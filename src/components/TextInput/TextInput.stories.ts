@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
-import Input from "./Input";
+import TextInput from "./TextInput";
 
-const meta: Meta<typeof Input> = {
+const meta: Meta<typeof TextInput> = {
   title: "Components/Input",
-  component: Input,
+  component: TextInput,
   argTypes: {
     isInvalid: { control: "boolean" },
     isTextArea: { control: "boolean" },
@@ -15,7 +15,7 @@ const meta: Meta<typeof Input> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Input>;
+type Story = StoryObj<typeof TextInput>;
 
 export const Default: Story = {
   args: {

@@ -12,7 +12,7 @@ interface Props extends React.ComponentProps<"input"> {
   invalidMessage?: string;
 }
 
-function Input({ className, isInvalid = false, isTextArea = false, invalidMessage, label, type, ...props }: Props) {
+function TextInput({ className, isInvalid = false, isTextArea = false, invalidMessage, label, type, ...props }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const commonStyle = cn(
@@ -62,4 +62,4 @@ function Input({ className, isInvalid = false, isTextArea = false, invalidMessag
   );
 }
 
-export default Input;
+export default TextInput;
