@@ -21,7 +21,7 @@ function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }:
   const [comment, setComment] = useState("");
 
   return (
-    <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
+    <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-md rounded-md border border-gray-200">
       {/* Título principal */}
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Rent Request</h2>
 
