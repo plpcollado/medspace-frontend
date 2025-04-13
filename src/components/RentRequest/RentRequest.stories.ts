@@ -13,7 +13,6 @@ A form component for submitting clinic rental requests. It includes:
 
 - A title and description explaining the request process
 - Calendar for selecting available dates
-- Time range selector (placeholder for future implementation)
 - Optional comment section for additional details
 - Submit and Cancel actions
 

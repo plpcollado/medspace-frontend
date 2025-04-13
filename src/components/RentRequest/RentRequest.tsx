@@ -43,11 +43,6 @@ function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }:
         />
       </div>
 
-      {/* Placeholder del selector de rango de tiempo */}
-      <div className="time-selector-placeholder w-full h-40 mb-6 flex flex-col items-center justify-center border border-gray-300 rounded-lg">
-        <span className="text-gray-500 text-sm">[Time Range Selector Here]</span>
-      </div>
-
       {/* Comment Box */}
       <div className="mb-6">
         <TenantComment
