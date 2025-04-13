@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import Button from "../Button";
 import AvailabilityCalendar from "@/components/AvailabilityCalendar/AvailabilityCalendar";
 import { useState } from "react";
+import TenantComment from "../TenantComment/TenantComment";
 
 interface RentRequestProps {
   clinicName: string;
@@ -15,6 +18,7 @@ interface RentRequestProps {
 
 function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }: RentRequestProps) {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [comment, setComment] = useState("");
 
   return (
     <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
@@ -44,9 +48,14 @@ function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }:
         <span className="text-gray-500 text-sm">[Time Range Selector Here]</span>
       </div>
 
-      {/* Placeholder de la caja de comentarios */}
-      <div className="comment-box-placeholder w-full h-24 mb-6 flex flex-col items-start justify-center border border-gray-300 rounded-lg p-4">
-        <span className="text-gray-500 text-sm">[Comment Box Here]</span>
+      {/* Comment Box */}
+      <div className="mb-6">
+        <TenantComment
+          value={comment}
+          onChange={setComment}
+          showTitle={true}
+          rows={4}
+        />
       </div>
 
       {/* Botones */}
