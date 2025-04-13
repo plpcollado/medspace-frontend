@@ -103,8 +103,9 @@ const AvailabilityCalendar = ({
         toDate={allowedDateRange.end}
         className="rounded-md border shadow"
         classNames={{
-          day_selected: "bg-blue-500 text-white hover:bg-blue-600",
+          day_selected: "bg-red-500 text-white hover:bg-red-600 rounded-full",
           day_today: "bg-accent text-accent-foreground",
+          day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-gray-100 rounded-full transition-colors",
         }}
       />
       <div className="flex flex-col gap-2 w-full mt-4">
