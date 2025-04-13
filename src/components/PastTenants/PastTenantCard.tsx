@@ -4,6 +4,7 @@ import Image from "next/image";
 export type FullStarRating = 0 | 1 | 2 | 3 | 4 | 5;
 import profile_pic from "./profile_pic.jpg";
 import { IoMdStarOutline } from "react-icons/io";
+import Button from "../Button";
 
 import StarRating from "../StarRating/StarRating";
 export interface PastTenant {
@@ -46,9 +47,9 @@ const PastTenantCard: FC<Props> = ({ tenant }) => {
 
       <div className="flex items-center gap-3">
         <StarRating />
-        <button className="bg-blue-500 text-white text-sm px-4 py-1.5 rounded-md">
+        <Button variant="primary" size="small">
           Rate
-        </button>
+        </Button>
       </div>
     </div>
   );
