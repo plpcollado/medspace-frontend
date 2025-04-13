@@ -108,24 +108,6 @@ const AvailabilityCalendar = ({
           day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-gray-100 rounded-full transition-colors",
         }}
       />
-      <div className="flex flex-col gap-2 w-full mt-4">
-        <p className="text-sm text-gray-600">
-          Selected Days:{" "}
-          {selectedDates.length > 0 ? (
-            <span className="font-medium">
-              {selectedDates
-                .sort((a, b) => a.getTime() - b.getTime())
-                .map(date => date.toLocaleDateString())
-                .join(", ")}
-            </span>
-          ) : (
-            "No dates selected"
-          )}
-        </p>
-        <p className="text-sm text-gray-500">
-          Total days selected: {selectedDates.length}
-        </p>
-      </div>
     </div>
   );
 };
