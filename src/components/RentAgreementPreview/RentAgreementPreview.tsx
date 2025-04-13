@@ -1,10 +1,9 @@
 import React from "react";
-import Image from "next/image"; 
 import Button from "../Button";
 
 interface RentAgreementPreviewProps {
   clinicName: string;
-  rentalDate: string; 
+  rentalDate: string;
   schedule: string;
   onMessageClick: () => void;
   onReviewClick: () => void;
@@ -20,7 +19,7 @@ const RentAgreementPreview: React.FC<RentAgreementPreviewProps> = ({
   images = [],
 }) => {
   return (
-    <div className="w-full max-w-2xl bg-white shadow rounded-lg p-6 flex flex-col gap-6">
+    <div className="w-full max-w-2xl bg-white shadow rounded-lg p-6 flex flex-col gap-1 ">
       {/* Section: Title */}
       <div className="text-xl font-semibold text-gray-800">
         {clinicName}
@@ -36,12 +35,10 @@ const RentAgreementPreview: React.FC<RentAgreementPreviewProps> = ({
         <div className="flex gap-4 overflow-x-auto">
           {images.slice(0, 3).map((src, idx) => (
             <div key={idx} className="relative w-48 h-32 rounded overflow-hidden">
-              <Image
+              <img
                 src={src}
                 alt={`Clinic image ${idx + 1}`}
-                layout="fill" 
-                objectFit="cover" 
-                className="rounded"
+                className="w-full h-full object-cover rounded"
               />
             </div>
           ))}

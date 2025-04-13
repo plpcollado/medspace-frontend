@@ -4,24 +4,24 @@ import "react-calendar/dist/Calendar.css";
 import './GeneralCalendar.css'; 
 
 interface GeneralCalendarProps {
-  fechaActual: Date;
-  onChangeFecha: (fecha: Date) => void;
+  currentDate: Date;
+  onDateChange: (date: Date) => void;
 }
 
-const GeneralCalendar: React.FC<GeneralCalendarProps> = ({ fechaActual, onChangeFecha }) => {
-  const [currentDate, setCurrentDate] = useState<Date>(fechaActual);
+const GeneralCalendar: React.FC<GeneralCalendarProps> = ({ currentDate, onDateChange }) => {
+  const [selectedDate, setSelectedDate] = useState<Date>(currentDate);
 
   const handleDateChange: CalendarProps["onChange"] = (value) => {
     if (value instanceof Date) {
-      setCurrentDate(value);
-      onChangeFecha(value); 
+      setSelectedDate(value);
+      onDateChange(value); 
     }
   };
 
   return (
       <Calendar
         onChange={handleDateChange}
-        value={currentDate}
+        value={selectedDate}
         tileDisabled={({ date }) => date < new Date()}
         className="react-calendar"
       />

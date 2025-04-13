@@ -1,5 +1,6 @@
 import React from "react";
-import Button from "../Button"; // Importa el componente Button
+import Image from "next/image"; // Importa el componente Image de Next.js
+import Button from "../Button"; 
 
 interface TenantRequestItemProps {
   officeName: string;
@@ -18,11 +19,15 @@ const TenantRequestItem: React.FC<TenantRequestItemProps> = ({
     <div className="flex items-center justify-between p-4 bg-white shadow-sm rounded-lg w-full max-w-4xl border border-gray-200">
       {/* Office photo */}
       {officePhoto && (
-        <img
-          src={officePhoto}
-          alt="Office photo"
-          className="h-12 w-12 rounded-full object-cover mr-4"
-        />
+        <div className="h-12 w-12 rounded-full overflow-hidden mr-4">
+          <Image
+            src={officePhoto}
+            alt="Office photo"
+            width={48} 
+            height={48}
+            className="object-cover"
+          />
+        </div>
       )}
 
       {/* Office details */}
