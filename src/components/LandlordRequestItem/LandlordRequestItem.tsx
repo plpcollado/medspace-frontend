@@ -4,36 +4,36 @@ import Image from "next/image";
 import Button from "../Button";
 
 interface LandlordRequestItemProps {
-  nombreEspecialista: string;
-  fecha: string;
-  nombreConsultorio: string;
+  specialistName: string;
+  date: string;
+  officeName: string;
   onClickAccept: () => void;
   onClickDeny: () => void;
-  fotoEspecialista?: string;
+  specialistPhoto?: string;
 }
 
 const RequestDetails = ({
-  nombreEspecialista,
-  fecha,
-  fotoEspecialista,
+  specialistName,
+  date,
+  specialistPhoto,
 }: {
-  nombreEspecialista: string;
-  fecha: string;
-  fotoEspecialista?: string;
+  specialistName: string;
+  date: string;
+  specialistPhoto?: string;
 }) => (
   <div className="flex items-center space-x-2">
-    {fotoEspecialista && (
+    {specialistPhoto && (
       <Image
-        src={fotoEspecialista}
-        alt="Foto del especialista"
+        src={specialistPhoto}
+        alt="Specialist photo"
         className="h-8 w-8 rounded-full object-cover"
         width={32} 
         height={32}
       />
     )}
     <div className="flex flex-col">
-      <strong className="text-base font-medium">{nombreEspecialista}</strong>
-      <small className="text-gray-500 text-sm">{fecha}</small>
+      <strong className="text-base font-medium">{specialistName}</strong>
+      <small className="text-gray-500 text-sm">{date}</small>
     </div>
   </div>
 );
@@ -62,21 +62,21 @@ const RequestActions = ({
 );
 
 const LandlordRequestItem: React.FC<LandlordRequestItemProps> = ({
-  nombreEspecialista,
-  fecha,
-  nombreConsultorio,
+  specialistName,
+  date,
+  officeName,
   onClickAccept,
   onClickDeny,
-  fotoEspecialista,
+  specialistPhoto,
 }) => {
   return (
     <div className="flex items-center justify-between p-4 bg-white shadow-sm rounded-lg w-full max-w-6xl mx-auto">
       <RequestDetails
-        nombreEspecialista={nombreEspecialista}
-        fecha={fecha}
-        fotoEspecialista={fotoEspecialista}
+        specialistName={specialistName}
+        date={date}
+        specialistPhoto={specialistPhoto}
       />
-      <div className="flex-1 ml-4 text-gray-700">{nombreConsultorio}</div>
+      <div className="flex-1 ml-4 text-gray-700">{officeName}</div>
       <RequestActions onClickAccept={onClickAccept} onClickDeny={onClickDeny} />
     </div>
   );
