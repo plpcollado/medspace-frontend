@@ -1,11 +1,21 @@
 import React from "react";
 import Button from "../Button";
+import AvailabilityCalendar from "@/components/AvailabilityCalendar/AvailabilityCalendar";
+import { useState } from "react";
 
 interface RentRequestProps {
-  clinicName: string; // Prop para recibir el nombre del consultorio
+  clinicName: string;
+  availableDates: string[];
+  occupiedDates: string[];
+  requestDate: {
+    start: string;
+    end: string;
+  };
 }
 
-function RentRequest({ clinicName }: RentRequestProps) {
+function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }: RentRequestProps) {
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+
   return (
     <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
       {/* Título principal */}
@@ -18,9 +28,15 @@ function RentRequest({ clinicName }: RentRequestProps) {
         You'll receive a notification once the owner reviews your request.
       </p>
 
-      {/* Placeholder del calendario */}
-      <div className="calendar-placeholder w-full h-56 mb-6 flex flex-col items-center justify-center border border-gray-300 rounded-lg">
-        <span className="text-gray-500 text-sm">[Calendar Component Here]</span>
+      {/* Calendar Component */}
+      <div className="mb-6">
+        <AvailabilityCalendar
+          availableDates={availableDates}
+          occupiedDates={occupiedDates}
+          request_date={requestDate}
+          selected_dates={selectedDates}
+          onDatesChange={setSelectedDates}
+        />
       </div>
 
       {/* Placeholder del selector de rango de tiempo */}
