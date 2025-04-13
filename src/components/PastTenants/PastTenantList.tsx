@@ -1,23 +1,6 @@
 import { FC } from "react";
 import PastTenantCard, { PastTenant } from "./PastTenantCard";
 
-const pastTenants: PastTenant[] = [
-  {
-    id: "1",
-    name: "John Doe",
-    agreementDate: "Diciembre 2021",
-    specialty: "Cardiologist",
-    rating: 5,
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    agreementDate: "Diciembre 2021",
-    specialty: "Pediatry",
-    rating: 3,
-  },
-];
-
 interface PastTenantListProps {
   tenants: PastTenant[];
 }
@@ -40,7 +23,7 @@ export default function PastTenantsPage() {
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Past Tenants</h1>
-      <PastTenantList tenants={pastTenants} />
+      <PastTenantList tenants={[]} />
     </main>
   );
 }
