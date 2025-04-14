@@ -2,23 +2,27 @@
 
 import React from "react";
 import Button from "../Button";
-import AvailabilityCalendar from "@/components/AvailabilityCalendar/AvailabilityCalendar";
 import { useState } from "react";
 import TenantComment from "../TenantComment/TenantComment";
+import DatePicker from "../DatePicker/DatePicker";
 
 interface RentRequestProps {
   clinicName: string;
-  availableDates: string[];
-  occupiedDates: string[];
-  requestDate: {
-    start: string;
-    end: string;
-  };
+  occupiedDates: Date[];
+  availableDatesEnd?: Date;
 }
 
-function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }: RentRequestProps) {
+function RentRequest({
+  clinicName,
+  occupiedDates,
+  availableDatesEnd
+}: RentRequestProps) {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [comment, setComment] = useState("");
+
+  function handleSelectDate(dates: Date[] | Date | undefined) {
+    setSelectedDates(dates as Date[]);
+  }
 
   return (
     <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-md rounded-md border border-gray-200">
@@ -27,19 +31,20 @@ function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }:
 
       {/* Descripción */}
       <p className="text-sm text-gray-600 mb-6">
-        You're about to request <strong>"{clinicName}"</strong>. 
-        Please select the date you'd like to rent it and add an optional comment before submitting. 
-        You'll receive a notification once the owner reviews your request.
+        You&#39;re about to request <strong>&quot;{clinicName}&quot;</strong>.
+        Please select the date you&#39;d like to rent it and add an optional
+        comment before submitting. You&#39;ll receive a notification once the
+        owner reviews your request.
       </p>
 
       {/* Calendar Component */}
-      <div className="mb-6">
-        <AvailabilityCalendar
-          availableDates={availableDates}
-          occupiedDates={occupiedDates}
-          request_date={requestDate}
-          selected_dates={selectedDates}
-          onDatesChange={setSelectedDates}
+      <div className="mb-6 flex justify-center">
+        <DatePicker
+          mode="multiple"
+          onSelectDate={handleSelectDate} // Placeholder function
+          disabledDates={occupiedDates}
+          fromDate={new Date()}
+          toDate={availableDatesEnd}
         />
       </div>
 
@@ -63,7 +68,7 @@ function RentRequest({ clinicName, availableDates, occupiedDates, requestDate }:
           Cancel
         </Button>
         <Button
-          onClick={() => alert("Request submitted")}
+          onClick={() => alert(`Request submitted ${selectedDates}`)}
           variant="primary"
           className="flex-1 h-12 text-base"
         >

@@ -1,121 +1,90 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import RentRequest from "./RentRequest";
+import { Meta, StoryObj } from "@storybook/react";
+import RentRequest from "@/components/RentRequest"; // Adjust the import path as needed
+import { addDays } from "date-fns";
 
 const meta: Meta<typeof RentRequest> = {
   title: "Components/RentRequest",
   component: RentRequest,
   parameters: {
-    layout: "centered",
-    docs: {
-      description: {
-        component: `
-A form component for submitting clinic rental requests. It includes:
-
-- A title and description explaining the request process
-- Calendar for selecting available dates
-- Optional comment section for additional details
-- Submit and Cancel actions
-
-### Props
-
-- \`clinicName\`: Name of the clinic being requested
-- \`availableDates\`: Array of dates when the clinic is available (format: 'YYYY-MM-DD')
-- \`occupiedDates\`: Array of dates when the clinic is already booked (format: 'YYYY-MM-DD')
-- \`requestDate\`: Object containing the allowed date range
-  - \`start\`: Start date of the range (format: 'YYYY-MM-DD')
-  - \`end\`: End date of the range (format: 'YYYY-MM-DD')
-`,
-      },
-    },
+    layout: "centered"
   },
   tags: ["autodocs"],
+  argTypes: {
+    clinicName: {
+      control: "text",
+      description: "Name of the clinic being requested"
+    },
+    occupiedDates: {
+      control: "object",
+      description:
+        "Array of dates that are already occupied and cannot be selected"
+    },
+    availableDatesEnd: {
+      control: "date",
+      description: "The last date available for selection"
+    }
+  }
 };
 
 export default meta;
 type Story = StoryObj<typeof RentRequest>;
 
-// Helper function to generate dates
-const generateDates = (startDate: string, count: number) => {
-  const dates = [];
-  let currentDate = new Date(startDate);
-  
-  for (let i = 0; i < count; i++) {
-    dates.push(currentDate.toISOString().split('T')[0]);
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-  
-  return dates;
-};
+// Generate some sample occupied dates (today plus a few random days)
+const today = new Date();
+const generateOccupiedDates = () => [
+  today,
+  addDays(today, 2),
+  addDays(today, 5),
+  addDays(today, 8),
+  addDays(today, 15)
+];
 
+// Default RentRequest
 export const Default: Story = {
   args: {
-    clinicName: "Modern Medical Clinic",
-    availableDates: [
-      ...generateDates("2024-03-01", 5),  // First week
-      ...generateDates("2024-03-10", 5),  // Second week
-      ...generateDates("2024-03-20", 5),  // Third week
-    ],
-    occupiedDates: [
-      "2024-03-02", "2024-03-03",        // Some days in March
-      "2024-03-12", "2024-03-13",        // Some days in March
-    ],
-    requestDate: {
-      start: "2024-03-01",
-      end: "2024-03-31",
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Default view of the rent request form showing a clinic with mixed availability across March.",
-      },
-    },
-  },
+    clinicName: "Downtown Medical Office",
+    occupiedDates: generateOccupiedDates(),
+    availableDatesEnd: addDays(today, 60) // Available for the next 60 days
+  }
 };
 
-export const WithLongClinicName: Story = {
+// RentRequest with different clinic name
+export const DifferentClinic: Story = {
   args: {
-    clinicName: "Dr. Smith's Advanced Dental & Orthodontics Center - Downtown Location",
-    availableDates: [
-      ...generateDates("2024-03-01", 3),
-    ],
-    occupiedDates: [
-      "2024-03-04", "2024-03-05",
-    ],
-    requestDate: {
-      start: "2024-03-01",
-      end: "2024-03-07",
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Shows how the form handles a long clinic name while maintaining proper layout.",
-      },
-    },
-  },
+    clinicName: "Sunset Boulevard Dental Practice",
+    occupiedDates: generateOccupiedDates(),
+    availableDatesEnd: addDays(today, 90) // Available for the next 90 days
+  }
 };
 
+// RentRequest with many occupied dates
+export const MostlyOccupied: Story = {
+  args: {
+    clinicName: "Oak Street Pediatric Center",
+    occupiedDates: [
+      ...Array(20)
+        .fill(0)
+        .map((_, i) => addDays(today, i + 1))
+        .filter((_, i) => i % 2 === 0)
+    ],
+    availableDatesEnd: addDays(today, 30)
+  }
+};
+
+// RentRequest with limited availability window
 export const LimitedAvailability: Story = {
   args: {
-    clinicName: "City Dental Office",
-    availableDates: [
-      "2024-03-01", "2024-03-15", "2024-03-30",  // Only few dates available
-    ],
-    occupiedDates: [
-      ...generateDates("2024-03-02", 13),  // Most days are occupied
-      ...generateDates("2024-03-16", 14),
-    ],
-    requestDate: {
-      start: "2024-03-01",
-      end: "2024-03-31",
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: "Shows the form when the clinic has limited availability, with most dates being occupied.",
-      },
-    },
-  },
-}; 
+    clinicName: "Central Hospital Consulting Room",
+    occupiedDates: generateOccupiedDates(),
+    availableDatesEnd: addDays(today, 14) // Only available for the next 2 weeks
+  }
+};
+
+// RentRequest without end date constraint
+export const NoEndDateConstraint: Story = {
+  args: {
+    clinicName: "Lakeside Radiology Center",
+    occupiedDates: generateOccupiedDates()
+    // No availableDatesEnd provided, so no upper limit
+  }
+};
