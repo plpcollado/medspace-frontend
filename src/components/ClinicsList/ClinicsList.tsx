@@ -1,7 +1,7 @@
 "use client";
 
+import { Toggle } from "@radix-ui/react-toggle";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
-import { Toggle } from "@/components/ui/toggle";
 
 type ClinicCardProps = {
   /** URL of the clinic's image */
@@ -36,10 +36,10 @@ const ClinicCard = ({
   priceUnit,
   isFavorited,
   onFavoriteToggle,
-  onClick,
+  onClick
 }: ClinicCardProps) => {
   return (
-    <div 
+    <div
       className="flex flex-row bg-white cursor-pointer hover:bg-gray-50 transition-colors w-full py-4"
       onClick={onClick}
     >
@@ -71,9 +71,7 @@ const ClinicCard = ({
         </div>
 
         {/* Features */}
-        <p className="text-gray-600">
-          {features.join(" · ")}
-        </p>
+        <p className="text-gray-600">{features.join(" · ")}</p>
 
         {/* Rating, reviews and price in the same row */}
         <div className="flex items-center justify-between">
@@ -82,11 +80,9 @@ const ClinicCard = ({
               <span className="font-semibold">{rating}</span>
               <span className="text-yellow-400">★</span>
             </span>
-            <span className="text-gray-600">
-              ({reviewsCount} reviews)
-            </span>
+            <span className="text-gray-600">({reviewsCount} reviews)</span>
           </div>
-          
+
           {/* Price */}
           <div className="flex items-center gap-1">
             <span className="text-xl font-semibold">${price}</span>
