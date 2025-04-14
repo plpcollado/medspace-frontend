@@ -10,7 +10,7 @@ type ClinicCardProps = {
   price: number;
   priceUnit: string;
   isFavorited: boolean;
-  onFavoriteToggle: () => void;
+  onFavoriteToggle: (pressed: boolean) => void;
   onClick: () => void;
 };
 
@@ -45,7 +45,7 @@ const sampleClinics: ClinicCardProps[] = [
     price: 325,
     priceUnit: "day",
     isFavorited: false,
-    onFavoriteToggle: () => console.log("Toggle favorite"),
+    onFavoriteToggle: (pressed) => console.log("Toggle favorite", pressed),
     onClick: () => console.log("Clinic clicked"),
   },
   {
@@ -57,7 +57,7 @@ const sampleClinics: ClinicCardProps[] = [
     price: 450,
     priceUnit: "day",
     isFavorited: false,
-    onFavoriteToggle: () => console.log("Toggle favorite"),
+    onFavoriteToggle: (pressed) => console.log("Toggle favorite", pressed),
     onClick: () => console.log("Clinic clicked"),
   }
 ];
@@ -77,18 +77,5 @@ export const Default: Story = {
 export const SingleClinic: Story = {
   args: {
     clinics: [sampleClinics[0]],
-  },
-};
-
-/**
- * Story showing favorited clinics
- */
-export const WithFavorites: Story = {
-  args: {
-    clinics: [
-      { ...sampleClinics[0], isFavorited: true },
-      { ...sampleClinics[1], isFavorited: true },
-      { ...sampleClinics[2], isFavorited: false },
-    ],
   },
 };
