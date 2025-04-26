@@ -1,9 +1,17 @@
 import Navbar from "@/components/Navbar";
-export default function LandingPageLayout({
+import { isGuestServerSide } from "@/lib/firebase/serverApp";
+import { redirect } from "next/navigation";
+export default async function LandingPageLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const isGuest = await isGuestServerSide();
+
+  if (!isGuest) {
+    return redirect("/main");
+  }
+
   return (
     <>
       <Navbar variant="guest" />

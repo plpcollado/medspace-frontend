@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import Logo from "../Logo/Logo";
 import Avatar from "../Avatar/Avatar";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { AuthService } from "@/services/AuthService";
 
 interface Props {
   variant: "tenant" | "landlord" | "analyst" | "guest";
@@ -95,6 +96,11 @@ function UserRightSection() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  async function onLogout() {
+    await AuthService.signOut();
+    window.location.href = "/"; // Redirect to login page after logout
+  }
+
   return (
     <div className="relative" ref={menuRef}>
       <button
@@ -123,9 +129,7 @@ function UserRightSection() {
           <li>
             <button
               className="w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => {
-                console.log("Logging out...");
-              }}
+              onClick={onLogout}
             >
               Logout
             </button>
