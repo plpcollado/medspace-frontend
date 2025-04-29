@@ -4,37 +4,45 @@ import Button from "@/components/Button";
 import MultistepFormNavItem from "@/components/MultistepFormNavItem";
 import { cn } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function CreateClinicPage() {
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
 
-  const currentStepComponentMap = {
-    1: (
-      <BasicInfoSection
-        onClickPrimary={() => setCurrentStep(2)}
-        onClickSecondary={() => redirect("/main")}
-      />
-    ),
-    2: (
-      <PhotosSection
-        onClickPrimary={() => setCurrentStep(3)}
-        onClickSecondary={() => setCurrentStep(1)}
-      />
-    ),
-    3: (
-      <RentDataSection
-        onClickPrimary={() => setCurrentStep(4)}
-        onClickSecondary={() => setCurrentStep(2)}
-      />
-    ),
-    4: (
-      <PropertyProof
-        onClickPrimary={() => redirect("/main")}
-        onClickSecondary={() => setCurrentStep(3)}
-      />
-    )
-  };
+  const CurrentStepComponent = useMemo(() => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <BasicInfoSection
+            onClickPrimary={() => setCurrentStep(2)}
+            onClickSecondary={() => redirect("/main")}
+          />
+        );
+      case 2:
+        return (
+          <PhotosSection
+            onClickPrimary={() => setCurrentStep(3)}
+            onClickSecondary={() => setCurrentStep(1)}
+          />
+        );
+      case 3:
+        return (
+          <RentDataSection
+            onClickPrimary={() => setCurrentStep(4)}
+            onClickSecondary={() => setCurrentStep(2)}
+          />
+        );
+      case 4:
+        return (
+          <PropertyProof
+            onClickPrimary={() => redirect("/main")}
+            onClickSecondary={() => setCurrentStep(3)}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [currentStep]);
 
   return (
     <>
@@ -76,7 +84,7 @@ export default function CreateClinicPage() {
 
         <div className="flex-1">
           <div className="container mx-auto px-6 py-2 sm:py-8">
-            {currentStepComponentMap[currentStep]}
+            {CurrentStepComponent}
           </div>
         </div>
       </main>
