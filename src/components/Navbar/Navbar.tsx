@@ -21,6 +21,7 @@ const navbarLinks = {
   landlord: [
     { name: "Metrics", href: "/metrics" },
     { name: "My Clinics", href: "/my-clinics" },
+    { name: "New Clinic", href: "/create-clinic" },
     { name: "Past tenants", href: "/past-tenants" },
     { name: "Notifications", href: "/notifications" }
   ],
