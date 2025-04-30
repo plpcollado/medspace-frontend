@@ -26,7 +26,7 @@ export function useCreateClinicForm() {
       description: "",
       category: CLINIC_CATEGORIES[0],
       equipments: [],
-      size: 0
+      size: null
     },
     photos: [],
     rentInfo: { pricePerDay: null, maximumStayInDays: null },
