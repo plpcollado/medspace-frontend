@@ -27,7 +27,7 @@ const ClinicAvailabilityInput = ({
   onChangeToTime,
   isActive,
   onChangeActive,
-  error = null,
+  error = null
 }: ClinicAvailabilityInputProps) => {
   return (
     <>
@@ -85,7 +85,6 @@ const ClinicAvailabilityInput = ({
               value={isActive && toTime ? toTime : ""}
               onChange={(e) => {
                 onChangeToTime(e.target.value);
-                console.log(e.target.value);
               }}
             />
           </div>

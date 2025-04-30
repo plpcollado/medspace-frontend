@@ -17,6 +17,16 @@ type UpdateFormData =
   | Partial<RentInfoData>
   | Partial<PropertyProofData>;
 
+const DAYS_OF_WEEK = [
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+  "SUNDAY"
+];
+
 export function useCreateClinicForm() {
   const router = useRouter();
 
@@ -29,7 +39,16 @@ export function useCreateClinicForm() {
       size: null
     },
     photos: [],
-    rentInfo: { pricePerDay: null, maximumStayInDays: null },
+    rentInfo: {
+      pricePerDay: null,
+      maximumStayInDays: null,
+      availabilities: DAYS_OF_WEEK.map((day) => ({
+        dayOfWeek: day,
+        fromTime: null,
+        toTime: null,
+        isActive: true
+      }))
+    },
     propertyProof: { documentFile: null }
   });
 
