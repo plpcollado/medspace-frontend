@@ -38,7 +38,14 @@ export default function CreateClinicPage() {
         );
       case 3:
         return (
-          <RentDataSection onClickPrimary={goNext} onClickSecondary={goBack} />
+          <RentDataSection
+            onClickPrimary={goNext}
+            onClickSecondary={goBack}
+            data={formData.rentInfo}
+            setData={(data) => {
+              updateFormData("rentInfo", data);
+            }}
+          />
         );
       case 4:
         return (
