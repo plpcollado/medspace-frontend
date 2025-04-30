@@ -1,16 +1,22 @@
-import { CLINIC_CATEGORIES } from "@/types/clinicTypes";
+import {
+  CLINIC_CATEGORIES,
+  CLINIC_EQUIPMENTS,
+  ClinicCategory,
+  ClinicEquipment
+} from "@/types/clinicTypes";
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import TextInput from "@/components/TextInput";
 import SelectInput from "@/components/SelectInput/SelectInput";
 import TextAreaInput from "@/components/TextAreaInput";
+import ClinicEquipmentTag from "@/components/ClinicEquipmentTag";
+import { constToTitleCase } from "@/lib/textUtils";
 
 export interface BasicInfoData {
   displayName: string;
   description: string;
-  category: string;
-  // equipments: string[];
-  // size: number;
-  // TODO: add location data @Eashley
+  category: ClinicCategory;
+  equipments: ClinicEquipment[];
+  size: number;
 }
 
 interface BasicInfoSectionProps extends StepSectionProps {
@@ -26,12 +32,26 @@ export default function BasicInfoSection({
 }: BasicInfoSectionProps) {
   const categoryOptions = CLINIC_CATEGORIES.map((cat) => ({
     value: cat,
-    name: cat
-      .toLowerCase()
-      .split("_")
-      .map((word) => word[0].toUpperCase() + word.slice(1))
-      .join(" ")
+    name: constToTitleCase(cat)
   }));
+
+  const equipmentsOptions = [
+    { name: "Select", value: "SELECT" },
+    ...CLINIC_EQUIPMENTS.map((eq) => ({
+      value: eq,
+      name: constToTitleCase(eq)
+    }))
+  ];
+
+  const handleAddEquipment = (eq: string) => {
+    if (!data.equipments.includes(eq)) {
+      setData({ equipments: [...data.equipments, eq] });
+    }
+  };
+
+  const handleDeleteEquipment = (eq: string) => {
+    setData({ equipments: data.equipments.filter((e) => e !== eq) });
+  };
 
   return (
     <StepSectionBase
@@ -67,6 +87,38 @@ export default function BasicInfoSection({
             />
           </div>
           <div className="flex-1">Map here</div>
+        </div>
+        <div className="flex gap-12">
+          <div className="flex-1">
+            <SelectInput
+              label="Equipments"
+              values={equipmentsOptions}
+              onChange={(e) => handleAddEquipment(e.target.value)}
+              value={"Select"}
+            />
+          </div>
+          <div className="flex-1">
+            <TextInput
+              type="number"
+              label="Size (in sq m)"
+              value={data.size}
+              min="0"
+              onChange={(e) => {
+                setData({ size: Number(e.target.value) });
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex gap-4 flex-wrap">
+          {data.equipments.map((eq, idx) => (
+            <ClinicEquipmentTag
+              key={idx}
+              name={constToTitleCase(eq)}
+              onDelete={() => {
+                handleDeleteEquipment(eq);
+              }}
+            />
+          ))}
         </div>
       </div>
     </StepSectionBase>

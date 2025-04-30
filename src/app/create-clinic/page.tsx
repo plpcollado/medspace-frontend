@@ -24,14 +24,16 @@ export default function CreateClinicPage() {
     basicInfo: {
       displayName: "",
       description: "",
-      category: CLINIC_CATEGORIES[0]
+      category: CLINIC_CATEGORIES[0],
+      equipments: [],
+      size: 0
     },
     photos: [],
     rentData: { price: 0, contractLengthMonths: 0 },
     propertyProof: { documentFile: null }
   });
 
-  const CurrentStepComponent = (() => {
+  const renderCurrentStepComponent = () => {
     switch (currentStep) {
       case 1:
         return (
@@ -74,7 +76,7 @@ export default function CreateClinicPage() {
       default:
         return null;
     }
-  })();
+  };
 
   return (
     <>
@@ -116,7 +118,7 @@ export default function CreateClinicPage() {
 
         <div className="flex-1">
           <div className="container mx-auto px-6 py-2 sm:py-8">
-            {CurrentStepComponent}
+            {renderCurrentStepComponent()}
           </div>
         </div>
       </main>

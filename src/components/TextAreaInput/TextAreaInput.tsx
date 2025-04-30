@@ -35,7 +35,7 @@ export default function TextAreaInput({
       >
         {label}
       </label>
-      <textarea className={cn(baseStyle)} {...props} rows={5} />
+      <textarea className={cn(baseStyle)} {...props} rows={10} />
       {isInvalid && invalidMessage && (
         <p className="text-red-500 text-sm mt-2">{invalidMessage}</p>
       )}
