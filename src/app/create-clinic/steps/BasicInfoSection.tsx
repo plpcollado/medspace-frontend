@@ -35,8 +35,9 @@ export default function BasicInfoSection({
     name: constToTitleCase(cat)
   }));
 
+  const DEFAULT_EQUIPMENT = "DEFAULT_SELECT";
   const equipmentsOptions = [
-    { name: "Select", value: "SELECT" },
+    { name: "Select", value: DEFAULT_EQUIPMENT },
     ...CLINIC_EQUIPMENTS.map((eq) => ({
       value: eq,
       name: constToTitleCase(eq)
@@ -44,7 +45,7 @@ export default function BasicInfoSection({
   ];
 
   const handleAddEquipment = (eq: string) => {
-    if (!data.equipments.includes(eq)) {
+    if (eq != DEFAULT_EQUIPMENT && !data.equipments.includes(eq)) {
       setData({ equipments: [...data.equipments, eq] });
     }
   };
