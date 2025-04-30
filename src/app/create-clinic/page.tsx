@@ -1,21 +1,53 @@
 "use client";
 
-import Button from "@/components/Button";
 import MultistepFormNavItem from "@/components/MultistepFormNavItem";
 import { cn } from "@/lib/utils";
+import { CLINIC_CATEGORIES } from "@/types/clinicTypes";
 import { redirect } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import BasicInfoSection, { BasicInfoData } from "./steps/BasicInfoSection";
+import PhotosSection from "./steps/PhotosSection";
+import RentDataSection, { RentData } from "./steps/RentDataSection";
+import PropertyProof, { PropertyProofData } from "./steps/PropertyProofSection";
+
+interface ClinicFormData {
+  basicInfo: BasicInfoData;
+  photos: string[];
+  rentData: RentData;
+  propertyProof: PropertyProofData;
+}
 
 export default function CreateClinicPage() {
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
 
-  const CurrentStepComponent = useMemo(() => {
+  const [formData, setFormData] = useState<ClinicFormData>({
+    basicInfo: {
+      displayName: "",
+      description: "",
+      category: CLINIC_CATEGORIES[0]
+    },
+    photos: [],
+    rentData: { price: 0, contractLengthMonths: 0 },
+    propertyProof: { documentFile: null }
+  });
+
+  const CurrentStepComponent = (() => {
     switch (currentStep) {
       case 1:
         return (
           <BasicInfoSection
             onClickPrimary={() => setCurrentStep(2)}
             onClickSecondary={() => redirect("/main")}
+            data={formData.basicInfo}
+            setData={(data) =>
+              setFormData((prev) => ({
+                ...prev,
+                basicInfo: {
+                  ...prev.basicInfo,
+                  ...data
+                }
+              }))
+            }
           />
         );
       case 2:
@@ -42,7 +74,7 @@ export default function CreateClinicPage() {
       default:
         return null;
     }
-  }, [currentStep]);
+  })();
 
   return (
     <>
@@ -89,98 +121,5 @@ export default function CreateClinicPage() {
         </div>
       </main>
     </>
-  );
-}
-
-interface StepSectionBaseProps {
-  children?: React.ReactNode;
-  onClickPrimary: () => void;
-  onClickSecondary: () => void;
-  primaryLabel: string;
-  secondaryLabel: string;
-}
-
-function StepSectionBase({
-  children,
-  onClickPrimary,
-  onClickSecondary,
-  primaryLabel,
-  secondaryLabel
-}: StepSectionBaseProps) {
-  return (
-    <section className="max-w-4xl mx-auto flex flex-col">
-      <div className="min-h-[45vh]">{children}</div>
-      <div className="flex mt-10 justify-around">
-        <Button variant="outline" className="w-1/3" onClick={onClickSecondary}>
-          {secondaryLabel}
-        </Button>
-        <Button className="w-1/3" onClick={onClickPrimary}>
-          {primaryLabel}
-        </Button>
-      </div>
-    </section>
-  );
-}
-
-interface StepSectionProps {
-  onClickPrimary: () => void;
-  onClickSecondary: () => void;
-}
-
-function BasicInfoSection({
-  onClickPrimary,
-  onClickSecondary
-}: StepSectionProps) {
-  return (
-    <StepSectionBase
-      onClickPrimary={onClickPrimary}
-      onClickSecondary={onClickSecondary}
-      primaryLabel={"Continue"}
-      secondaryLabel={"Cancel"}
-    >
-      <p>Basic info section</p>
-    </StepSectionBase>
-  );
-}
-
-function PhotosSection({ onClickPrimary, onClickSecondary }: StepSectionProps) {
-  return (
-    <StepSectionBase
-      onClickPrimary={onClickPrimary}
-      onClickSecondary={onClickSecondary}
-      primaryLabel="Continue"
-      secondaryLabel="Back"
-    >
-      <p>Photos Section</p>
-    </StepSectionBase>
-  );
-}
-
-function RentDataSection({
-  onClickPrimary,
-  onClickSecondary
-}: StepSectionProps) {
-  return (
-    <StepSectionBase
-      onClickPrimary={onClickPrimary}
-      onClickSecondary={onClickSecondary}
-      primaryLabel="Continue"
-      secondaryLabel="Back"
-    >
-      <p>Rent Data Section</p>
-    </StepSectionBase>
-  );
-}
-
-function PropertyProof({ onClickPrimary, onClickSecondary }: StepSectionProps) {
-  return (
-    <StepSectionBase
-      onClickPrimary={onClickPrimary}
-      onClickSecondary={onClickSecondary}
-      primaryLabel="Submit"
-      secondaryLabel="Back"
-    >
-      <p>Property Proof Section</p>
-    </StepSectionBase>
   );
 }
