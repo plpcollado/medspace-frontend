@@ -1,18 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useState
+} from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { cn } from "@/lib/utils";
 
-interface Props extends React.ComponentProps<"input"> {
+// Base type for shared properties
+interface BaseProps {
   className?: string;
   label?: string;
   isInvalid?: boolean;
-  isTextArea?: boolean;
   invalidMessage?: string;
 }
 
-function TextInput({ className, isInvalid = false, isTextArea = false, invalidMessage, label, type, ...props }: Props) {
+interface InputProps extends BaseProps, InputHTMLAttributes<HTMLInputElement> {
+  isTextArea?: false; // This prop indicates that this is not a textarea
+}
+
+interface TextareaProps
+  extends BaseProps,
+    TextareaHTMLAttributes<HTMLTextAreaElement> {
+  isTextArea: true; // This prop indicates that this is a textarea
+  type?: never; // No type prop for textarea
+}
+
+// Union type that can be either input or textarea props
+type Props = InputProps | TextareaProps;
+
+function TextInput({
+  className,
+  isInvalid = false,
+  isTextArea = false,
+  invalidMessage,
+  label,
+  type,
+  ...props
+}: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const commonStyle = cn(
@@ -31,15 +57,19 @@ function TextInput({ className, isInvalid = false, isTextArea = false, invalidMe
 
   return (
     <div className={cn("w-full", className)}>
-      <label className={`mt-4 block text-sm font-medium text-gray-800 dark:text-gray-200 ${!label && "hidden"}`}>
+      <label
+        className={`mt-4 block text-sm font-medium text-gray-800 dark:text-gray-200 ${!label && "hidden"}`}
+      >
         {label}
       </label>
 
       {!isTextArea && (
         <div className="relative">
           <input
-            type={type === "password" ? (showPassword ? "text" : "password") : type}
-            {...props}
+            type={
+              type === "password" ? (showPassword ? "text" : "password") : type
+            }
+            {...(props as InputHTMLAttributes<HTMLInputElement>)}
             className={`${className} ${commonStyle}`}
           />
 
@@ -55,9 +85,21 @@ function TextInput({ className, isInvalid = false, isTextArea = false, invalidMe
         </div>
       )}
 
-      {isTextArea && <textarea rows={10} className={cn(className, commonStyle)} />}
+      {isTextArea && (
+        <textarea
+          {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+          rows={10}
+          className={cn(className, commonStyle)}
+        />
+      )}
 
-      {isInvalid && <p className={`text-red-500 text-sm mt-2 ${!invalidMessage && "hidden"} `}>{invalidMessage}</p>}
+      {isInvalid && (
+        <p
+          className={`text-red-500 text-sm mt-2 ${!invalidMessage && "hidden"} `}
+        >
+          {invalidMessage}
+        </p>
+      )}
     </div>
   );
 }
