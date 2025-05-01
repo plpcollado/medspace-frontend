@@ -2,20 +2,30 @@ import { useState } from "react";
 import { CLINIC_CATEGORIES } from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import { BasicInfoData } from "./steps/BasicInfoSection";
-import { RentData } from "./steps/RentDataSection";
+import { RentInfoData } from "./steps/RentDataSection";
 import { PropertyProofData } from "./steps/PropertyProofSection";
 
 export interface ClinicFormData {
   basicInfo: BasicInfoData;
   photos: string[];
-  rentData: RentData;
+  rentInfo: RentInfoData;
   propertyProof: PropertyProofData;
 }
 
 type UpdateFormData =
   | Partial<BasicInfoData>
-  | Partial<RentData>
+  | Partial<RentInfoData>
   | Partial<PropertyProofData>;
+
+const DAYS_OF_WEEK = [
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+  "SUNDAY"
+];
 
 export function useCreateClinicForm() {
   const router = useRouter();
@@ -26,10 +36,19 @@ export function useCreateClinicForm() {
       description: "",
       category: CLINIC_CATEGORIES[0],
       equipments: [],
-      size: 0
+      size: null
     },
     photos: [],
-    rentData: { price: 0, contractLengthMonths: 0 },
+    rentInfo: {
+      pricePerDay: null,
+      maximumStayInDays: null,
+      availabilities: DAYS_OF_WEEK.map((day) => ({
+        dayOfWeek: day,
+        fromTime: null,
+        toTime: null,
+        isActive: true
+      }))
+    },
     propertyProof: { documentFile: null }
   });
 

@@ -15,7 +15,7 @@ export interface BasicInfoData {
   description: string;
   category: ClinicCategory;
   equipments: ClinicEquipment[];
-  size: number;
+  size: number | null;
 }
 
 interface BasicInfoSectionProps extends StepSectionProps {
@@ -102,10 +102,12 @@ export default function BasicInfoSection({
             <TextInput
               type="number"
               label="Size (in sq m)"
-              value={data.size}
+              value={data.size ?? ""}
               min="0"
               onChange={(e) => {
-                setData({ size: Number(e.target.value) });
+                setData({
+                  size: e.target.value ? Number(e.target.value) : null
+                });
               }}
             />
           </div>
