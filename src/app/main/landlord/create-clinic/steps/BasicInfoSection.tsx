@@ -7,7 +7,6 @@ import {
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import TextInput from "@/components/TextInput";
 import SelectInput from "@/components/SelectInput/SelectInput";
-import TextAreaInput from "@/components/TextAreaInput";
 import ClinicEquipmentTag from "@/components/ClinicEquipmentTag";
 import { constToTitleCase } from "@/lib/textUtils";
 
@@ -81,7 +80,8 @@ export default function BasicInfoSection({
         </div>
         <div className="flex gap-12">
           <div className="flex-1">
-            <TextAreaInput
+            <TextInput
+              isTextArea={true}
               label="Description"
               value={data.description}
               onChange={(e) => setData({ description: e.target.value })}
