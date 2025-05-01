@@ -1,26 +1,17 @@
-import {
-  CLINIC_CATEGORIES,
-  CLINIC_EQUIPMENTS,
-  ClinicCategory,
-  ClinicEquipment
-} from "@/types/clinicTypes";
+import { CLINIC_CATEGORIES, CLINIC_EQUIPMENTS } from "@/types/clinicTypes";
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import TextInput from "@/components/TextInput";
 import SelectInput from "@/components/SelectInput/SelectInput";
 import ClinicEquipmentTag from "@/components/ClinicEquipmentTag";
 import { constToTitleCase } from "@/lib/textUtils";
-
-export interface BasicInfoData {
-  displayName: string;
-  description: string;
-  category: ClinicCategory;
-  equipments: ClinicEquipment[];
-  size: number | null;
-}
+import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 
 interface BasicInfoSectionProps extends StepSectionProps {
-  data: BasicInfoData;
-  setData: (data: Partial<BasicInfoData>) => void;
+  data: CreateClinicFormData;
+  setData: (
+    key: keyof CreateClinicFormData,
+    value: CreateClinicFormData[keyof CreateClinicFormData]
+  ) => void;
 }
 
 export default function BasicInfoSection({
@@ -44,13 +35,13 @@ export default function BasicInfoSection({
   ];
 
   const handleAddEquipment = (eq: string) => {
-    if (eq != DEFAULT_EQUIPMENT && !data.equipments.includes(eq)) {
-      setData({ equipments: [...data.equipments, eq] });
+    if (eq != DEFAULT_EQUIPMENT && !data.equipments?.includes(eq)) {
+      setData("equipments", [...(data.equipments ?? []), eq]);
     }
   };
 
   const handleDeleteEquipment = (eq: string) => {
-    setData({ equipments: data.equipments.filter((e) => e !== eq) });
+    setData("equipments", [...(data.equipments ?? []).filter((e) => e !== eq)]);
   };
 
   return (
@@ -66,14 +57,14 @@ export default function BasicInfoSection({
             <TextInput
               label="Display Name"
               value={data.displayName}
-              onChange={(e) => setData({ displayName: e.target.value })}
+              onChange={(e) => setData("displayName", e.target.value)}
             />
           </div>
           <div className="flex-1">
             <SelectInput
               label="Clinic Category"
               values={categoryOptions}
-              onChange={(e) => setData({ category: e.target.value })}
+              onChange={(e) => setData("category", e.target.value)}
               value={data.category}
             />
           </div>
@@ -84,7 +75,7 @@ export default function BasicInfoSection({
               isTextArea={true}
               label="Description"
               value={data.description}
-              onChange={(e) => setData({ description: e.target.value })}
+              onChange={(e) => setData("description", e.target.value)}
             />
           </div>
           <div className="flex-1">Map here</div>
@@ -104,16 +95,14 @@ export default function BasicInfoSection({
               label="Size (in sq m)"
               value={data.size ?? ""}
               min="0"
-              onChange={(e) => {
-                setData({
-                  size: e.target.value ? Number(e.target.value) : null
-                });
-              }}
+              onChange={(e) =>
+                setData("size", e.target.value ? Number(e.target.value) : null)
+              }
             />
           </div>
         </div>
         <div className="flex gap-4 flex-wrap">
-          {data.equipments.map((eq, idx) => (
+          {data.equipments?.map((eq, idx) => (
             <ClinicEquipmentTag
               key={idx}
               name={constToTitleCase(eq)}
