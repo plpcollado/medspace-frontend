@@ -35,7 +35,7 @@ export default function DatePicker({
   return (
     <div
       className={cn(
-        "w-fit rounded-2xl border p-4 shadow-md bg-white",
+        "w-fit rounded-2xl border border-gray-300 p-4 shadow-md bg-white",
         className
       )}
     >

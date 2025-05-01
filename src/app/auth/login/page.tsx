@@ -38,7 +38,7 @@ export default function LoginPage() {
   return (
     <>
       <main className="h-screen flex justify-center items-center">
-        <div className="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <div className="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md ">
           <div className="flex justify-center mx-auto text-2xl font-bold ">
             Login to your account
           </div>
@@ -56,7 +56,7 @@ export default function LoginPage() {
 
             <div className="mt-4">
               <div className="flex items-center justify-between">
-                <label className="block font-medium text-sm text-gray-800 dark:text-gray-200">
+                <label className="block font-medium text-sm text-gray-800 ">
                   Password:
                 </label>
               </div>
@@ -77,7 +77,7 @@ export default function LoginPage() {
             Don&#39;t have an account?{" "}
             <Link
               href="/auth/register"
-              className="font-medium text-gray-700 dark:text-gray-200 hover:underline"
+              className="font-medium text-gray-700  hover:underline"
             >
               Create one
             </Link>

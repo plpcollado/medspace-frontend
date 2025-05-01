@@ -106,7 +106,7 @@ function UserRightSection() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setMenuOpen((prev) => !prev)}
-        className="flex items-center space-x-4 border rounded-full p-2 hover:bg-gray-50 cursor-pointer"
+        className="flex items-center space-x-4 border border-gray-300 rounded-full p-2 hover:bg-gray-50 cursor-pointer"
       >
         <RxHamburgerMenu className="size-7 p-1 mr-2 ml-1" />
         <Avatar imageUrl="/pfp_placeholder.png" className="size-7" />

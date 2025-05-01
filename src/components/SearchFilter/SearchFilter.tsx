@@ -70,19 +70,19 @@ const SearchFilter = ({
         <Toggle
           defaultPressed
           onPressedChange={(pressed) => handleDurationToggle("Hourly", pressed)}
-          className="px-4 py-2 text-sm font-medium bg-white border-2 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
+          className="px-4 py-2 text-sm font-medium bg-white border-2 border-gray-300 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
         >
           Hourly
         </Toggle>
         <Toggle
           onPressedChange={(pressed) => handleDurationToggle("Daily", pressed)}
-          className="px-4 py-2 text-sm font-medium bg-white border-2 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
+          className="px-4 py-2 text-sm font-medium bg-white border-2 border-gray-300 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
         >
           Daily
         </Toggle>
         <Toggle
           onPressedChange={(pressed) => handleDurationToggle("Weekly", pressed)}
-          className="px-4 py-2 text-sm font-medium bg-white border-2 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
+          className="px-4 py-2 text-sm font-medium bg-white border-2 border-gray-300 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
         >
           Weekly
         </Toggle>
@@ -90,7 +90,7 @@ const SearchFilter = ({
           onPressedChange={(pressed) =>
             handleDurationToggle("Monthly", pressed)
           }
-          className="px-4 py-2 text-sm font-medium bg-white border-2 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
+          className="px-4 py-2 text-sm font-medium bg-white border-2 border-gray-300 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
         >
           Monthly
         </Toggle>
@@ -100,7 +100,7 @@ const SearchFilter = ({
       <div className="flex flex-wrap gap-2 ml-16 shrink-0">
         <Toggle
           onPressedChange={onShowSavedToggle}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border-2 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border-2 border-gray-300 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
         >
           <HiOutlineHeart className="w-4 h-4" />
           Show Saved
@@ -111,7 +111,7 @@ const SearchFilter = ({
             onPressedChange={() =>
               setIsEquipmentDropdownOpen(!isEquipmentDropdownOpen)
             }
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border-2 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border-2 border-gray-300 rounded-full data-[state=on]:bg-[#1D8BF9] data-[state=on]:text-white data-[state=on]:border-[#1D8BF9]"
           >
             <IoAdd className="w-4 h-4" />
             Select Equipment

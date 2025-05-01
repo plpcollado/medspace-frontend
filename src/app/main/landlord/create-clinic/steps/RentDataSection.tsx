@@ -79,7 +79,7 @@ export default function RentDataSection({
           </div>
         </div>
         <div className="flex flex-col max-w-2/3">
-          <p className="mb-4 block text-sm font-medium text-gray-800 dark:text-gray-200 ">
+          <p className="mb-4 block text-sm font-medium text-gray-800 ">
             Daily Availabilities
           </p>
           <div className="flex flex-col gap-6">

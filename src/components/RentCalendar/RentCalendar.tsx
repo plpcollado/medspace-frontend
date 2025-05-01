@@ -50,7 +50,7 @@ const RentCalendar = ({
           })}
         </p>
         <input
-          className="border-1 p-1 cursor-pointer rounded-sm"
+          className="border-1 border-gray-300  p-1 cursor-pointer rounded-md"
           type="date"
           value={dateToString(currentDate, {
             day: "2-digit",

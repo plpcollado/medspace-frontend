@@ -47,7 +47,7 @@ const ClinicAvailabilityInput = ({
             onChange={(e) => onChangeActive(e.target.checked)}
           />
           <label
-            className="text-md font-semibold text-gray-700 dark:text-gray-200"
+            className="text-md font-semibold text-gray-700"
             htmlFor={`day-checkbox-${dayOfWeek}`}
           >
             {dayOfWeek}
@@ -57,7 +57,7 @@ const ClinicAvailabilityInput = ({
         <div className="flex flex-col items-center gap-6 md:flex-row">
           <div className="flex gap-3">
             <label
-              className="text-md font-semibold text-gray-700 dark:text-gray-200"
+              className="text-md font-semibold text-gray-700"
               htmlFor={`from-${dayOfWeek}`}
             >
               From:
@@ -73,7 +73,7 @@ const ClinicAvailabilityInput = ({
 
           <div className="flex gap-3">
             <label
-              className="text-md font-semibold text-gray-700 dark:text-gray-200"
+              className="text-md font-semibold text-gray-700"
               htmlFor={`to-${dayOfWeek}`}
             >
               To:

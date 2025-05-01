@@ -62,7 +62,7 @@ export default function EarningsChart({ data = defaultData }: Props) {
         }).format(value);
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white border rounded-2xl shadow-md p-6">
+    <div className="w-full max-w-4xl mx-auto bg-white border-1 border-gray-300 rounded-2xl shadow-md p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h2 className="text-2xl font-semibold">Predicted Earnings</h2>
