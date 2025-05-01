@@ -1,9 +1,5 @@
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 
-export interface PropertyProofData {
-  documentFile: File | null;
-}
-
 export default function PropertyProof({
   onClickPrimary,
   onClickSecondary

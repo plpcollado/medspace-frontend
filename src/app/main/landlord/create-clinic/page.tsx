@@ -2,11 +2,11 @@
 
 import MultistepFormNavItem from "@/components/MultistepFormNavItem";
 import { cn } from "@/lib/utils";
+import { useCreateClinicForm } from "@/hooks/useCreateClinicForm";
 import BasicInfoSection from "./steps/BasicInfoSection";
 import PhotosSection from "./steps/PhotosSection";
 import RentDataSection from "./steps/RentDataSection";
 import PropertyProof from "./steps/PropertyProofSection";
-import { useCreateClinicForm } from "./useCreateClinicForm";
 
 export default function CreateClinicPage() {
   const { currentStep, goBack, goNext, cancel, formData, updateFormData } =
@@ -26,10 +26,8 @@ export default function CreateClinicPage() {
           <BasicInfoSection
             onClickPrimary={goNext}
             onClickSecondary={cancel}
-            data={formData.basicInfo}
-            setData={(data) => {
-              updateFormData("basicInfo", data);
-            }}
+            data={formData}
+            setData={updateFormData}
           />
         );
       case 2:
@@ -41,10 +39,8 @@ export default function CreateClinicPage() {
           <RentDataSection
             onClickPrimary={goNext}
             onClickSecondary={goBack}
-            data={formData.rentInfo}
-            setData={(data) => {
-              updateFormData("rentInfo", data);
-            }}
+            data={formData}
+            setData={updateFormData}
           />
         );
       case 4:

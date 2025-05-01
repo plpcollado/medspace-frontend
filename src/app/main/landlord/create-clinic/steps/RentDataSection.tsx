@@ -2,23 +2,15 @@ import TextInput from "@/components/TextInput";
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import ClinicAvailabilityInput from "@/components/ClinicAvailabilityInput";
 import { constToTitleCase } from "@/lib/textUtils";
+import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
+import { ClinicDailyAvailability } from "@/types/clinicTypes";
 
-export interface RentInfoData {
-  pricePerDay: number | null;
-  maximumStayInDays: number | null;
-  availabilities: DailyAvailability[];
-}
-
-export interface DailyAvailability {
-  dayOfWeek: string;
-  fromTime: string | null;
-  toTime: string | null;
-  isActive: boolean;
-}
-
-interface BasicInfoSectionProps extends StepSectionProps {
-  data: RentInfoData;
-  setData: (data: Partial<RentInfoData>) => void;
+interface RentDataSectionProps extends StepSectionProps {
+  data: CreateClinicFormData;
+  setData: (
+    key: keyof CreateClinicFormData,
+    value: CreateClinicFormData[keyof CreateClinicFormData]
+  ) => void;
 }
 
 export default function RentDataSection({
@@ -26,18 +18,19 @@ export default function RentDataSection({
   onClickSecondary,
   data,
   setData
-}: BasicInfoSectionProps) {
+}: RentDataSectionProps) {
   const handleAvailabilityChange = (
     dayOfWeek: string,
-    newData: Partial<DailyAvailability>
+    newData: Partial<ClinicDailyAvailability>
   ) => {
-    setData({
-      availabilities: data.availabilities.map((availability) =>
+    setData(
+      "availabilities",
+      data.availabilities?.map((availability) =>
         availability.dayOfWeek === dayOfWeek
           ? { ...availability, ...newData }
           : availability
       )
-    });
+    );
   };
 
   return (
@@ -56,9 +49,10 @@ export default function RentDataSection({
               min={0}
               value={data.pricePerDay ?? ""}
               onChange={(e) => {
-                setData({
-                  pricePerDay: e.target.value ? Number(e.target.value) : null
-                });
+                setData(
+                  "pricePerDay",
+                  e.target.value ? Number(e.target.value) : null
+                );
               }}
             />
           </div>
@@ -67,11 +61,10 @@ export default function RentDataSection({
               label="Maximum Stay (in days)"
               type="number"
               onChange={(e) => {
-                setData({
-                  maximumStayInDays: e.target.value
-                    ? Number(e.target.value)
-                    : null
-                });
+                setData(
+                  "maximumStayInDays",
+                  e.target.value ? Number(e.target.value) : null
+                );
               }}
               value={data.maximumStayInDays ?? ""}
               min={1}
@@ -83,7 +76,7 @@ export default function RentDataSection({
             Daily Availabilities
           </p>
           <div className="flex flex-col gap-6">
-            {data.availabilities.map((availability) => (
+            {data.availabilities?.map((availability) => (
               <ClinicAvailabilityInput
                 key={availability.dayOfWeek}
                 dayOfWeek={constToTitleCase(availability.dayOfWeek)}

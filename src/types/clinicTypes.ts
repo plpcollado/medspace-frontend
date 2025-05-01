@@ -19,3 +19,23 @@ export const CLINIC_EQUIPMENTS = [
   "REHABILITATION"
 ];
 export type ClinicEquipment = (typeof CLINIC_EQUIPMENTS)[number];
+
+export interface ClinicDailyAvailability {
+  dayOfWeek: string;
+  fromTime: string | null;
+  toTime: string | null;
+  isActive: boolean;
+}
+
+export interface ClinicRegistrationData {
+  displayName: string;
+  description: string;
+  category: ClinicCategory;
+  equipments: ClinicEquipment[];
+  size: number | null;
+  photos: string[];
+  pricePerDay: number | null;
+  maximumStayInDays: number | null;
+  availabilities: ClinicDailyAvailability[];
+  propertyProof: File | null;
+}
