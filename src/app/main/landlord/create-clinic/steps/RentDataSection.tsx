@@ -51,9 +51,8 @@ export default function RentDataSection({
         <div className="flex gap-12">
           <div className="flex-1">
             <TextInput
-              label="Price Per Day"
+              label="Price Per Day (in USD)"
               type="number"
-              placeholder="$0.00"
               min={0}
               value={data.pricePerDay ?? ""}
               onChange={(e) => {
@@ -65,7 +64,7 @@ export default function RentDataSection({
           </div>
           <div className="flex-1">
             <TextInput
-              label="Maximum Stay In Days"
+              label="Maximum Stay (in days)"
               type="number"
               onChange={(e) => {
                 setData({
@@ -75,7 +74,6 @@ export default function RentDataSection({
                 });
               }}
               value={data.maximumStayInDays ?? ""}
-              placeholder="1"
               min={1}
             />
           </div>
