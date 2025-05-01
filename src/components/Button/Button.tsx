@@ -1,54 +1,69 @@
 import { cn } from "@/lib/utils";
+import { ButtonHTMLAttributes } from "react";
+import { CgSpinner } from "react-icons/cg";
 
-type ButtonProps = {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Text to display in the Button */
   children: React.ReactNode;
-  /** Function to call when the Button is clicked */
-  onClick?: () => void;
   /** Variant of the Button */
   variant?: "primary" | "blue" | "outline" | "danger";
   /** Icon to display in the Button, tipically a React Icon */
   icon?: React.ReactNode;
   /** Size of the Button */
   size?: "default" | "small" | "large" | "fill";
-  /** Other classes */
-  className?: string;
-};
+  /*Disable button and show spinner*/
+  isLoading?: boolean;
+}
 
 const Button = ({
   children,
-  onClick,
   variant = "primary",
   icon,
   size = "default",
   className,
-}: ButtonProps) => {
+  isLoading,
+  ...props
+}: Props) => {
+  const isDisabled = props.disabled || isLoading;
+
   const variantMap = {
     primary: "bg-blue-500 text-white hover:bg-blue-600",
-    blue: "bg-blue-200 text-blue-600 font-extrabold hover:bg-blue-300",
-    outline: "bg-transparent text-black border border-black hover:bg-gray-100",
-    danger: "bg-red-500 text-white hover:bg-red-600",
+    blue: "bg-blue-200 text-blue-600 font-semibold hover:bg-blue-300",
+    outline:
+      "border-2 border-[#2E90FA] text-[#2E90FA] bg-white outline-none hover:bg-[#2E90FA] hover:text-white transition-all ",
+    danger: "bg-red-500 text-white hover:bg-red-600"
   };
 
   const sizeMap = {
     small: "text-sm px-4 py-1",
     default: "text-md px-6 py-2",
     large: "text-lg px-8 py-3",
-    fill: "flex-1 text-sm px-6 py-3",
+    fill: "flex-1 text-sm px-6 py-3"
   };
 
   return (
     <button
-      onClick={onClick}
+      disabled={isDisabled}
+      {...props}
       className={cn(
         "items-center inline-flex justify-center gap-2 rounded-md text-sm px-6 py-2 cursor-pointer transition-all duration-150",
         variantMap[variant],
         sizeMap[size],
+        isDisabled && "opacity-70 cursor-not-allowed pointer-events-none",
         className
       )}
     >
-      {icon && <span className="mr-1">{icon}</span>}
-      {children}
+      {isLoading && <CgSpinner className="absolute animate-spin text-lg" />}
+
+      <div
+        className={cn(
+          "flex items-center transition-opacity",
+          isLoading && "opacity-0"
+        )}
+      >
+        {icon && <span className="mr-1">{icon}</span>}
+        {children}
+      </div>
     </button>
   );
 };
