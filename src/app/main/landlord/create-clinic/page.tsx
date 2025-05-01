@@ -9,8 +9,15 @@ import RentDataSection from "./steps/RentDataSection";
 import PropertyProof from "./steps/PropertyProofSection";
 
 export default function CreateClinicPage() {
-  const { currentStep, goBack, goNext, cancel, formData, updateFormData } =
-    useCreateClinicForm();
+  const {
+    currentStep,
+    goBack,
+    goNext,
+    cancel,
+    formData,
+    updateFormData,
+    submit
+  } = useCreateClinicForm();
 
   const steps = [
     { label: "Basic Info" },
@@ -45,7 +52,7 @@ export default function CreateClinicPage() {
         );
       case 4:
         return (
-          <PropertyProof onClickPrimary={cancel} onClickSecondary={goBack} />
+          <PropertyProof onClickPrimary={submit} onClickSecondary={goBack} />
         );
       default:
         return null;
