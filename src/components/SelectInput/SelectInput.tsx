@@ -9,10 +9,23 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
 }
 
-function SelectInput({ className, placeholder, isInvalid = false, invalidMessage, values, label, ...props }: Props) {
+function SelectInput({
+  className,
+  placeholder,
+  isInvalid = false,
+  invalidMessage,
+  values,
+  label,
+  ...props
+}: Props) {
   return (
     <div className={cn("w-full", className)}>
-      <label className={cn("mt-4 block text-sm font-medium text-gray-800 dark:text-gray-200", !label && "hidden")}>
+      <label
+        className={cn(
+          "mt-4 block text-sm font-medium text-gray-800",
+          !label && "hidden"
+        )}
+      >
         {label}
       </label>
 
@@ -20,11 +33,11 @@ function SelectInput({ className, placeholder, isInvalid = false, invalidMessage
         {...props}
         className={cn(
           "px-4 py-2 mt-2 w-full",
-          "block  text-gray-700 bg-white border",
+          "block  text-gray-700 bg-white border border-gray-300",
           "rounded-lg focus:outline-none focus:ring focus:ring-opacity-40",
           isInvalid
             ? " border-red-500  focus:border-red-500 focus:ring-red-500 "
-            : "focus:border-blue-400  focus:ring-blue-300"
+            : "focus:border-primary-400  focus:ring-primary-300"
         )}
       >
         {placeholder && <option value={""}>{placeholder}</option>}
@@ -34,7 +47,16 @@ function SelectInput({ className, placeholder, isInvalid = false, invalidMessage
           </option>
         ))}
       </select>
-      {isInvalid && <p className={cn("text-red-500 text-sm mt-2", !invalidMessage && "hidden")}>{invalidMessage}</p>}
+      {isInvalid && (
+        <p
+          className={cn(
+            "text-red-500 text-sm mt-2",
+            !invalidMessage && "hidden"
+          )}
+        >
+          {invalidMessage}
+        </p>
+      )}
     </div>
   );
 }

@@ -39,7 +39,7 @@ function Hero() {
     <div className="max-w-screen-xl mt-24 px-8 xl:px-16 mx-auto">
       <div className="grid grid-flow-row sm:grid-flow-col grid-rows-2 md:grid-rows-1 sm:grid-cols-2 py-6 sm:py-16">
         <div className="flex flex-col justify-center items-start row-start-2 sm:row-start-1">
-          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-medium text-[#2E90FA] leading-normal">
+          <h1 className="text-3xl lg:text-4xl xl:text-5xl font-medium text-primary leading-normal">
             Find and Book Medical Clinics Easily
           </h1>
           <p className="text-black-500 mt-4 mb-6">
@@ -48,7 +48,7 @@ function Hero() {
           </p>
           <Link
             href="/auth/register"
-            className="py-3 lg:py-4 px-12 lg:px-16 text-white font-semibold rounded-lg hover:bg-primary-600 bg-[#2E90FA] transition-all outline-none"
+            className="py-3 lg:py-4 px-12 lg:px-16 text-white font-semibold rounded-lg hover:bg-primary-600 bg-primary transition-all outline-none"
           >
             Get Started
           </Link>
@@ -74,7 +74,7 @@ function Hero() {
             >
               <div className="flex">
                 <div className="flex items-center justify-center bg-[#B2DDFF] w-12 h-12 mr-6 rounded-full">
-                  <stat.icon className="h-6 w-6 text-[#2E90FA]" />
+                  <stat.icon className="h-6 w-6 text-primary" />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-xl text-black-600 font-bold">

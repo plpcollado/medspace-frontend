@@ -38,11 +38,11 @@ const TenantProfileCard = ({
   numberOfRentAgreements,
   tenantBiography,
   onClickEdit,
-  variant = "primary",
+  variant = "primary"
 }: ProfileCardProps) => {
   return (
     <div className="flex flex-1 flex-col gap-4 items-center justify-between shadow-[0_0_5px_rgba(0,0,0,0.1)] rounded-sm">
-      <div className="flex flex-col items-center gap-4 bg-blue-500 p-4 w-full rounded-t-sm">
+      <div className="flex flex-col items-center gap-4 bg-primary-500 p-4 w-full rounded-t-sm">
         <img
           src={tenantImageURL}
           alt="Tenant"

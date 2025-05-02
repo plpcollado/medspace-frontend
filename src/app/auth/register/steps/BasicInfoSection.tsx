@@ -15,7 +15,7 @@ interface Props {
 
 export default function BasicInfoSection({ formData, updateFormData }: Props) {
   return (
-    <div className="w-full p-6 m-auto mx-auto   dark:bg-gray-800">
+    <div className="w-full p-6 m-auto mx-auto  ">
       <form>
         <TextInput
           label="Full Name:"

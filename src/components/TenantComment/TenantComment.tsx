@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
+import TextInput from "../TextInput";
 
 interface Props {
   value: string;
@@ -14,24 +15,15 @@ interface Props {
   containerClassName?: string;
 }
 
-function TenantComment({ 
-  value, 
-  onChange, 
-  className,
+function TenantComment({
+  value,
+  onChange,
   containerClassName,
   placeholder = "Enter your comment",
   showTitle = true,
   customTitle,
   rows = 10
 }: Props) {
-  const textareaStyle = cn(
-    "px-4 py-2 w-full",
-    "block text-gray-700 bg-white border",
-    "rounded-lg focus:outline-none focus:ring focus:ring-opacity-40",
-    "focus:border-blue-400 focus:ring-blue-300",
-    className
-  );
-
   return (
     <div className={cn("flex flex-col gap-2", containerClassName)}>
       {showTitle && (
@@ -39,12 +31,12 @@ function TenantComment({
           {customTitle || "Leave a Comment (optional)"}
         </h2>
       )}
-      <textarea
+      <TextInput
+        isTextArea
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
-        className={textareaStyle}
       />
     </div>
   );

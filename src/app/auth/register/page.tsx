@@ -181,7 +181,7 @@ export default function RegisterPage() {
               className={cn(
                 "flex",
                 currentStep === i + 1
-                  ? "font-bold text-blue-600"
+                  ? "font-bold text-primary-600"
                   : "text-gray-500"
               )}
             />
