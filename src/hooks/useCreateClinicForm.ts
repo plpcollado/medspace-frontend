@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CLINIC_CATEGORIES, ClinicRegistrationData } from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import { useForm } from "./useForm";
+import { ClinicService } from "@/services/ClinicService";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
 
@@ -44,6 +45,16 @@ export function useCreateClinicForm() {
   const goNext = () => setCurrentStep((prev) => prev + 1);
   const goBack = () => setCurrentStep((prev) => prev - 1);
   const cancel = () => router.push("/main");
+  const submit = async () => {
+    try {
+      const response = await ClinicService.createClinic(
+        formData as ClinicRegistrationData
+      );
+      router.push("/main");
+    } catch (error) {
+      console.error("[Clinic]: Error creating clinic", error);
+    }
+  };
 
   return {
     formData,
@@ -52,6 +63,7 @@ export function useCreateClinicForm() {
     goNext,
     goBack,
     cancel,
+    submit,
     setCurrentStep
   };
 }

@@ -1,11 +1,11 @@
 export const CLINIC_CATEGORIES = [
   "GENERAL_PURPOSE",
-  "DENTAL",
-  "DERMATOLOGY",
-  "GYNECOLOGY",
-  "CARDIOLOGY",
-  "PEDIATRICS"
-];
+  "DENTIST",
+  "PEDIATRIC",
+  "PSYCHOLOGICAL",
+  "SURGICAL",
+  "DERMATOLOGICAL"
+] as const;
 export type ClinicCategory = (typeof CLINIC_CATEGORIES)[number];
 
 export const CLINIC_EQUIPMENTS = [
@@ -25,6 +25,24 @@ export interface ClinicDailyAvailability {
   fromTime: string | null;
   toTime: string | null;
   isActive: boolean;
+}
+
+export interface ClinicModel {
+  id: number;
+  displayName: string;
+  description: string;
+  category: ClinicCategory;
+  size: number;
+  pricePerDay: number;
+  maximumStayInDays: number;
+
+  addressStreet: string;
+  addressCity: string;
+  addressState: string;
+  addressZip: string;
+  addressCountry: string;
+  addressLongitude: string;
+  addressLatitude: string;
 }
 
 export interface ClinicRegistrationData {
