@@ -6,6 +6,7 @@ import Logo from "../Logo/Logo";
 import Avatar from "../Avatar/Avatar";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { AuthService } from "@/services/AuthService";
+import { useRouter } from "next/navigation";
 
 interface Props {
   variant: "tenant" | "landlord" | "analyst" | "guest";
@@ -83,6 +84,7 @@ function GuestRightSection() {
 }
 
 function UserRightSection() {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -99,7 +101,7 @@ function UserRightSection() {
 
   async function onLogout() {
     await AuthService.signOut();
-    window.location.href = "/"; // Redirect to login page after logout
+    router.push("/");
   }
 
   return (

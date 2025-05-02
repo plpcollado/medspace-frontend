@@ -6,12 +6,15 @@ import TextInput from "@/components/TextInput";
 import { AuthService } from "@/services/AuthService";
 import { FirebaseError } from "firebase/app";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   // State hooks to manage email and password values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter(); // Initialize router for navigation
 
   // Handle form submission
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -21,7 +24,7 @@ export default function LoginPage() {
     try {
       await AuthService.signInWithEmailAndPassword(email, password);
 
-      window.location.href = "/main";
+      router.push("/main"); // Redirect to the home page after successful login
     } catch (error) {
       if (error instanceof FirebaseError) {
         // Handle specific Firebase error codes here

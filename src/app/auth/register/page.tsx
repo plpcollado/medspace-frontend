@@ -12,10 +12,12 @@ import { AuthService } from "@/services/AuthService";
 import { UserRegistrationData } from "@/types/userTypes";
 import axios from "axios";
 import { FirebaseError } from "firebase/app";
+import { useRouter } from "next/navigation";
 
 type CreateUserFormData = Partial<UserRegistrationData>;
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { formData, updateFormData } = useForm<CreateUserFormData>({
     fullName: "",
@@ -70,9 +72,10 @@ export default function RegisterPage() {
         d.password,
         d
       );
+
       toast.success("User created successfully!");
 
-      window.location.href = "/main";
+      router.push("/main"); // Redirect to home page after successful registration
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.code === "ERR_NETWORK")
@@ -123,13 +126,25 @@ export default function RegisterPage() {
   }
 
   function validateDocuments() {
+    const sizeLimit = 2 * 1024 * 1024; // 2MB
+
     if (!formData.pfp) {
       toast.error("Please upload a profile picture.");
       return false;
     }
+    if (formData.pfp.size > sizeLimit) {
+      toast.error("Profile picture size should be less than 2MB.");
+      return false;
+    }
+
     if (!formData.officialId) {
       console.log(formData.officialId);
       toast.error("Please upload an official ID.");
+      return false;
+    }
+
+    if (formData.officialId.size > sizeLimit) {
+      toast.error("Oficial ID size should be less than 2MB.");
       return false;
     }
 
@@ -141,6 +156,11 @@ export default function RegisterPage() {
 
       if (!formData.tenantProfessionalLicense) {
         toast.error("Please upload a professional license.");
+        return false;
+      }
+
+      if (formData.tenantProfessionalLicense.size > sizeLimit) {
+        toast.error("Professional license size should be less than 2MB.");
         return false;
       }
     }
