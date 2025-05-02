@@ -16,6 +16,7 @@ export class ClinicService {
         category: data.category,
         pricePerDay: data.pricePerDay,
         maxStayDays: data.maximumStayInDays,
+        description: data.description,
 
         // TODO: update address fields with the correct data
         addressStreet: "Av hacker",

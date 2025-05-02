@@ -5,6 +5,8 @@ import SelectInput from "@/components/SelectInput/SelectInput";
 import ClinicEquipmentTag from "@/components/ClinicEquipmentTag";
 import { constToTitleCase } from "@/lib/textUtils";
 import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 interface BasicInfoSectionProps extends StepSectionProps {
   data: CreateClinicFormData;
@@ -20,6 +22,12 @@ export default function BasicInfoSection({
   data,
   setData
 }: BasicInfoSectionProps) {
+  const [errors, setErrors] = useState({
+    displayName: "",
+    description: "",
+    size: ""
+  });
+
   const categoryOptions = CLINIC_CATEGORIES.map((cat) => ({
     value: cat,
     name: constToTitleCase(cat)
@@ -44,9 +52,55 @@ export default function BasicInfoSection({
     setData("equipments", [...(data.equipments ?? []).filter((e) => e !== eq)]);
   };
 
+  const validateData = () => {
+    const newErrors: typeof errors = {
+      displayName: "",
+      description: "",
+      size: ""
+    };
+
+    let isValid = true;
+
+    if (!data.displayName?.trim()) {
+      newErrors.displayName = "Display name cannot be empty";
+      isValid = false;
+    }
+
+    if (!data.description?.trim()) {
+      newErrors.description = "Description cannot be empty";
+      isValid = false;
+    }
+
+    if (data.size == null || data.size <= 0) {
+      newErrors.size =
+        data.size == null
+          ? "Size cannot be empty"
+          : "Size must be greater than 0";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const onNavigateNext = () => {
+    if (!validateData()) {
+      toast.error("Please fix errors in the form.");
+      return;
+    }
+    onClickPrimary();
+  };
+
+  const clearError = (field: keyof typeof errors) => {
+    setErrors((prev) => ({
+      ...prev,
+      [field]: ""
+    }));
+  };
+
   return (
     <StepSectionBase
-      onClickPrimary={onClickPrimary}
+      onClickPrimary={onNavigateNext}
       onClickSecondary={onClickSecondary}
       primaryLabel={"Continue"}
       secondaryLabel={"Cancel"}
@@ -57,7 +111,12 @@ export default function BasicInfoSection({
             <TextInput
               label="Display Name"
               value={data.displayName}
-              onChange={(e) => setData("displayName", e.target.value)}
+              onChange={(e) => {
+                clearError("displayName");
+                setData("displayName", e.target.value);
+              }}
+              invalidMessage={errors.displayName}
+              isInvalid={!!errors.displayName}
             />
           </div>
           <div className="flex-1">
@@ -75,7 +134,12 @@ export default function BasicInfoSection({
               isTextArea={true}
               label="Description"
               value={data.description}
-              onChange={(e) => setData("description", e.target.value)}
+              onChange={(e) => {
+                clearError("description");
+                setData("description", e.target.value);
+              }}
+              invalidMessage={errors.description}
+              isInvalid={!!errors.description}
             />
           </div>
           <div className="flex-1">Map here</div>
@@ -94,10 +158,13 @@ export default function BasicInfoSection({
               type="number"
               label="Size (in sq m)"
               value={data.size ?? ""}
-              min="0"
-              onChange={(e) =>
-                setData("size", e.target.value ? Number(e.target.value) : null)
-              }
+              min="1"
+              onChange={(e) => {
+                clearError("size");
+                setData("size", e.target.value ? Number(e.target.value) : null);
+              }}
+              invalidMessage={errors.size}
+              isInvalid={!!errors.size}
             />
           </div>
         </div>
