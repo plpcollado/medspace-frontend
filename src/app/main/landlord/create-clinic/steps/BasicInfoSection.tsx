@@ -84,9 +84,11 @@ export default function BasicInfoSection({
   };
 
   const onNavigateNext = () => {
-    if (validateData()) {
-      onClickPrimary();
+    if (!validateData()) {
+      toast.error("Please fix errors in the form.");
+      return;
     }
+    onClickPrimary();
   };
 
   const clearError = (field: keyof typeof errors) => {
