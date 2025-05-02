@@ -47,7 +47,7 @@ function TextInput({
     "rounded-lg focus:outline-none focus:ring focus:ring-opacity-40",
     isInvalid
       ? "border-red-500  focus:border-red-500 focus:ring-red-500 "
-      : "focus:border-blue-400  focus:ring-blue-300"
+      : "focus:border-primary-400  focus:ring-primary-300"
   );
 
   function handleShowPassword() {

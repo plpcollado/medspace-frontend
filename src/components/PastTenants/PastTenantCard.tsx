@@ -28,7 +28,7 @@ const PastTenantCard: FC<Props> = ({ tenant }) => {
             <h3 className="text-base font-semibold">{tenant.name}</h3>
 
             <div className="flex items-center space-x-1">
-              <IoMdStarOutline className="text-blue-500 ml-4" />
+              <IoMdStarOutline className="text-primary-500 ml-4" />
               <p className="text-base font-semibold">{tenant.rating}</p>
             </div>
           </div>

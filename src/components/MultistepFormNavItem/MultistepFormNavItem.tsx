@@ -27,8 +27,8 @@ const MultistepFormNavItem = ({
     <div className={cn("flex gap-2 items-center", className)}>
       <div
         className={cn(
-          "bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center text-lg font-medium",
-          fill ? "bg-blue-500 text-white" : "bg-blue-50 text-black"
+          "bg-primary-500 w-12 h-12 rounded-full flex items-center justify-center text-lg font-medium",
+          fill ? "bg-primary-500 text-white" : "bg-primary-50 text-black"
         )}
       >
         {stepNumber}

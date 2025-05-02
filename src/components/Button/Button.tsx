@@ -27,10 +27,10 @@ const Button = ({
   const isDisabled = props.disabled || isLoading;
 
   const variantMap = {
-    primary: "bg-blue-500 text-white hover:bg-blue-600",
-    blue: "bg-blue-200 text-blue-600 font-semibold hover:bg-blue-300",
+    primary: "bg-primary-500 text-white hover:bg-primary-600",
+    blue: "bg-primary-200 text-primary-600 font-semibold hover:bg-primary-300",
     outline:
-      "border-2 border-[#2E90FA] text-[#2E90FA] bg-white outline-none hover:bg-[#2E90FA] hover:text-white transition-all ",
+      "border-2 border-primary text-primary bg-white outline-none hover:bg-primary hover:text-white transition-all ",
     danger: "bg-red-500 text-white hover:bg-red-600"
   };
 

@@ -46,7 +46,7 @@ export default function Navbar({ variant }: Props) {
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex space-x-6 text-[#2E90FA] font-medium">
+        <ul className="hidden md:flex space-x-6 text-primary font-medium">
           {navbarLinks[variant as keyof typeof navbarLinks].map((link) => (
             <li key={link.name}>
               <Link href={link.href} className="hover:underline">
@@ -67,14 +67,14 @@ function GuestRightSection() {
   return (
     <div className="flex items-center space-x-4">
       <Link
-        className="text-black-600 mx-2 sm:mx-4 capitalize tracking-wide hover:text-[#2E90FA] transition-all"
+        className="text-black-600 mx-2 sm:mx-4 capitalize tracking-wide hover:text-primary transition-all"
         href="/auth/login"
       >
         Log in
       </Link>
       <Link
         href={"/auth/register"}
-        className="font-medium tracking-wide py-2 px-4 border-2 border-[#2E90FA] text-[#2E90FA] bg-white outline-none rounded-l-full rounded-r-full capitalize hover:bg-[#2E90FA] hover:text-white transition-all "
+        className="font-medium tracking-wide py-2 px-4 border-2 border-primary text-primary bg-white outline-none rounded-l-full rounded-r-full capitalize hover:bg-primary hover:text-white transition-all "
       >
         Sign up
       </Link>

@@ -36,7 +36,7 @@ export const CustomImage: Story = {
 export const WithBorder: Story = {
   args: {
     imageUrl: "/pfp_placeholder.png",
-    className: "w-12 h-12 border-2 border-blue-500"
+    className: "w-12 h-12 border-2 border-primary-500"
   }
 };
 

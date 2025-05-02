@@ -99,7 +99,7 @@ function SearchBar({
               key={loc}
               className={`cursor-pointer px-2 py-1 rounded-md  ${
                 selectedLocation === loc
-                  ? "font-semibold text-blue-500  bg-blue-50"
+                  ? "font-semibold text-primary-500  bg-primary-50"
                   : "hover:bg-gray-100"
               }`}
               onClick={() => setSelectedLocation(loc)}
@@ -166,7 +166,7 @@ function SearchBar({
 
       <button
         disabled={isLoading}
-        className={`bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full cursor-pointer`}
+        className={`bg-primary-500 hover:bg-primary-600 text-white p-2 rounded-full cursor-pointer`}
         onClick={handleSearch}
       >
         {isLoading ? <CgSpinner className="animate-spin" /> : <FiSearch />}
