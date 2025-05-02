@@ -16,6 +16,7 @@ import { FirebaseError } from "firebase/app";
 type CreateUserFormData = Partial<UserRegistrationData>;
 
 export default function RegisterPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const { formData, updateFormData } = useForm<CreateUserFormData>({
     fullName: "",
     email: "",
@@ -59,6 +60,7 @@ export default function RegisterPage() {
 
   async function handleSumit() {
     if (!validateDocuments()) return;
+    setIsLoading(true); // Set loading state to true
 
     try {
       const d = formData as UserRegistrationData;
@@ -69,7 +71,7 @@ export default function RegisterPage() {
         d
       );
       toast.success("User created successfully!");
-      // Redirect to login page or show success message
+
       window.location.href = "/main";
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -91,6 +93,8 @@ export default function RegisterPage() {
       } else {
         toast.error("Error creating user. Please try again.");
       }
+    } finally {
+      setIsLoading(false); // Reset loading state
     }
   }
 
@@ -200,7 +204,11 @@ export default function RegisterPage() {
               Back
             </Button>
           )}
-          <Button className="w-full" onClick={handleNextStep}>
+          <Button
+            className="w-full"
+            onClick={handleNextStep}
+            isLoading={isLoading}
+          >
             {currentStep === steps.length ? "Submit" : "Next"}
           </Button>
         </div>

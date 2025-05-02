@@ -50,12 +50,12 @@ export class UserService {
     }
   }
 
-  static async getSelf(token: string): Promise<User> {
+  static async fetchCurrentUserProfile(): Promise<User> {
     try {
+      const headers = await AuthService.getAuthHeaders();
+
       const response = await axios.get(this.BASE_URL + "/me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers
       });
 
       const userData = response.data.data as User;

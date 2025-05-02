@@ -2,34 +2,58 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  User as FirebaseUser
+  User as FirebaseUser,
+  onAuthStateChanged
 } from "firebase/auth";
 import { setCookie, deleteCookie } from "cookies-next";
 import { UserService } from "./UserService";
-import { UserRegistrationData } from "@/types/userTypes";
-import { auth } from "@/lib/firebase/clientApp";
+import { User, UserRegistrationData } from "@/types/userTypes";
+import { auth } from "@/lib/firebase/firebaseApp";
 
 export class AuthService {
-  //
-  private static async setSessionCookie(user: FirebaseUser | null) {
+  static USER_COOKIE_NAME = "__current_user";
+
+  static async setUserCookie(user: User | null = null) {
     if (user) {
-      const idToken = await user.getIdToken();
-      await setCookie("__session", idToken);
+      await setCookie(this.USER_COOKIE_NAME, user);
     } else {
-      await deleteCookie("__session");
+      await deleteCookie(this.USER_COOKIE_NAME);
     }
   }
 
-  private static checkIfClientSide() {
-    if (typeof window === "undefined") {
-      throw new Error("This method can only be called on the client side.");
-    }
+  // Check if user is authenticated
+  static isAuthenticated(): boolean {
+    return !!auth.currentUser;
   }
 
-  static isGuest() {
-    this.checkIfClientSide();
+  // Get the current Firebase auth user
+  private static getCurrentFirebaseUser(): FirebaseUser | null {
+    return auth.currentUser;
+  }
 
-    return !auth.currentUser;
+  // Subscribe to auth state changes
+  static onAuthStateChanged(callback: (user: User | null) => void): () => void {
+    return onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) {
+        this.setUserCookie(null); // Delete session cookie if user is not authenticated
+        return callback(null); // No user is signed in
+      }
+
+      let userProfile: User | null = null;
+
+      try {
+        userProfile = await UserService.fetchCurrentUserProfile();
+        await this.setUserCookie(userProfile);
+      } catch (error) {
+        console.error(
+          "[AuthService]: Error fetching user profile from API",
+          error
+        );
+        await this.signOut();
+      }
+
+      callback(userProfile); // Call the original callback
+    });
   }
 
   // Register a new user with email and password
@@ -48,8 +72,6 @@ export class AuthService {
       );
 
       await UserService.createUserProfile(userData);
-
-      await this.setSessionCookie(userCredential.user);
     } catch (error) {
       console.error("[AuthService]: Error creating user", error);
 
@@ -75,8 +97,7 @@ export class AuthService {
     password: string
   ): Promise<void> {
     try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      await this.setSessionCookie(res.user);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error("[AuthService] Error signing in:", error);
       throw error; // Optionally, rethrow or return a custom error message
@@ -115,20 +136,8 @@ export class AuthService {
   static async signOut() {
     try {
       await signOut(auth);
-      await this.setSessionCookie(null);
     } catch (error) {
       console.error("Error signing out", error);
     }
-  }
-
-  static async getCurrentUserClientSide() {
-    this.checkIfClientSide();
-
-    const user = auth.currentUser;
-    if (!user) return null;
-
-    // Now calling UserService to get user data
-    const data = await UserService.getSelf(await user.getIdToken());
-    return data;
   }
 }

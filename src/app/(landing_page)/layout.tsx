@@ -1,22 +1,12 @@
+import AuthGuard from "@/components/AuthGuard";
 import Navbar from "@/components/Navbar";
-import { isGuestServerSide } from "@/lib/firebase/serverApp";
-import { redirect } from "next/navigation";
-export default async function LandingPageLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-  const isGuest = await isGuestServerSide();
 
-  if (!isGuest) {
-    return redirect("/main");
-  }
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <AuthGuard guestOnly redirectPath="/main">
       <Navbar variant="guest" />
       {children}
       {/* <Footer /> */}
-    </>
+    </AuthGuard>
   );
 }
