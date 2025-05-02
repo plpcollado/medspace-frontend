@@ -114,7 +114,7 @@ function UserRightSection() {
 
       {/* Dropdown with transition */}
       <div
-        className={`absolute right-0 top-full mt-2 w-48 bg-white border rounded-lg shadow-md z-50 transform transition-all duration-200 ease-out
+        className={`overflow-hidden absolute right-0 top-full mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-md z-50 transform transition-all duration-200 ease-out
               ${menuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}
             `}
       >

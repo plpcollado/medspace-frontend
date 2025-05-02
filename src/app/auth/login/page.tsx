@@ -11,10 +11,13 @@ export default function LoginPage() {
   // State hooks to manage email and password values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handle form submission
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true); // Set loading state to true
+
     try {
       await AuthService.signInWithEmailAndPassword(email, password);
 
@@ -32,6 +35,8 @@ export default function LoginPage() {
       } else {
         toast.error("Error logging in. Please try again.");
       }
+    } finally {
+      setIsLoading(false); // Reset loading state
     }
   }
 
@@ -69,7 +74,9 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-6">
-              <Button className="w-full">Login</Button>
+              <Button isLoading={isLoading} className="w-full">
+                Login
+              </Button>
             </div>
           </form>
 

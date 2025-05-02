@@ -1,22 +1,12 @@
-import { redirect } from "next/navigation";
+"use client";
 import Navbar from "@/components/Navbar";
-import { getCurrentUserServerSide } from "@/lib/firebase/serverApp";
+import AuthGuard from "@/components/AuthGuard";
 
-export default async function Layout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-  const user = await getCurrentUserServerSide();
-
-  if (user?.userType !== "ANALYST") {
-    return redirect("/");
-  }
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <AuthGuard allowedUserTypes={["ANALYST"]} redirectPath="/main">
       <Navbar variant="analyst" />
       {children}
-    </>
+    </AuthGuard>
   );
 }
