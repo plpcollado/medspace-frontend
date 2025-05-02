@@ -4,7 +4,7 @@ import { User } from "@/types/userTypes";
 import { AuthService } from "@/services/AuthService";
 
 interface AuthContextType {
-  user: User | null | false; // false indicates loading state
+  user: User | null; // false indicates loading state
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -16,7 +16,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null | false>(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const unsubscribe = AuthService.onAuthStateChanged(async (userData) => {

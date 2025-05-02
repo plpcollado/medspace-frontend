@@ -33,15 +33,20 @@ export class AuthService {
 
   // Subscribe to auth state changes
   static onAuthStateChanged(callback: (user: User | null) => void): () => void {
-    return onAuthStateChanged(auth, async (firebaseUser) => {
-      if (!firebaseUser) {
-        this.setUserCookie(null); // Delete session cookie if user is not authenticated
+    return onAuthStateChanged(auth, async (fibUser) => {
+      if (!fibUser) {
+        await this.setUserCookie(null); // Delete session cookie if user is not authenticated
         return callback(null); // No user is signed in
       }
 
       let userProfile: User | null = null;
 
       try {
+        if (fibUser.metadata.creationTime === fibUser.metadata.lastSignInTime) {
+          // User is newly created, wait a bit before fetch profile from API
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+
         userProfile = await UserService.fetchCurrentUserProfile();
         await this.setUserCookie(userProfile);
       } catch (error) {
@@ -72,12 +77,16 @@ export class AuthService {
       );
 
       await UserService.createUserProfile(userData);
+
+      //Wait for a bit to ensure the user is created in the database before proceeding
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       console.error("[AuthService]: Error creating user", error);
 
       // Rollback: delete Firebase user if DB user creation fails
       if (userCredential?.user) {
         try {
+          console.warn("[AuthService]: Rolling back Firebase user creation");
           await userCredential.user.delete();
         } catch (deleteError) {
           console.error(
@@ -118,18 +127,15 @@ export class AuthService {
   }
 
   // Get auth headers for API requests (includes Firebase token)
-  static async getAuthHeaders(
-    contentType: string = "application/json"
-  ): Promise<Record<string, string>> {
+  static async getAuthHeaders(): Promise<Record<string, string>> {
     try {
       const token = await this.getIdToken();
       return {
-        "Content-Type": contentType,
         Authorization: `Bearer ${token}`
       };
     } catch (error) {
       console.error("Get auth headers error:", error);
-      return { "Content-Type": contentType };
+      return {}; // Return empty headers on error};
     }
   }
 

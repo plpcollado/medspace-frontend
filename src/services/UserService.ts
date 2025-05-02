@@ -31,11 +31,7 @@ export class UserService {
         );
         formData.append("tenantSpecialtyId", String(data.tenantSpecialtyId));
       }
-      const headers = await AuthService.getAuthHeaders("multipart/form-data");
-
-      // Option 2: Convert to an object and log
-      const dataObject = Object.fromEntries(formData.entries());
-      console.log(dataObject);
+      const headers = await AuthService.getAuthHeaders();
 
       const response = await axios.post<ApiResponse<null>>(
         this.BASE_URL,
