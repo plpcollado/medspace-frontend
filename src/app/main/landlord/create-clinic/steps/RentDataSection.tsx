@@ -3,9 +3,15 @@ import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import ClinicAvailabilityInput from "@/components/ClinicAvailabilityInput";
 import { constToTitleCase } from "@/lib/textUtils";
 import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
-import { ClinicDailyAvailability } from "@/types/clinicTypes";
 import toast from "react-hot-toast";
 import { useState } from "react";
+
+interface ClinicDailyAvailabilityInput {
+  dayOfWeek: string;
+  fromTime: string | null;
+  toTime: string | null;
+  isActive: boolean;
+}
 
 interface RentDataSectionProps extends StepSectionProps {
   data: CreateClinicFormData;
@@ -30,7 +36,7 @@ export default function RentDataSection({
 
   const handleAvailabilityChange = (
     dayOfWeek: string,
-    newData: Partial<ClinicDailyAvailability>
+    newData: Partial<ClinicDailyAvailabilityInput>
   ) => {
     clearError("atLeastOneAvailabilityActive");
     setErrors((prev) => ({

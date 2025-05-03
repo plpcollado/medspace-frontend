@@ -6,7 +6,7 @@ export const CLINIC_CATEGORIES = [
   "SURGICAL",
   "DERMATOLOGICAL"
 ] as const;
-export type ClinicCategory = (typeof CLINIC_CATEGORIES)[number];
+export type ClinicCategoryType = (typeof CLINIC_CATEGORIES)[number];
 
 export const CLINIC_EQUIPMENTS = [
   "X_RAY",
@@ -18,23 +18,30 @@ export const CLINIC_EQUIPMENTS = [
   "PHARMACY",
   "REHABILITATION"
 ];
-export type ClinicEquipment = (typeof CLINIC_EQUIPMENTS)[number];
+export type ClinicEquipmentType = (typeof CLINIC_EQUIPMENTS)[number];
 
-export interface ClinicDailyAvailability {
-  dayOfWeek: string;
-  fromTime: string | null;
-  toTime: string | null;
-  isActive: boolean;
-}
+export const WEEK_DAYS = [
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+  "SUNDAY"
+] as const;
 
-export interface ClinicModel {
+export type WeekDayType = (typeof WEEK_DAYS)[number];
+
+export interface Clinic {
   id: number;
   displayName: string;
+  category: ClinicCategoryType;
   description: string;
-  category: ClinicCategory;
-  size: number;
+
   pricePerDay: number;
-  maximumStayInDays: number;
+  maxStayDays: number;
+  availableFromDate: Date;
+  availableToDate: Date;
 
   addressStreet: string;
   addressCity: string;
@@ -43,17 +50,51 @@ export interface ClinicModel {
   addressCountry: string;
   addressLongitude: string;
   addressLatitude: string;
+
+  landlordId: number;
+  averageRating: number;
+
+  photos?: ClinicPhoto[];
+  equipments?: ClinicEquipment[];
+  availabilities?: ClinicAvailability[];
+}
+
+export interface ClinicPhoto {
+  id: number;
+  clinicId: number;
+  path: string;
+  isPrimary: boolean;
+}
+
+export interface ClinicAvailability {
+  id: number;
+  clinicId: number;
+  startTime: string; // Format: HH:mm
+  endTime: string; // Format: HH:mm
+  weekDay: WeekDayType;
+}
+
+export interface ClinicEquipment {
+  id: number;
+  clinicId: number;
+  quantity: number;
+  equipmentType: ClinicEquipmentType;
 }
 
 export interface ClinicRegistrationData {
   displayName: string;
   description: string;
-  category: ClinicCategory;
-  equipments: ClinicEquipment[];
+  category: ClinicCategoryType;
+  equipments: ClinicEquipmentType[];
   size: number | null;
   photos: string[];
   pricePerDay: number | null;
   maximumStayInDays: number | null;
-  availabilities: ClinicDailyAvailability[];
+  availabilities: {
+    dayOfWeek: string;
+    fromTime: string | null;
+    toTime: string | null;
+    isActive: boolean;
+  }[];
   propertyProof: File | null;
 }
