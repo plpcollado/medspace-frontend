@@ -2,28 +2,20 @@ import TextInput from "@/components/TextInput";
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import ClinicAvailabilityInput from "@/components/ClinicAvailabilityInput";
 import { constToTitleCase } from "@/lib/textUtils";
-import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 import { ClinicDailyAvailability } from "@/types/clinicTypes";
 import toast from "react-hot-toast";
 import { useState } from "react";
-
-interface RentDataSectionProps extends StepSectionProps {
-  data: CreateClinicFormData;
-  setData: (
-    key: keyof CreateClinicFormData,
-    value: CreateClinicFormData[keyof CreateClinicFormData]
-  ) => void;
-}
 
 export default function RentDataSection({
   onClickPrimary,
   onClickSecondary,
   data,
-  setData
-}: RentDataSectionProps) {
-  const [errors, setErrors] = useState({
-    pricePerDay: "",
-    maximumStayInDays: "",
+  setData,
+  setError,
+  clearError,
+  errors
+}: StepSectionProps) {
+  const [availabilityErrors, setAvailabilityErrors] = useState({
     availabilities: data.availabilities!.map(() => ""),
     atLeastOneAvailabilityActive: ""
   });
@@ -32,9 +24,9 @@ export default function RentDataSection({
     dayOfWeek: string,
     newData: Partial<ClinicDailyAvailability>
   ) => {
-    clearError("atLeastOneAvailabilityActive");
-    setErrors((prev) => ({
+    setAvailabilityErrors((prev) => ({
       ...prev,
+      atLeastOneAvailabilityActive: "",
       availabilities: prev.availabilities.map((err, index) =>
         index ===
         data.availabilities!.findIndex(
@@ -44,6 +36,7 @@ export default function RentDataSection({
           : err
       )
     }));
+
     setData(
       "availabilities",
       data.availabilities?.map((availability) =>
@@ -55,25 +48,24 @@ export default function RentDataSection({
   };
 
   const validateData = () => {
-    const newErrors: typeof errors = {
-      pricePerDay: "",
-      maximumStayInDays: "",
+    const newErrors: typeof availabilityErrors = {
       availabilities: data.availabilities!.map(() => ""),
       atLeastOneAvailabilityActive: ""
     };
     let isValid = true;
 
     if (data.pricePerDay == null || data.pricePerDay <= 0) {
-      newErrors.pricePerDay = "Price per day must be greater than 0";
+      setError("pricePerDay", "Price per day must be greater than 0");
       isValid = false;
     }
 
     if (data.maximumStayInDays == null || data.maximumStayInDays <= 0) {
-      newErrors.maximumStayInDays = "Maximum stay must be greater than 1";
+      setError("maximumStayInDays", "Maximum stay must be greater than 0");
       isValid = false;
     }
 
     let numOfActiveAvailabilities = 0;
+
     data.availabilities?.forEach((availability, index) => {
       if (availability.isActive) {
         numOfActiveAvailabilities++;
@@ -94,7 +86,7 @@ export default function RentDataSection({
       isValid = false;
     }
 
-    setErrors(newErrors);
+    setAvailabilityErrors(newErrors);
     return isValid;
   };
 
@@ -104,13 +96,6 @@ export default function RentDataSection({
       return;
     }
     handler();
-  };
-
-  const clearError = (field: keyof typeof errors) => {
-    setErrors((prev) => ({
-      ...prev,
-      [field]: ""
-    }));
   };
 
   return (
@@ -161,9 +146,9 @@ export default function RentDataSection({
           <p className="mb-4 block text-sm font-medium text-gray-800 ">
             Daily Availabilities
           </p>
-          {errors.atLeastOneAvailabilityActive && (
+          {availabilityErrors.atLeastOneAvailabilityActive && (
             <p className="text-sm text-red-500 mb-4">
-              {errors.atLeastOneAvailabilityActive}
+              {availabilityErrors.atLeastOneAvailabilityActive}
             </p>
           )}
           <div className="flex flex-col gap-6">
@@ -190,7 +175,7 @@ export default function RentDataSection({
                   fromTime={availability.fromTime}
                   toTime={availability.toTime}
                   error={
-                    errors.availabilities[
+                    availabilityErrors.availabilities[
                       data.availabilities!.indexOf(availability)
                     ]
                   }
