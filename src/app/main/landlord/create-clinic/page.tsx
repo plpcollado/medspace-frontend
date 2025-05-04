@@ -39,7 +39,12 @@ export default function CreateClinicPage() {
         );
       case 2:
         return (
-          <PhotosSection onClickPrimary={goNext} onClickSecondary={goBack} />
+          <PhotosSection
+            onClickPrimary={goNext}
+            onClickSecondary={goBack}
+            data={formData}
+            setData={updateFormData}
+          />
         );
       case 3:
         return (
@@ -83,7 +88,7 @@ export default function CreateClinicPage() {
         </div>
 
         <div className="flex-1">
-          <div className="container mx-auto px-6 py-2 sm:py-8">
+          <div className="container mx-auto px-6 py-2">
             {renderCurrentStepComponent()}
           </div>
         </div>

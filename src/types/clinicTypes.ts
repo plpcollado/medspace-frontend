@@ -51,7 +51,7 @@ export interface ClinicRegistrationData {
   category: ClinicCategory;
   equipments: ClinicEquipment[];
   size: number | null;
-  photos: string[];
+  photos: (File | null)[];
   pricePerDay: number | null;
   maximumStayInDays: number | null;
   availabilities: ClinicDailyAvailability[];

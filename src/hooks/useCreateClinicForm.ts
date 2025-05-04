@@ -16,13 +16,15 @@ const DAYS_OF_WEEK = [
   "SUNDAY"
 ];
 
+const ALLOWED_NUM_OF_PHOTOS = 4;
+
 const defaultData: CreateClinicFormData = {
   displayName: "",
   description: "",
   category: CLINIC_CATEGORIES[0],
   equipments: [],
   size: null,
-  photos: [],
+  photos: Array.from({ length: ALLOWED_NUM_OF_PHOTOS }, () => null),
   pricePerDay: null,
   maximumStayInDays: null,
   availabilities: DAYS_OF_WEEK.map((day) => ({
