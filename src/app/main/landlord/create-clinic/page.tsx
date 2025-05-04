@@ -16,7 +16,10 @@ export default function CreateClinicPage() {
     cancel,
     formData,
     updateFormData,
-    submit
+    submit,
+    errors,
+    setError,
+    clearError
   } = useCreateClinicForm();
 
   const steps = [
@@ -35,11 +38,22 @@ export default function CreateClinicPage() {
             onClickSecondary={cancel}
             data={formData}
             setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
           />
         );
       case 2:
         return (
-          <PhotosSection onClickPrimary={goNext} onClickSecondary={goBack} />
+          <PhotosSection
+            onClickPrimary={goNext}
+            onClickSecondary={goBack}
+            data={formData}
+            setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
+          />
         );
       case 3:
         return (
@@ -48,11 +62,22 @@ export default function CreateClinicPage() {
             onClickSecondary={goBack}
             data={formData}
             setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
           />
         );
       case 4:
         return (
-          <PropertyProof onClickPrimary={submit} onClickSecondary={goBack} />
+          <PropertyProof
+            onClickPrimary={submit}
+            onClickSecondary={goBack}
+            data={formData}
+            setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
+          />
         );
       default:
         return null;
@@ -83,7 +108,7 @@ export default function CreateClinicPage() {
         </div>
 
         <div className="flex-1">
-          <div className="container mx-auto px-6 py-2 sm:py-8">
+          <div className="container mx-auto px-6 py-2">
             {renderCurrentStepComponent()}
           </div>
         </div>

@@ -10,13 +10,15 @@ import { ClinicService } from "@/services/ClinicService";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
 
+const ALLOWED_NUM_OF_PHOTOS = 4;
+
 const defaultData: CreateClinicFormData = {
   displayName: "",
   description: "",
   category: CLINIC_CATEGORIES[0],
   equipments: [],
   size: null,
-  photos: [],
+  photos: Array.from({ length: ALLOWED_NUM_OF_PHOTOS }, () => null),
   pricePerDay: null,
   maximumStayInDays: null,
   availabilities: WEEK_DAYS.map((day) => ({
@@ -31,7 +33,7 @@ const defaultData: CreateClinicFormData = {
 export function useCreateClinicForm() {
   const router = useRouter();
 
-  const { formData, updateFormData } =
+  const { formData, updateFormData, errors, setError, clearError } =
     useForm<CreateClinicFormData>(defaultData);
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -56,6 +58,9 @@ export function useCreateClinicForm() {
     goBack,
     cancel,
     submit,
-    setCurrentStep
+    setCurrentStep,
+    errors,
+    setError,
+    clearError
   };
 }
