@@ -4,30 +4,17 @@ import TextInput from "@/components/TextInput";
 import SelectInput from "@/components/SelectInput/SelectInput";
 import ClinicEquipmentTag from "@/components/ClinicEquipmentTag";
 import { constToTitleCase } from "@/lib/textUtils";
-import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 import toast from "react-hot-toast";
-import { useState } from "react";
-
-interface BasicInfoSectionProps extends StepSectionProps {
-  data: CreateClinicFormData;
-  setData: (
-    key: keyof CreateClinicFormData,
-    value: CreateClinicFormData[keyof CreateClinicFormData]
-  ) => void;
-}
 
 export default function BasicInfoSection({
   onClickPrimary,
   onClickSecondary,
   data,
-  setData
-}: BasicInfoSectionProps) {
-  const [errors, setErrors] = useState({
-    displayName: "",
-    description: "",
-    size: ""
-  });
-
+  setData,
+  setError,
+  clearError,
+  errors
+}: StepSectionProps) {
   const categoryOptions = CLINIC_CATEGORIES.map((cat) => ({
     value: cat,
     name: constToTitleCase(cat)
@@ -53,33 +40,21 @@ export default function BasicInfoSection({
   };
 
   const validateData = () => {
-    const newErrors: typeof errors = {
-      displayName: "",
-      description: "",
-      size: ""
-    };
-
     let isValid = true;
-
     if (!data.displayName?.trim()) {
-      newErrors.displayName = "Display name cannot be empty";
+      setError("displayName", "Display name cannot be empty");
       isValid = false;
     }
 
     if (!data.description?.trim()) {
-      newErrors.description = "Description cannot be empty";
+      setError("description", "Description cannot be empty");
       isValid = false;
     }
 
     if (data.size == null || data.size <= 0) {
-      newErrors.size =
-        data.size == null
-          ? "Size cannot be empty"
-          : "Size must be greater than 0";
+      setError("size", "Size must be greater than 0");
       isValid = false;
     }
-
-    setErrors(newErrors);
     return isValid;
   };
 
@@ -89,13 +64,6 @@ export default function BasicInfoSection({
       return;
     }
     onClickPrimary();
-  };
-
-  const clearError = (field: keyof typeof errors) => {
-    setErrors((prev) => ({
-      ...prev,
-      [field]: ""
-    }));
   };
 
   return (

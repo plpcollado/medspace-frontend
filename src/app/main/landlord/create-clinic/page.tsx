@@ -16,7 +16,10 @@ export default function CreateClinicPage() {
     cancel,
     formData,
     updateFormData,
-    submit
+    submit,
+    errors,
+    setError,
+    clearError
   } = useCreateClinicForm();
 
   const steps = [
@@ -35,6 +38,9 @@ export default function CreateClinicPage() {
             onClickSecondary={cancel}
             data={formData}
             setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
           />
         );
       case 2:
@@ -44,6 +50,9 @@ export default function CreateClinicPage() {
             onClickSecondary={goBack}
             data={formData}
             setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
           />
         );
       case 3:
@@ -53,11 +62,22 @@ export default function CreateClinicPage() {
             onClickSecondary={goBack}
             data={formData}
             setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
           />
         );
       case 4:
         return (
-          <PropertyProof onClickPrimary={submit} onClickSecondary={goBack} />
+          <PropertyProof
+            onClickPrimary={submit}
+            onClickSecondary={goBack}
+            data={formData}
+            setData={updateFormData}
+            errors={errors}
+            setError={setError}
+            clearError={clearError}
+          />
         );
       default:
         return null;

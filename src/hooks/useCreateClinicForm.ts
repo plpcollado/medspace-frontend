@@ -39,7 +39,7 @@ const defaultData: CreateClinicFormData = {
 export function useCreateClinicForm() {
   const router = useRouter();
 
-  const { formData, updateFormData } =
+  const { formData, updateFormData, errors, setError, clearError } =
     useForm<CreateClinicFormData>(defaultData);
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -66,6 +66,9 @@ export function useCreateClinicForm() {
     goBack,
     cancel,
     submit,
-    setCurrentStep
+    setCurrentStep,
+    errors,
+    setError,
+    clearError
   };
 }

@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 
 interface StepSectionBaseProps {
   children?: React.ReactNode;
@@ -11,6 +12,14 @@ interface StepSectionBaseProps {
 export interface StepSectionProps {
   onClickPrimary: () => void;
   onClickSecondary: () => void;
+  data: CreateClinicFormData;
+  setData: (
+    key: keyof CreateClinicFormData,
+    value: CreateClinicFormData[keyof CreateClinicFormData]
+  ) => void;
+  errors: Record<keyof CreateClinicFormData, string>;
+  setError: (field: keyof CreateClinicFormData, message: string) => void;
+  clearError: (field: keyof CreateClinicFormData) => void;
 }
 
 export default function StepSectionBase({
