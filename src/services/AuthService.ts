@@ -116,6 +116,8 @@ export class AuthService {
   // Get Firebase auth token for API calls to custom backend
   static async getIdToken(): Promise<string> {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Wait a bit to ensure page loads before firbase fetches the token
+
       const user = auth.currentUser;
       if (!user) throw new Error("No authenticated user");
 

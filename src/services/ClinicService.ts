@@ -1,9 +1,13 @@
 import { env } from "@/config/env";
-import { Clinic, ClinicRegistrationData } from "@/types/clinicTypes";
+import {
+  Clinic,
+  ClinicEquipmentType,
+  ClinicRegistrationData
+} from "@/types/clinicTypes";
 import { ApiResponse } from "@/types/serviceTypes";
 import { AuthService } from "./AuthService";
 import axios from "axios";
-import { MOCK_CLINICS } from "@/mocks/clinics";
+import { format } from "date-fns";
 
 export class ClinicService {
   static BASE_URL = env.NEXT_PUBLIC_API_URL + "/clinics";
@@ -37,16 +41,53 @@ export class ClinicService {
     }
   }
 
-  static async getClinics(): Promise<Clinic[]> {
+  static async getClinics(settings: {
+    includePhotos: boolean;
+    includeEquipments: boolean;
+    includeAvailabilities: boolean;
+    targetDate?: Date;
+    equipmentList?: ClinicEquipmentType[];
+    targetHour?: string;
+    targetCity?: string;
+  }): Promise<Clinic[]> {
     try {
-      // const headers = await AuthService.getAuthHeaders();
-      // const response = await axios.get<ApiResponse<Clinic[]>>(this.BASE_URL, {
-      //   headers
-      // });
+      const headers = await AuthService.getAuthHeaders();
 
-      // return response.data.data!;
+      const params = new URLSearchParams();
+      params.append("photos", settings.includePhotos.toString());
+      params.append("equipments", settings.includeEquipments.toString());
+      params.append(
+        "availabilities",
+        settings.includeAvailabilities.toString()
+      );
 
-      return MOCK_CLINICS;
+      if (settings.targetDate) {
+        const date = format(settings.targetDate, "yyyy-MM-dd");
+        params.append("date", date);
+      }
+
+      if (settings.equipmentList && settings.equipmentList.length > 0) {
+        settings.equipmentList.forEach((equipment) => {
+          params.append("equipmentList", equipment);
+        });
+      }
+
+      if (settings.targetHour) {
+        params.append("hour", settings.targetHour);
+      }
+
+      if (settings.targetCity) {
+        params.append("city", settings.targetCity);
+      }
+
+      const response = await axios.get<ApiResponse<Clinic[]>>(
+        `${this.BASE_URL}?${params.toString()}`,
+        {
+          headers
+        }
+      );
+
+      return response.data.data || [];
     } catch (error) {
       console.error("[ClinicService]: Get clinic by ID error:", error);
       throw error;

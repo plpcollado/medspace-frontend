@@ -1,7 +1,7 @@
 "use client";
 
 import ClinicCard from "@/components/ClinicCard";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ClinicsMap from "./components/ClinicsMap";
 import { ClinicService } from "@/services/ClinicService";
 import { Clinic } from "@/types/clinicTypes";
@@ -17,20 +17,42 @@ interface SearchParams {
 }
 
 export default function Page() {
-  const [clinics, setClinics] = React.useState<Clinic[]>([]);
+  const [clinics, setClinics] = useState<Clinic[]>([]);
+  const [isloading, setIsLoading] = useState(false);
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    time: "12:00",
+    equipment: [],
+    date: undefined,
+    location: "CMDX",
+    showSaved: false
+  });
 
   useEffect(() => {
-    ClinicService.getClinics()
+    setIsLoading(true);
+    ClinicService.getClinics({
+      includePhotos: true,
+      includeEquipments: true,
+      includeAvailabilities: true,
+      targetDate: searchParams.date,
+      equipmentList: searchParams.equipment,
+      targetHour: searchParams.time,
+      targetCity: searchParams.location
+    })
       .then((data) => {
         setClinics(data);
       })
       .catch((error) => {
         console.error("Error fetching clinics:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, []);
+  }, [searchParams]);
 
-  function handleSearch(searchParams: SearchParams) {
+  async function handleSearch(searchParams: SearchParams) {
     console.log("Search Params:", searchParams);
+
+    setSearchParams(searchParams);
   }
 
   return (
@@ -39,7 +61,7 @@ export default function Page() {
       <div className="w-3/4 flex flex-col">
         {/* Search & Filter */}
         <div className="p-4">
-          <ClinicFilterBar onSearch={handleSearch} />
+          <ClinicFilterBar onSearch={handleSearch} isLoading={isloading} />
         </div>
 
         {/* Scrollable clinic list */}
