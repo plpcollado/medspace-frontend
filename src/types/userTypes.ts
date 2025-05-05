@@ -22,7 +22,12 @@ export interface User {
 
 export type UserCompact = Pick<
   User,
-  "id" | "fullName" | "email" | "profilePhotoUrl" | "userType"
+  | "id"
+  | "fullName"
+  | "profilePhotoUrl"
+  | "userType"
+  | "averageRating"
+  | "createdAt"
 >;
 
 export interface UserRegistrationData {

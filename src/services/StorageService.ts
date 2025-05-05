@@ -17,14 +17,18 @@ export class StorageService {
     }
   }
 
-  static async getFileUrl(path: string) {
+  static async getFileUrl(path?: string) {
+    if (!path) {
+      return null;
+    }
+
     const storageRef = ref(storage, path);
     try {
       const url = await getDownloadURL(storageRef);
       return url;
     } catch (error) {
       console.error("[FileService]: Error getting file URL", error);
-      throw error;
+      return null;
     }
   }
 }
