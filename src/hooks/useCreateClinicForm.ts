@@ -7,6 +7,8 @@ import {
 import { useRouter } from "next/navigation";
 import { useForm } from "./useForm";
 import { ClinicService } from "@/services/ClinicService";
+import { ClinicPhotoService } from "@/services/ClinicPhotoService";
+import { v4 as uuidv4 } from "uuid";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
 
@@ -45,7 +47,26 @@ export function useCreateClinicForm() {
   const cancel = () => router.push("/main");
   const submit = async () => {
     try {
-      await ClinicService.createClinic(formData as ClinicRegistrationData);
+      const response = await ClinicService.createClinic(
+        formData as ClinicRegistrationData
+      );
+
+      if (!response.success || !response.data) {
+        throw new Error("Could not create clinic");
+      }
+
+      const clinic = response.data;
+      await Promise.all(
+        formData.photos!.map(async (photo, index) => {
+          await ClinicPhotoService.uploadClinicPhoto(
+            photo!,
+            uuidv4(),
+            clinic.id,
+            index === 0
+          );
+        })
+      );
+
       router.push("/main");
     } catch (error) {
       console.error("[Clinic]: Error creating clinic", error);

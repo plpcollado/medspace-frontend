@@ -12,7 +12,9 @@ import { format } from "date-fns";
 export class ClinicService {
   static BASE_URL = env.NEXT_PUBLIC_API_URL + "/clinics";
 
-  static async createClinic(data: ClinicRegistrationData): Promise<void> {
+  static async createClinic(
+    data: ClinicRegistrationData
+  ): Promise<ApiResponse<Clinic>> {
     try {
       const body = {
         displayName: data.displayName,
@@ -20,6 +22,8 @@ export class ClinicService {
         pricePerDay: data.pricePerDay,
         maxStayDays: data.maximumStayInDays,
         description: data.description,
+        availableFromDate: data.availableFromDate,
+        availableToDate: data.availableToDate,
 
         // TODO: update address fields with the correct data
         addressStreet: "Av hacker",
@@ -32,9 +36,14 @@ export class ClinicService {
       };
 
       const headers = await AuthService.getAuthHeaders();
-      await axios.post<ApiResponse<Clinic>>(this.BASE_URL, body, {
-        headers
-      });
+      const response = await axios.post<ApiResponse<Clinic>>(
+        this.BASE_URL,
+        body,
+        {
+          headers
+        }
+      );
+      return response.data;
     } catch (error) {
       console.error("[ClinicService]: Create clinic error:", error);
       throw error;
