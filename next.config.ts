@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
         search: ""
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/v0/b/**"
       }
     ]
   }
