@@ -72,6 +72,11 @@ export default function RentDataSection({
       isValid = false;
     }
 
+    if (!data.availableFromDate || !data.availableToDate) {
+      setError("availableFromDate", "Please select a valid range");
+      isValid = false;
+    }
+
     let numOfActiveAvailabilities = 0;
 
     data.availabilities?.forEach((availability, index) => {
@@ -149,7 +154,17 @@ export default function RentDataSection({
               invalidMessage={errors.maximumStayInDays}
             />
           </div>
-          <div className="flex-1">
+        </div>
+        <div className="flex gap-10 flex-col sm:flex-row">
+          <div className="flex-1 flex flex-col">
+            <p className="mb-4 block text-sm font-medium text-gray-800 ">
+              Date Availability
+            </p>
+            {errors.availableFromDate && (
+              <p className="text-sm text-red-500 mb-4">
+                {errors.availableFromDate}
+              </p>
+            )}
             <DatePicker
               mode="range"
               selectedDate={{
@@ -157,52 +172,53 @@ export default function RentDataSection({
                 to: data.availableToDate ?? undefined
               }}
               onSelectDate={(dates) => {
+                clearError("availableFromDate");
                 setData("availableFromDate", dates?.from ?? null);
                 setData("availableToDate", dates?.to ?? null);
               }}
             />
           </div>
-        </div>
-        <div className="flex flex-col max-w-2/3">
-          <p className="mb-4 block text-sm font-medium text-gray-800 ">
-            Daily Availabilities
-          </p>
-          {availabilityErrors.atLeastOneAvailabilityActive && (
-            <p className="text-sm text-red-500 mb-4">
-              {availabilityErrors.atLeastOneAvailabilityActive}
+          <div className="flex flex-col flex-3">
+            <p className="mb-4 block text-sm font-medium text-gray-800 ">
+              Daily Availabilities
             </p>
-          )}
-          <div className="flex flex-col gap-6">
-            {data.availabilities?.map((availability) => (
-              <div key={availability.dayOfWeek}>
-                <ClinicAvailabilityInput
-                  dayOfWeek={constToTitleCase(availability.dayOfWeek)}
-                  onChangeFromTime={(newTime) =>
-                    handleAvailabilityChange(availability.dayOfWeek, {
-                      fromTime: newTime
-                    })
-                  }
-                  onChangeToTime={(newTime) =>
-                    handleAvailabilityChange(availability.dayOfWeek, {
-                      toTime: newTime
-                    })
-                  }
-                  isActive={availability.isActive}
-                  onChangeActive={(checked) =>
-                    handleAvailabilityChange(availability.dayOfWeek, {
-                      isActive: checked
-                    })
-                  }
-                  fromTime={availability.fromTime}
-                  toTime={availability.toTime}
-                  error={
-                    availabilityErrors.availabilities[
-                      data.availabilities!.indexOf(availability)
-                    ]
-                  }
-                />
-              </div>
-            ))}
+            {availabilityErrors.atLeastOneAvailabilityActive && (
+              <p className="text-sm text-red-500 mb-4">
+                {availabilityErrors.atLeastOneAvailabilityActive}
+              </p>
+            )}
+            <div className="flex flex-col gap-6">
+              {data.availabilities?.map((availability) => (
+                <div key={availability.dayOfWeek}>
+                  <ClinicAvailabilityInput
+                    dayOfWeek={constToTitleCase(availability.dayOfWeek)}
+                    onChangeFromTime={(newTime) =>
+                      handleAvailabilityChange(availability.dayOfWeek, {
+                        fromTime: newTime
+                      })
+                    }
+                    onChangeToTime={(newTime) =>
+                      handleAvailabilityChange(availability.dayOfWeek, {
+                        toTime: newTime
+                      })
+                    }
+                    isActive={availability.isActive}
+                    onChangeActive={(checked) =>
+                      handleAvailabilityChange(availability.dayOfWeek, {
+                        isActive: checked
+                      })
+                    }
+                    fromTime={availability.fromTime}
+                    toTime={availability.toTime}
+                    error={
+                      availabilityErrors.availabilities[
+                        data.availabilities!.indexOf(availability)
+                      ]
+                    }
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
