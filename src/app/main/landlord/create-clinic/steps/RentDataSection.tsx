@@ -6,13 +6,7 @@ import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import DatePicker from "@/components/DatePicker";
-
-interface ClinicDailyAvailabilityInput {
-  dayOfWeek: string;
-  fromTime: string | null;
-  toTime: string | null;
-  isActive: boolean;
-}
+import { ClinicDailyAvailabilityInput } from "@/types/clinicTypes";
 
 export default function RentDataSection({
   onClickPrimary,

@@ -3,6 +3,7 @@ import { AuthService } from "./AuthService";
 import axios from "axios";
 import { ApiResponse } from "@/types/serviceTypes";
 import { StorageService } from "./StorageService";
+import { safeApiCall } from "@/lib/apiUtils";
 
 export class ClinicPhotoService {
   static BASE_URL = env.NEXT_PUBLIC_API_URL + "/clinic-photos";
@@ -14,45 +15,29 @@ export class ClinicPhotoService {
     isPrimary: boolean
   ) {
     const bucketPath = `clinic-photos/${clinicId}-${path}`;
-    try {
-      await StorageService.uploadImage(photo, bucketPath);
-    } catch (error) {
-      console.error(
-        "[ClinicPhotoService]: Upload clinic to Cloud error:",
-        error
-      );
-      throw error;
-    }
-    try {
-      const headers = await AuthService.getAuthHeaders();
-      const body = {
-        clinicId,
-        isPrimary,
-        path: bucketPath
-      };
+    await safeApiCall(
+      () => StorageService.uploadImage(photo, bucketPath),
+      "ClinicPhotoService: upload clinic photo"
+    );
 
-      const response = await axios.post<ApiResponse<null>>(
-        this.BASE_URL,
-        body,
-        {
-          headers: {
-            ...headers,
-            "Content-Type": "application/json"
-          }
-        }
-      );
+    const headers = await AuthService.getAuthHeaders();
+    const body = {
+      clinicId,
+      isPrimary,
+      path: bucketPath
+    };
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
-      }
-
-      return response.data;
-    } catch (error) {
-      console.error(
-        "[ClinicPhotoService]: Upload clinic photo to server error:",
-        error
-      );
-      throw error;
-    }
+    return safeApiCall(
+      () =>
+        axios
+          .post<ApiResponse<null>>(this.BASE_URL, body, {
+            headers: { ...headers, "Content-Type": "application/json" }
+          })
+          .then((res) => {
+            if (!res.data.success) throw new Error(res.data.message);
+            return res.data;
+          }),
+      "ClinicPhotoService: uploadClinicPhoto"
+    );
   }
 }

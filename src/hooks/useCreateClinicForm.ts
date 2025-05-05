@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
   CLINIC_CATEGORIES,
+  ClinicDailyAvailabilityInput,
+  ClinicEquipmentType,
   ClinicRegistrationData,
   WEEK_DAYS
 } from "@/types/clinicTypes";
@@ -11,6 +13,7 @@ import { ClinicPhotoService } from "@/services/ClinicPhotoService";
 import { v4 as uuidv4 } from "uuid";
 import { ClinicEquipmentService } from "@/services/ClinicEquipmentService";
 import { ClinicAvailabilityService } from "@/services/ClinicAvailabilityService";
+import toast from "react-hot-toast";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
 
@@ -52,51 +55,22 @@ export function useCreateClinicForm() {
       const response = await ClinicService.createClinic(
         formData as ClinicRegistrationData
       );
-
       if (!response.success || !response.data) {
         throw new Error("Could not create clinic");
       }
 
       const clinic = response.data;
-      await Promise.all(
-        formData.photos!.map(async (photo, index) => {
-          await ClinicPhotoService.uploadClinicPhoto(
-            photo!,
-            uuidv4(),
-            clinic.id,
-            index === 0
-          );
-        })
-      );
-
-      await Promise.all(
-        formData.equipments!.map(async (equipment) => {
-          await ClinicEquipmentService.uploadClinicEquipment(
-            equipment,
-            1, // TODO: implement quantity
-            clinic.id
-          );
-        })
-      );
-
-      await Promise.all(
-        formData.availabilities!.map(async (availability) => {
-          if (!availability.isActive) {
-            return;
-          }
-
-          await ClinicAvailabilityService.createClinicAvailability(
-            clinic.id,
-            availability.fromTime!,
-            availability.toTime!,
-            availability.dayOfWeek
-          );
-        })
-      );
-
-      router.push("/main");
+      await Promise.all([
+        uploadPhotos(formData.photos!, clinic.id),
+        uploadEquipments(formData.equipments!, clinic.id),
+        uploadAvailabilities(formData.availabilities!, clinic.id)
+      ]);
+      toast.success("Clinic created successfully");
     } catch (error) {
       console.error("[Clinic]: Error creating clinic", error);
+      toast.error("Could not create all resources. Please try again");
+    } finally {
+      router.push("/main");
     }
   };
 
@@ -113,4 +87,46 @@ export function useCreateClinicForm() {
     setError,
     clearError
   };
+}
+
+async function uploadPhotos(photos: (File | null)[], clinicId: number) {
+  await Promise.all(
+    photos.map((photo, index) =>
+      ClinicPhotoService.uploadClinicPhoto(
+        photo!,
+        uuidv4(),
+        clinicId,
+        index === 0
+      )
+    )
+  );
+}
+
+async function uploadEquipments(
+  equipments: ClinicEquipmentType[],
+  clinicId: number
+) {
+  await Promise.all(
+    equipments.map((equipment) =>
+      ClinicEquipmentService.uploadClinicEquipment(equipment, 1, clinicId)
+    )
+  );
+}
+
+async function uploadAvailabilities(
+  availabilities: ClinicDailyAvailabilityInput[],
+  clinicId: number
+) {
+  await Promise.all(
+    availabilities
+      .filter((a) => a.isActive)
+      .map((a) =>
+        ClinicAvailabilityService.uploadClinicAvailability(
+          clinicId,
+          a.fromTime!,
+          a.toTime!,
+          a.dayOfWeek
+        )
+      )
+  );
 }

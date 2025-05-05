@@ -100,3 +100,10 @@ export interface ClinicRegistrationData {
   availableFromDate: Date | null;
   availableToDate: Date | null;
 }
+
+export interface ClinicDailyAvailabilityInput {
+  dayOfWeek: string;
+  fromTime: string | null;
+  toTime: string | null;
+  isActive: boolean;
+}
