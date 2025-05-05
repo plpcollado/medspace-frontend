@@ -9,6 +9,7 @@ import { useForm } from "./useForm";
 import { ClinicService } from "@/services/ClinicService";
 import { ClinicPhotoService } from "@/services/ClinicPhotoService";
 import { v4 as uuidv4 } from "uuid";
+import { ClinicEquipmentService } from "@/services/ClinicEquipmentService";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
 
@@ -63,6 +64,16 @@ export function useCreateClinicForm() {
             uuidv4(),
             clinic.id,
             index === 0
+          );
+        })
+      );
+
+      await Promise.all(
+        formData.equipments!.map(async (equipment) => {
+          await ClinicEquipmentService.uploadClinicEquipment(
+            equipment,
+            1, // TODO: implement quantity
+            clinic.id
           );
         })
       );
