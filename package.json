@@ -31,7 +31,8 @@
     "react-map-gl": "^8.0.3",
     "recharts": "^2.15.2",
     "tailwind-merge": "^3.2.0",
-    "tw-animate-css": "^1.2.5"
+    "tw-animate-css": "^1.2.5",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",

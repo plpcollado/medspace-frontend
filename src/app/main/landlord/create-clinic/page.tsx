@@ -7,6 +7,7 @@ import BasicInfoSection from "./steps/BasicInfoSection";
 import PhotosSection from "./steps/PhotosSection";
 import RentDataSection from "./steps/RentDataSection";
 import PropertyProof from "./steps/PropertyProofSection";
+import { useState } from "react";
 
 export default function CreateClinicPage() {
   const {
@@ -19,7 +20,8 @@ export default function CreateClinicPage() {
     submit,
     errors,
     setError,
-    clearError
+    clearError,
+    isSubmitting
   } = useCreateClinicForm();
 
   const steps = [
@@ -70,6 +72,7 @@ export default function CreateClinicPage() {
       case 4:
         return (
           <PropertyProof
+            isSubmitting={isSubmitting}
             onClickPrimary={submit}
             onClickSecondary={goBack}
             data={formData}
