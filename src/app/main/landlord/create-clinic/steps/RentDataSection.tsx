@@ -5,6 +5,7 @@ import { constToTitleCase } from "@/lib/textUtils";
 import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import DatePicker from "@/components/DatePicker";
 
 interface ClinicDailyAvailabilityInput {
   dayOfWeek: string;
@@ -12,15 +13,6 @@ interface ClinicDailyAvailabilityInput {
   toTime: string | null;
   isActive: boolean;
 }
-
-interface RentDataSectionProps extends StepSectionProps {
-  data: CreateClinicFormData;
-  setData: (
-    key: keyof CreateClinicFormData,
-    value: CreateClinicFormData[keyof CreateClinicFormData]
-  ) => void;
-}
-
 
 export default function RentDataSection({
   onClickPrimary,
@@ -155,6 +147,19 @@ export default function RentDataSection({
               min={1}
               isInvalid={!!errors.maximumStayInDays}
               invalidMessage={errors.maximumStayInDays}
+            />
+          </div>
+          <div className="flex-1">
+            <DatePicker
+              mode="range"
+              selectedDate={{
+                from: data.availableFromDate ?? undefined,
+                to: data.availableToDate ?? undefined
+              }}
+              onSelectDate={(dates) => {
+                setData("availableFromDate", dates?.from ?? null);
+                setData("availableToDate", dates?.to ?? null);
+              }}
             />
           </div>
         </div>

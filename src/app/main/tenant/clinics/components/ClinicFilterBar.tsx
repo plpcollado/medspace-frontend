@@ -43,7 +43,7 @@ interface Props {
 }
 
 export default function ClinicFilterBar({
-  locations = ["CMDX", "MONTERREY"],
+  locations = ["CDMX", "MONTERREY"],
   defaultLocation,
   defaultTime,
   defaultDate,
@@ -153,7 +153,11 @@ export default function ClinicFilterBar({
           </div>
         </PopoverTrigger>
         <PopoverContent>
-          <DatePicker onSelectDate={handleDateChange} />
+          <DatePicker
+            mode="single"
+            onSelectDate={handleDateChange}
+            selectedDate={selectedDate}
+          />
         </PopoverContent>
       </Popover>
 

@@ -27,7 +27,9 @@ const defaultData: CreateClinicFormData = {
     toTime: null,
     isActive: true
   })),
-  propertyProof: null
+  propertyProof: null,
+  availableFromDate: null,
+  availableToDate: null
 };
 
 export function useCreateClinicForm() {

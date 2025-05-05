@@ -23,7 +23,7 @@ export default function Page() {
     time: "12:00",
     equipment: [],
     date: undefined,
-    location: "CMDX",
+    location: "CDMX",
     showSaved: false
   });
 

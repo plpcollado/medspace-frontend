@@ -97,4 +97,6 @@ export interface ClinicRegistrationData {
     isActive: boolean;
   }[];
   propertyProof: File | null;
+  availableFromDate: Date | null;
+  availableToDate: Date | null;
 }
