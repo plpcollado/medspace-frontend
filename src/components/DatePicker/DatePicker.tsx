@@ -2,55 +2,43 @@
 
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
-import { useEffect, useState } from "react";
 
-import { DayPicker, Matcher } from "react-day-picker";
+import { DateRange, DayPicker, Matcher } from "react-day-picker";
 import "react-day-picker/style.css";
 
-interface PropsSingle {
-  mode?: "single";
-  onSelectDate: (date: Date | undefined) => void;
+interface BaseProps {
   fromDate?: Date;
   toDate?: Date;
   className?: ClassValue;
   disabledDates?: Date[];
 }
 
-interface PropsMultiple {
-  mode: "multiple";
-  onSelectDate: (date: Date[] | undefined) => void;
-  fromDate?: Date;
-  toDate?: Date;
-  className?: ClassValue;
-  disabledDates?: Date[];
-}
-
-type Props = PropsSingle | PropsMultiple;
+type Props =
+  | ({
+      mode: "single";
+      selectedDate: Date | undefined;
+      onSelectDate: (date: Date | undefined) => void;
+    } & BaseProps)
+  | ({
+      mode: "multiple";
+      selectedDate: Date[] | undefined;
+      onSelectDate: (date: Date[] | undefined) => void;
+    } & BaseProps)
+  | ({
+      mode: "range";
+      selectedDate: DateRange | undefined;
+      onSelectDate: (range: DateRange | undefined) => void;
+    } & BaseProps);
 
 export default function DatePicker({
-  mode = "single",
+  mode,
   onSelectDate,
   fromDate,
   toDate,
   disabledDates,
-  className
+  className,
+  selectedDate
 }: Props) {
-  // Use separate state variables based on mode
-  const [selectedSingle, setSelectedSingle] = useState<Date | undefined>(
-    undefined
-  );
-  const [selectedMultiple, setSelectedMultiple] = useState<Date[] | undefined>(
-    undefined
-  );
-
-  useEffect(() => {
-    if (mode === "single" && selectedSingle !== undefined) {
-      (onSelectDate as PropsSingle["onSelectDate"])(selectedSingle);
-    } else if (mode === "multiple" && selectedMultiple !== undefined) {
-      (onSelectDate as PropsMultiple["onSelectDate"])(selectedMultiple);
-    }
-  }, [selectedSingle, selectedMultiple, onSelectDate, mode]);
-
   return (
     <div
       className={cn(
@@ -58,21 +46,33 @@ export default function DatePicker({
         className
       )}
     >
-      {mode === "single" ? (
+      {mode === "single" && (
         <DayPicker
           mode="single"
-          selected={selectedSingle}
-          onSelect={setSelectedSingle}
+          selected={selectedDate}
+          onSelect={onSelectDate}
           disabled={[
             { before: fromDate, after: toDate } as Matcher,
             ...(disabledDates || [])
           ]}
         />
-      ) : (
+      )}
+      {mode === "multiple" && (
         <DayPicker
           mode="multiple"
-          selected={selectedMultiple}
-          onSelect={setSelectedMultiple}
+          selected={selectedDate}
+          onSelect={onSelectDate}
+          disabled={[
+            { before: fromDate, after: toDate } as Matcher,
+            ...(disabledDates || [])
+          ]}
+        />
+      )}
+      {mode === "range" && (
+        <DayPicker
+          mode="range"
+          selected={selectedDate}
+          onSelect={onSelectDate}
           disabled={[
             { before: fromDate, after: toDate } as Matcher,
             ...(disabledDates || [])
