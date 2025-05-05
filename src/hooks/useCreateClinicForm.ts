@@ -46,12 +46,14 @@ export function useCreateClinicForm() {
     useForm<CreateClinicFormData>(defaultData);
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const goNext = () => setCurrentStep((prev) => prev + 1);
   const goBack = () => setCurrentStep((prev) => prev - 1);
   const cancel = () => router.push("/main");
   const submit = async () => {
     try {
+      setIsSubmitting(true);
       const response = await ClinicService.createClinic(
         formData as ClinicRegistrationData
       );
@@ -70,6 +72,7 @@ export function useCreateClinicForm() {
       console.error("[Clinic]: Error creating clinic", error);
       toast.error("Could not create all resources. Please try again");
     } finally {
+      setIsSubmitting(false);
       router.push("/main");
     }
   };
@@ -85,7 +88,8 @@ export function useCreateClinicForm() {
     setCurrentStep,
     errors,
     setError,
-    clearError
+    clearError,
+    isSubmitting
   };
 }
 
