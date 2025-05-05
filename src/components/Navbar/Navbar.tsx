@@ -14,7 +14,7 @@ interface Props {
 
 const navbarLinks = {
   tenant: [
-    { name: "Clinics", href: "/clinics" },
+    { name: "Clinics", href: "/main/tenant/clinics" },
     { name: "Rent Requests", href: "/rent-requests" },
     { name: "Rent Calendar", href: "/rent-calendar" },
     { name: "Notifications", href: "/notifications" }

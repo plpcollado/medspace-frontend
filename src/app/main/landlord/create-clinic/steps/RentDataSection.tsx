@@ -2,9 +2,25 @@ import TextInput from "@/components/TextInput";
 import StepSectionBase, { StepSectionProps } from "./StepSectionBase";
 import ClinicAvailabilityInput from "@/components/ClinicAvailabilityInput";
 import { constToTitleCase } from "@/lib/textUtils";
-import { ClinicDailyAvailability } from "@/types/clinicTypes";
+import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 import toast from "react-hot-toast";
 import { useState } from "react";
+
+interface ClinicDailyAvailabilityInput {
+  dayOfWeek: string;
+  fromTime: string | null;
+  toTime: string | null;
+  isActive: boolean;
+}
+
+interface RentDataSectionProps extends StepSectionProps {
+  data: CreateClinicFormData;
+  setData: (
+    key: keyof CreateClinicFormData,
+    value: CreateClinicFormData[keyof CreateClinicFormData]
+  ) => void;
+}
+
 
 export default function RentDataSection({
   onClickPrimary,
@@ -22,7 +38,7 @@ export default function RentDataSection({
 
   const handleAvailabilityChange = (
     dayOfWeek: string,
-    newData: Partial<ClinicDailyAvailability>
+    newData: Partial<ClinicDailyAvailabilityInput>
   ) => {
     setAvailabilityErrors((prev) => ({
       ...prev,

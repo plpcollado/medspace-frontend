@@ -1,15 +1,18 @@
 import { env } from "@/config/env";
-import { ClinicModel, ClinicRegistrationData } from "@/types/clinicTypes";
+import {
+  Clinic,
+  ClinicEquipmentType,
+  ClinicRegistrationData
+} from "@/types/clinicTypes";
 import { ApiResponse } from "@/types/serviceTypes";
 import { AuthService } from "./AuthService";
 import axios from "axios";
+import { format } from "date-fns";
 
 export class ClinicService {
   static BASE_URL = env.NEXT_PUBLIC_API_URL + "/clinics";
 
-  static async createClinic(
-    data: ClinicRegistrationData
-  ): Promise<ApiResponse<ClinicModel>> {
+  static async createClinic(data: ClinicRegistrationData): Promise<void> {
     try {
       const body = {
         displayName: data.displayName,
@@ -29,14 +32,64 @@ export class ClinicService {
       };
 
       const headers = await AuthService.getAuthHeaders();
-      const response = await axios.post<ApiResponse<ClinicModel>>(
-        this.BASE_URL,
-        body,
-        { headers }
-      );
-      return response.data;
+      await axios.post<ApiResponse<Clinic>>(this.BASE_URL, body, {
+        headers
+      });
     } catch (error) {
       console.error("[ClinicService]: Create clinic error:", error);
+      throw error;
+    }
+  }
+
+  static async getClinics(settings: {
+    includePhotos: boolean;
+    includeEquipments: boolean;
+    includeAvailabilities: boolean;
+    targetDate?: Date;
+    equipmentList?: ClinicEquipmentType[];
+    targetHour?: string;
+    targetCity?: string;
+  }): Promise<Clinic[]> {
+    try {
+      const headers = await AuthService.getAuthHeaders();
+
+      const params = new URLSearchParams();
+      params.append("photos", settings.includePhotos.toString());
+      params.append("equipments", settings.includeEquipments.toString());
+      params.append(
+        "availabilities",
+        settings.includeAvailabilities.toString()
+      );
+
+      if (settings.targetDate) {
+        const date = format(settings.targetDate, "yyyy-MM-dd");
+        params.append("date", date);
+      }
+
+      if (settings.equipmentList && settings.equipmentList.length > 0) {
+        settings.equipmentList.forEach((equipment) => {
+          params.append("equipmentList", equipment);
+        });
+      }
+
+      if (settings.targetHour) {
+        params.append("hour", settings.targetHour);
+      }
+
+      if (settings.targetCity) {
+        params.append("city", settings.targetCity);
+      }
+
+      const response = await axios.get<ApiResponse<Clinic[]>>(
+        `${this.BASE_URL}?${params.toString()}`,
+        {
+          headers
+        }
+      );
+
+      return response.data.data || [];
+    } catch (error) {
+      console.error("[ClinicService]: Get clinic by ID error:", error);
       throw error;
     }
   }

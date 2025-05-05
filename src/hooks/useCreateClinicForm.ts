@@ -1,20 +1,14 @@
 import { useState } from "react";
-import { CLINIC_CATEGORIES, ClinicRegistrationData } from "@/types/clinicTypes";
+import {
+  CLINIC_CATEGORIES,
+  ClinicRegistrationData,
+  WEEK_DAYS
+} from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import { useForm } from "./useForm";
 import { ClinicService } from "@/services/ClinicService";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
-
-const DAYS_OF_WEEK = [
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY"
-];
 
 const ALLOWED_NUM_OF_PHOTOS = 4;
 
@@ -27,7 +21,7 @@ const defaultData: CreateClinicFormData = {
   photos: Array.from({ length: ALLOWED_NUM_OF_PHOTOS }, () => null),
   pricePerDay: null,
   maximumStayInDays: null,
-  availabilities: DAYS_OF_WEEK.map((day) => ({
+  availabilities: WEEK_DAYS.map((day) => ({
     dayOfWeek: day,
     fromTime: null,
     toTime: null,
@@ -49,9 +43,7 @@ export function useCreateClinicForm() {
   const cancel = () => router.push("/main");
   const submit = async () => {
     try {
-      const response = await ClinicService.createClinic(
-        formData as ClinicRegistrationData
-      );
+      await ClinicService.createClinic(formData as ClinicRegistrationData);
       router.push("/main");
     } catch (error) {
       console.error("[Clinic]: Error creating clinic", error);
