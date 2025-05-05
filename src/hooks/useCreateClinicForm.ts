@@ -10,6 +10,7 @@ import { ClinicService } from "@/services/ClinicService";
 import { ClinicPhotoService } from "@/services/ClinicPhotoService";
 import { v4 as uuidv4 } from "uuid";
 import { ClinicEquipmentService } from "@/services/ClinicEquipmentService";
+import { ClinicAvailabilityService } from "@/services/ClinicAvailabilityService";
 
 export type CreateClinicFormData = Partial<ClinicRegistrationData>;
 
@@ -74,6 +75,21 @@ export function useCreateClinicForm() {
             equipment,
             1, // TODO: implement quantity
             clinic.id
+          );
+        })
+      );
+
+      await Promise.all(
+        formData.availabilities!.map(async (availability) => {
+          if (!availability.isActive) {
+            return;
+          }
+
+          await ClinicAvailabilityService.createClinicAvailability(
+            clinic.id,
+            availability.fromTime!,
+            availability.toTime!,
+            availability.dayOfWeek
           );
         })
       );
