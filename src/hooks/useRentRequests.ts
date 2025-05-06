@@ -29,21 +29,14 @@ export function useRentRequests() {
 
         const requestsWithPhotos = await Promise.all(
           response.data.map(async (request) => {
-            try {
-              const profilePictureUrl = await StorageService.getFileUrl(
-                `profile_pictures/${request.tenantProfilePictureUrl}`
-              );
-
-              return {
-                ...request,
-                tenantProfilePictureUrl: profilePictureUrl
-              };
-            } catch {
-              return {
-                ...request,
-                tenantProfilePictureUrl: "/pfp_placeholder.png"
-              };
-            }
+            const profilePictureUrl = await StorageService.getFileUrl(
+              `profile_pictures/${request.tenantProfilePictureUrl}`
+            );
+            return {
+              ...request,
+              tenantProfilePictureUrl:
+                profilePictureUrl || "/pfp_placeholder.png"
+            };
           })
         );
 
