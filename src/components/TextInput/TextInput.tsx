@@ -86,8 +86,8 @@ function TextInput({
 
       {isTextArea && (
         <textarea
-          {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
           rows={10}
+          {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
           className={cn(className, commonStyle)}
         />
       )}

@@ -88,7 +88,11 @@ export default async function Page({
           </div>
 
           {/* Right Content - Booking Widget */}
-          <ReserveCard costPerDay={clinicData.pricePerDay} />
+          <ReserveCard
+            costPerDay={clinicData.pricePerDay}
+            clinicName={clinicData.displayName}
+            clinicId={clinicData.id}
+          />
         </div>
       </main>
     </div>
