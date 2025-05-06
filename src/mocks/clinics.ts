@@ -23,11 +23,23 @@ export const MOCK_CLINICS: Clinic[] = [
       {
         id: 1,
         clinicId: 1,
-        path: "https://i.imgur.com/9ZrfnTS.png",
+        path: "https://images.unsplash.com/photo-1629909613654-28e377c37b09",
         isPrimary: true
       },
       {
         id: 2,
+        clinicId: 1,
+        path: "https://images.unsplash.com/photo-1629909613654-28e377c37b09",
+        isPrimary: false
+      },
+      {
+        id: 3,
+        clinicId: 1,
+        path: "https://i.imgur.com/9ZrfnTS.png",
+        isPrimary: false
+      },
+      {
+        id: 4,
         clinicId: 1,
         path: "https://i.imgur.com/9ZrfnTS.png",
         isPrimary: false
@@ -35,7 +47,13 @@ export const MOCK_CLINICS: Clinic[] = [
     ],
     equipments: [
       { id: 1, clinicId: 1, quantity: 2, equipmentType: "X_RAY" },
-      { id: 2, clinicId: 1, quantity: 1, equipmentType: "LABORATORY" }
+      { id: 2, clinicId: 1, quantity: 1, equipmentType: "LABORATORY" },
+      { id: 3, clinicId: 1, quantity: 1, equipmentType: "PHARMACY" },
+      { id: 4, clinicId: 1, quantity: 1, equipmentType: "SURGICAL_THEATER" },
+      { id: 5, clinicId: 1, quantity: 1, equipmentType: "REHABILITATION" },
+      { id: 6, clinicId: 1, quantity: 1, equipmentType: "CT_SCAN" },
+      { id: 7, clinicId: 1, quantity: 1, equipmentType: "MRI" },
+      { id: 8, clinicId: 1, quantity: 1, equipmentType: "ULTRASOUND" }
     ],
     availabilities: [
       {

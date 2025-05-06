@@ -15,3 +15,12 @@
   --color-primary-800: #1849a9; /* AAA */
   --color-primary-900: #194185; /* AAA */
 }
+
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

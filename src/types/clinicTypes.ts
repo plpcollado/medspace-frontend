@@ -17,7 +17,7 @@ export const CLINIC_EQUIPMENTS = [
   "SURGICAL_THEATER",
   "PHARMACY",
   "REHABILITATION"
-];
+] as const;
 export type ClinicEquipmentType = (typeof CLINIC_EQUIPMENTS)[number];
 
 export const WEEK_DAYS = [
