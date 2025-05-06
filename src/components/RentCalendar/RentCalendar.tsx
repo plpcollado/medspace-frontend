@@ -50,7 +50,7 @@ const RentCalendar = ({
           })}
         </p>
         <input
-          className="border-1 p-1 cursor-pointer rounded-sm"
+          className="border-1 border-gray-300  p-1 cursor-pointer rounded-md"
           type="date"
           value={dateToString(currentDate, {
             day: "2-digit",
@@ -136,20 +136,22 @@ const CalendarEventCard = ({ event }: CalendarEventCardProps) => {
 
   return (
     <div
-      className={`absolute w-full bg-blue-200 text-white rounded-md flex flex-col justify-between p-2`}
+      className={`absolute w-full bg-primary-200 text-white rounded-md flex flex-col justify-between p-2`}
       style={{
         top: `${top}rem`,
         height: `${height}rem`
       }}
     >
-      <p className="text-xs text-blue-600 font-bold truncate">{event.title}</p>
+      <p className="text-xs text-primary-600 font-bold truncate">
+        {event.title}
+      </p>
       <div className="flex gap-2 items-center">
-        <FaRegClock className="fill-blue-600" />
-        <p className="text-xs text-blue-600">
+        <FaRegClock className="fill-primary-600" />
+        <p className="text-xs text-primary-600">
           {event.startTime} : {event.endTime}
         </p>
       </div>
-      <div className="absolute top-0 left-0 h-full w-1 bg-blue-600 rounded-l-md"></div>
+      <div className="absolute top-0 left-0 h-full w-1 bg-primary-600 rounded-l-md"></div>
     </div>
   );
 };

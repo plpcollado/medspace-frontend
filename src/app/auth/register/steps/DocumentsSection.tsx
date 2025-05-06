@@ -21,7 +21,7 @@ export default function DocumentsSection({ formData, updateFormData }: Props) {
   );
 
   return (
-    <div className="w-full p-6 m-auto mx-auto   dark:bg-gray-800">
+    <div className="w-full p-6 m-auto mx-auto">
       <form className="space-y-4">
         <div className=" flex items-center justify-center ">
           <Avatar className={"size-20"} imageUrl={pfpPreview!} />

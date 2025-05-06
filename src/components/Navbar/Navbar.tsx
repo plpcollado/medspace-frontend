@@ -6,6 +6,7 @@ import Logo from "../Logo/Logo";
 import Avatar from "../Avatar/Avatar";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { AuthService } from "@/services/AuthService";
+import { useRouter } from "next/navigation";
 
 interface Props {
   variant: "tenant" | "landlord" | "analyst" | "guest";
@@ -13,15 +14,16 @@ interface Props {
 
 const navbarLinks = {
   tenant: [
-    { name: "Clinics", href: "/clinics" },
+    { name: "Clinics", href: "/main/tenant/clinics" },
     { name: "Rent Requests", href: "/rent-requests" },
     { name: "Rent Calendar", href: "/rent-calendar" },
     { name: "Notifications", href: "/notifications" }
   ],
   landlord: [
     { name: "Metrics", href: "/metrics" },
+    { name: "Rent Requests", href: "/main/landlord/rent-requests" },
     { name: "My Clinics", href: "/my-clinics" },
-    { name: "New Clinic", href: "/create-clinic" },
+    { name: "New Clinic", href: "/main/landlord/create-clinic" },
     { name: "Past tenants", href: "/past-tenants" },
     { name: "Notifications", href: "/notifications" }
   ],
@@ -46,7 +48,7 @@ export default function Navbar({ variant }: Props) {
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex space-x-6 text-[#2E90FA] font-medium">
+        <ul className="hidden md:flex space-x-6 text-primary font-medium">
           {navbarLinks[variant as keyof typeof navbarLinks].map((link) => (
             <li key={link.name}>
               <Link href={link.href} className="hover:underline">
@@ -67,14 +69,14 @@ function GuestRightSection() {
   return (
     <div className="flex items-center space-x-4">
       <Link
-        className="text-black-600 mx-2 sm:mx-4 capitalize tracking-wide hover:text-[#2E90FA] transition-all"
+        className="text-black-600 mx-2 sm:mx-4 capitalize tracking-wide hover:text-primary transition-all"
         href="/auth/login"
       >
         Log in
       </Link>
       <Link
         href={"/auth/register"}
-        className="font-medium tracking-wide py-2 px-4 border-2 border-[#2E90FA] text-[#2E90FA] bg-white outline-none rounded-l-full rounded-r-full capitalize hover:bg-[#2E90FA] hover:text-white transition-all "
+        className="font-medium tracking-wide py-2 px-4 border-2 border-primary text-primary bg-white outline-none rounded-l-full rounded-r-full capitalize hover:bg-primary hover:text-white transition-all "
       >
         Sign up
       </Link>
@@ -83,6 +85,7 @@ function GuestRightSection() {
 }
 
 function UserRightSection() {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -99,14 +102,14 @@ function UserRightSection() {
 
   async function onLogout() {
     await AuthService.signOut();
-    window.location.href = "/"; // Redirect to login page after logout
+    router.push("/");
   }
 
   return (
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setMenuOpen((prev) => !prev)}
-        className="flex items-center space-x-4 border rounded-full p-2 hover:bg-gray-50 cursor-pointer"
+        className="flex items-center space-x-4 border border-gray-300 rounded-full p-2 hover:bg-gray-50 cursor-pointer"
       >
         <RxHamburgerMenu className="size-7 p-1 mr-2 ml-1" />
         <Avatar imageUrl="/pfp_placeholder.png" className="size-7" />
@@ -114,7 +117,7 @@ function UserRightSection() {
 
       {/* Dropdown with transition */}
       <div
-        className={`absolute right-0 top-full mt-2 w-48 bg-white border rounded-lg shadow-md z-50 transform transition-all duration-200 ease-out
+        className={`overflow-hidden absolute right-0 top-full mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-md z-50 transform transition-all duration-200 ease-out
               ${menuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}
             `}
       >

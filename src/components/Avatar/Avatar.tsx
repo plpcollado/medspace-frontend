@@ -5,14 +5,14 @@ import { ClassValue } from "clsx";
 
 interface Props {
   className?: ClassValue;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export default function Avatar({ className, imageUrl }: Props) {
   return (
     <div
       className={cn(
-        "relative inline-flex items-center justify-center rounded-full overflow-hidden bg-gray-200 ",
+        "h-14 w-14 relative inline-flex items-center justify-center rounded-full overflow-hidden bg-gray-200",
         className
       )}
     >

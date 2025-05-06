@@ -31,11 +31,7 @@ export class UserService {
         );
         formData.append("tenantSpecialtyId", String(data.tenantSpecialtyId));
       }
-      const headers = await AuthService.getAuthHeaders("multipart/form-data");
-
-      // Option 2: Convert to an object and log
-      const dataObject = Object.fromEntries(formData.entries());
-      console.log(dataObject);
+      const headers = await AuthService.getAuthHeaders();
 
       const response = await axios.post<ApiResponse<null>>(
         this.BASE_URL,
@@ -50,12 +46,12 @@ export class UserService {
     }
   }
 
-  static async getSelf(token: string): Promise<User> {
+  static async fetchCurrentUserProfile(): Promise<User> {
     try {
+      const headers = await AuthService.getAuthHeaders();
+
       const response = await axios.get(this.BASE_URL + "/me", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers
       });
 
       const userData = response.data.data as User;

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import StarRating from "../StarRating"; 
+import StarRating from "../StarRating";
+import TextInput from "../TextInput";
 
 export default function ReviewForm() {
   const [rating, setRating] = useState(0);
@@ -11,7 +12,6 @@ export default function ReviewForm() {
     e.preventDefault();
     console.log("Rating:", rating);
     console.log("Comments:", comments);
-    
   };
 
   return (
@@ -31,8 +31,8 @@ export default function ReviewForm() {
         Comments About The Medical Office
       </label>
 
-      <textarea
-        className="w-full border rounded p-3 text-sm focus:outline-none focus:ring focus:border-blue-300"
+      <TextInput
+        isTextArea
         rows={4}
         placeholder="Write your comments here..."
         value={comments}
@@ -41,7 +41,7 @@ export default function ReviewForm() {
 
       <button
         type="submit"
-        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="mt-6 px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
       >
         Submit
       </button>

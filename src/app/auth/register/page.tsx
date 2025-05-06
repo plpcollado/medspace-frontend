@@ -12,10 +12,13 @@ import { AuthService } from "@/services/AuthService";
 import { UserRegistrationData } from "@/types/userTypes";
 import axios from "axios";
 import { FirebaseError } from "firebase/app";
+import { useRouter } from "next/navigation";
 
 type CreateUserFormData = Partial<UserRegistrationData>;
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const { formData, updateFormData } = useForm<CreateUserFormData>({
     fullName: "",
     email: "",
@@ -59,6 +62,7 @@ export default function RegisterPage() {
 
   async function handleSumit() {
     if (!validateDocuments()) return;
+    setIsLoading(true); // Set loading state to true
 
     try {
       const d = formData as UserRegistrationData;
@@ -68,9 +72,10 @@ export default function RegisterPage() {
         d.password,
         d
       );
+
       toast.success("User created successfully!");
-      // Redirect to login page or show success message
-      window.location.href = "/main";
+
+      router.push("/main"); // Redirect to home page after successful registration
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.code === "ERR_NETWORK")
@@ -91,6 +96,8 @@ export default function RegisterPage() {
       } else {
         toast.error("Error creating user. Please try again.");
       }
+    } finally {
+      setIsLoading(false); // Reset loading state
     }
   }
 
@@ -119,13 +126,25 @@ export default function RegisterPage() {
   }
 
   function validateDocuments() {
+    const sizeLimit = 2 * 1024 * 1024; // 2MB
+
     if (!formData.pfp) {
       toast.error("Please upload a profile picture.");
       return false;
     }
+    if (formData.pfp.size > sizeLimit) {
+      toast.error("Profile picture size should be less than 2MB.");
+      return false;
+    }
+
     if (!formData.officialId) {
       console.log(formData.officialId);
       toast.error("Please upload an official ID.");
+      return false;
+    }
+
+    if (formData.officialId.size > sizeLimit) {
+      toast.error("Oficial ID size should be less than 2MB.");
       return false;
     }
 
@@ -137,6 +156,11 @@ export default function RegisterPage() {
 
       if (!formData.tenantProfessionalLicense) {
         toast.error("Please upload a professional license.");
+        return false;
+      }
+
+      if (formData.tenantProfessionalLicense.size > sizeLimit) {
+        toast.error("Professional license size should be less than 2MB.");
         return false;
       }
     }
@@ -181,7 +205,7 @@ export default function RegisterPage() {
               className={cn(
                 "flex",
                 currentStep === i + 1
-                  ? "font-bold text-blue-600"
+                  ? "font-bold text-primary-600"
                   : "text-gray-500"
               )}
             />
@@ -200,7 +224,11 @@ export default function RegisterPage() {
               Back
             </Button>
           )}
-          <Button className="w-full" onClick={handleNextStep}>
+          <Button
+            className="w-full"
+            onClick={handleNextStep}
+            isLoading={isLoading}
+          >
             {currentStep === steps.length ? "Submit" : "Next"}
           </Button>
         </div>

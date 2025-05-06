@@ -6,19 +6,25 @@ import TextInput from "@/components/TextInput";
 import { AuthService } from "@/services/AuthService";
 import { FirebaseError } from "firebase/app";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   // State hooks to manage email and password values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter(); // Initialize router for navigation
 
   // Handle form submission
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true); // Set loading state to true
+
     try {
       await AuthService.signInWithEmailAndPassword(email, password);
 
-      window.location.href = "/main";
+      router.push("/main"); // Redirect to the home page after successful login
     } catch (error) {
       if (error instanceof FirebaseError) {
         // Handle specific Firebase error codes here
@@ -32,13 +38,15 @@ export default function LoginPage() {
       } else {
         toast.error("Error logging in. Please try again.");
       }
+    } finally {
+      setIsLoading(false); // Reset loading state
     }
   }
 
   return (
     <>
       <main className="h-screen flex justify-center items-center">
-        <div className="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <div className="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md ">
           <div className="flex justify-center mx-auto text-2xl font-bold ">
             Login to your account
           </div>
@@ -56,7 +64,7 @@ export default function LoginPage() {
 
             <div className="mt-4">
               <div className="flex items-center justify-between">
-                <label className="block font-medium text-sm text-gray-800 dark:text-gray-200">
+                <label className="block font-medium text-sm text-gray-800 ">
                   Password:
                 </label>
               </div>
@@ -69,7 +77,9 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-6">
-              <Button className="w-full">Login</Button>
+              <Button isLoading={isLoading} className="w-full">
+                Login
+              </Button>
             </div>
           </form>
 
@@ -77,7 +87,7 @@ export default function LoginPage() {
             Don&#39;t have an account?{" "}
             <Link
               href="/auth/register"
-              className="font-medium text-gray-700 dark:text-gray-200 hover:underline"
+              className="font-medium text-gray-700  hover:underline"
             >
               Create one
             </Link>
