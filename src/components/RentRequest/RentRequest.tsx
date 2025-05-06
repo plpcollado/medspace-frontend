@@ -20,7 +20,7 @@ function RentRequest({
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [comment, setComment] = useState("");
 
-  function handleSelectDate(dates: Date[] | Date | undefined) {
+  function handleSelectDate(dates: Date[] | undefined) {
     setSelectedDates(dates as Date[]);
   }
 
@@ -45,6 +45,7 @@ function RentRequest({
           disabledDates={occupiedDates}
           fromDate={new Date()}
           toDate={availableDatesEnd}
+          selectedDate={selectedDates}
         />
       </div>
 

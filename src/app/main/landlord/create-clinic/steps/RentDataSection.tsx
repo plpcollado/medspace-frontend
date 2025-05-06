@@ -5,22 +5,8 @@ import { constToTitleCase } from "@/lib/textUtils";
 import { CreateClinicFormData } from "@/hooks/useCreateClinicForm";
 import toast from "react-hot-toast";
 import { useState } from "react";
-
-interface ClinicDailyAvailabilityInput {
-  dayOfWeek: string;
-  fromTime: string | null;
-  toTime: string | null;
-  isActive: boolean;
-}
-
-interface RentDataSectionProps extends StepSectionProps {
-  data: CreateClinicFormData;
-  setData: (
-    key: keyof CreateClinicFormData,
-    value: CreateClinicFormData[keyof CreateClinicFormData]
-  ) => void;
-}
-
+import DatePicker from "@/components/DatePicker";
+import { ClinicDailyAvailabilityInput } from "@/types/clinicTypes";
 
 export default function RentDataSection({
   onClickPrimary,
@@ -77,6 +63,11 @@ export default function RentDataSection({
 
     if (data.maximumStayInDays == null || data.maximumStayInDays <= 0) {
       setError("maximumStayInDays", "Maximum stay must be greater than 0");
+      isValid = false;
+    }
+
+    if (!data.availableFromDate || !data.availableToDate) {
+      setError("availableFromDate", "Please select a valid range");
       isValid = false;
     }
 
@@ -158,46 +149,70 @@ export default function RentDataSection({
             />
           </div>
         </div>
-        <div className="flex flex-col max-w-2/3">
-          <p className="mb-4 block text-sm font-medium text-gray-800 ">
-            Daily Availabilities
-          </p>
-          {availabilityErrors.atLeastOneAvailabilityActive && (
-            <p className="text-sm text-red-500 mb-4">
-              {availabilityErrors.atLeastOneAvailabilityActive}
+        <div className="flex gap-10 flex-col sm:flex-row">
+          <div className="flex-1 flex flex-col">
+            <p className="mb-4 block text-sm font-medium text-gray-800 ">
+              Date Availability
             </p>
-          )}
-          <div className="flex flex-col gap-6">
-            {data.availabilities?.map((availability) => (
-              <div key={availability.dayOfWeek}>
-                <ClinicAvailabilityInput
-                  dayOfWeek={constToTitleCase(availability.dayOfWeek)}
-                  onChangeFromTime={(newTime) =>
-                    handleAvailabilityChange(availability.dayOfWeek, {
-                      fromTime: newTime
-                    })
-                  }
-                  onChangeToTime={(newTime) =>
-                    handleAvailabilityChange(availability.dayOfWeek, {
-                      toTime: newTime
-                    })
-                  }
-                  isActive={availability.isActive}
-                  onChangeActive={(checked) =>
-                    handleAvailabilityChange(availability.dayOfWeek, {
-                      isActive: checked
-                    })
-                  }
-                  fromTime={availability.fromTime}
-                  toTime={availability.toTime}
-                  error={
-                    availabilityErrors.availabilities[
-                      data.availabilities!.indexOf(availability)
-                    ]
-                  }
-                />
-              </div>
-            ))}
+            {errors.availableFromDate && (
+              <p className="text-sm text-red-500 mb-4">
+                {errors.availableFromDate}
+              </p>
+            )}
+            <DatePicker
+              mode="range"
+              selectedDate={{
+                from: data.availableFromDate ?? undefined,
+                to: data.availableToDate ?? undefined
+              }}
+              onSelectDate={(dates) => {
+                clearError("availableFromDate");
+                setData("availableFromDate", dates?.from ?? null);
+                setData("availableToDate", dates?.to ?? null);
+              }}
+            />
+          </div>
+          <div className="flex flex-col flex-3">
+            <p className="mb-4 block text-sm font-medium text-gray-800 ">
+              Daily Availabilities
+            </p>
+            {availabilityErrors.atLeastOneAvailabilityActive && (
+              <p className="text-sm text-red-500 mb-4">
+                {availabilityErrors.atLeastOneAvailabilityActive}
+              </p>
+            )}
+            <div className="flex flex-col gap-6">
+              {data.availabilities?.map((availability) => (
+                <div key={availability.dayOfWeek}>
+                  <ClinicAvailabilityInput
+                    dayOfWeek={constToTitleCase(availability.dayOfWeek)}
+                    onChangeFromTime={(newTime) =>
+                      handleAvailabilityChange(availability.dayOfWeek, {
+                        fromTime: newTime
+                      })
+                    }
+                    onChangeToTime={(newTime) =>
+                      handleAvailabilityChange(availability.dayOfWeek, {
+                        toTime: newTime
+                      })
+                    }
+                    isActive={availability.isActive}
+                    onChangeActive={(checked) =>
+                      handleAvailabilityChange(availability.dayOfWeek, {
+                        isActive: checked
+                      })
+                    }
+                    fromTime={availability.fromTime}
+                    toTime={availability.toTime}
+                    error={
+                      availabilityErrors.availabilities[
+                        data.availabilities!.indexOf(availability)
+                      ]
+                    }
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

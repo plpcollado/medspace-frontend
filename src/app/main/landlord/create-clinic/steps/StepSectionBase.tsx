@@ -7,6 +7,7 @@ interface StepSectionBaseProps {
   onClickSecondary: () => void;
   primaryLabel: string;
   secondaryLabel: string;
+  isActionDisabled?: boolean;
 }
 
 export interface StepSectionProps {
@@ -27,7 +28,8 @@ export default function StepSectionBase({
   onClickPrimary,
   onClickSecondary,
   primaryLabel,
-  secondaryLabel
+  secondaryLabel,
+  isActionDisabled = false
 }: StepSectionBaseProps) {
   return (
     <section className="max-w-4xl mx-auto flex flex-col">
@@ -36,7 +38,12 @@ export default function StepSectionBase({
         <Button variant="outline" className="w-1/3" onClick={onClickSecondary}>
           {secondaryLabel}
         </Button>
-        <Button className="w-1/3" onClick={onClickPrimary}>
+        <Button
+          className="w-1/3"
+          onClick={onClickPrimary}
+          disabled={isActionDisabled}
+          isLoading={isActionDisabled}
+        >
           {primaryLabel}
         </Button>
       </div>

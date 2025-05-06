@@ -9,37 +9,41 @@ import { AuthService } from "./AuthService";
 import axios from "axios";
 import { format } from "date-fns";
 import { MOCK_CLINICS } from "@/mocks/clinics";
+import { safeApiCall } from "@/lib/apiUtils";
 
 export class ClinicService {
   static BASE_URL = env.NEXT_PUBLIC_API_URL + "/clinics";
 
-  static async createClinic(data: ClinicRegistrationData): Promise<void> {
-    try {
-      const body = {
-        displayName: data.displayName,
-        category: data.category,
-        pricePerDay: data.pricePerDay,
-        maxStayDays: data.maximumStayInDays,
-        description: data.description,
+  static async createClinic(
+    data: ClinicRegistrationData
+  ): Promise<ApiResponse<Clinic>> {
+    const body = {
+      displayName: data.displayName,
+      category: data.category,
+      pricePerDay: data.pricePerDay,
+      maxStayDays: data.maximumStayInDays,
+      description: data.description,
+      availableFromDate: data.availableFromDate,
+      availableToDate: data.availableToDate,
 
-        // TODO: update address fields with the correct data
-        addressStreet: "Av hacker",
-        addressCity: "California",
-        addressState: "California",
-        addressZip: "123",
-        addressCountry: "USA",
-        addressLongitude: "134.234",
-        addressLatitude: "1234.23"
-      };
+      // TODO: update address fields with the correct data
+      addressStreet: "Av hacker",
+      addressCity: "California",
+      addressState: "California",
+      addressZip: "123",
+      addressCountry: "USA",
+      addressLongitude: "134.234",
+      addressLatitude: "1234.23"
+    };
 
-      const headers = await AuthService.getAuthHeaders();
-      await axios.post<ApiResponse<Clinic>>(this.BASE_URL, body, {
-        headers
-      });
-    } catch (error) {
-      console.error("[ClinicService]: Create clinic error:", error);
-      throw error;
-    }
+    const headers = await AuthService.getAuthHeaders();
+    return safeApiCall(
+      () =>
+        axios
+          .post<ApiResponse<Clinic>>(this.BASE_URL, body, { headers })
+          .then((res) => res.data),
+      "ClinicService: createClinic"
+    );
   }
 
   static async getClinics(settings: {
