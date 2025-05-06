@@ -3,7 +3,7 @@ import AuthGuard from "@/components/AuthGuard";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthGuard guestOnly>
+    <AuthGuard guestOnly redirectPath="/main">
       <Navbar variant="guest" />
       {children}
     </AuthGuard>
