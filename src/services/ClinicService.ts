@@ -8,7 +8,6 @@ import { ApiResponse } from "@/types/serviceTypes";
 import { AuthService } from "./AuthService";
 import axios from "axios";
 import { format } from "date-fns";
-import { MOCK_CLINICS } from "@/mocks/clinics";
 import { safeApiCall } from "@/lib/apiUtils";
 
 export class ClinicService {
@@ -99,26 +98,39 @@ export class ClinicService {
     }
   }
 
-  static async getClinicById(id: string): Promise<Clinic | null> {
-    return MOCK_CLINICS.find((clinic) => clinic.id === Number(id)) || null;
+  static async getClinicById(
+    id: string,
+    settings: {
+      includePhotos: boolean;
+      includeEquipments: boolean;
+      includeAvailabilities: boolean;
+    }
+  ): Promise<Clinic | null> {
+    try {
+      const params = new URLSearchParams();
+      params.append("photos", settings.includePhotos.toString());
+      params.append("equipments", settings.includeEquipments.toString());
+      params.append(
+        "availabilities",
+        settings.includeAvailabilities.toString()
+      );
 
-    // try {
-    //   const headers = await AuthService.getAuthHeaders();
-    //   const response = await axios.get<ApiResponse<Clinic>>(
-    //     `${this.BASE_URL}/${id}`,
-    //     {
-    //       headers
-    //     }
-    //   );
+      const headers = await AuthService.getAuthHeaders();
+      const response = await axios.get<ApiResponse<Clinic>>(
+        `${this.BASE_URL}/${id}?${params.toString()}`,
+        {
+          headers
+        }
+      );
 
-    //   if (!response.data || !response.data.data) {
-    //     return null;
-    //   }
+      if (!response.data || !response.data.data) {
+        return null;
+      }
 
-    //   return response.data.data;
-    // } catch (error) {
-    //   console.error("[ClinicService]: Get clinic by ID error:", error);
-    //   throw error;
-    // }
+      return response.data.data;
+    } catch (error) {
+      console.error("[ClinicService]: Get clinic by ID error:", error);
+      throw error;
+    }
   }
 }

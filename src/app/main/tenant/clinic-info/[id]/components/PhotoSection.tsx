@@ -1,13 +1,10 @@
 import React from "react";
-import Image from "next/image";
+import Image from "@/components/Image";
 import { ClinicPhoto } from "@/types/clinicTypes";
 
 interface Props {
   photos: ClinicPhoto[];
 }
-
-const PLACEHOLDER_IMAGE_URL =
-  "https://knetic.org.uk/wp-content/uploads/2020/07/Pcture-Placeholder.png";
 
 export default async function PhotoSection({ photos }: Props) {
   const primaryPhoto = photos?.find((p) => p.isPrimary);
@@ -18,7 +15,7 @@ export default async function PhotoSection({ photos }: Props) {
       {/* Main Photo 1 */}
       <div className="col-span-2 row-span-2">
         <Image
-          src={primaryPhoto?.path || PLACEHOLDER_IMAGE_URL}
+          src={primaryPhoto?.path}
           alt="Main photo 1"
           width={400}
           height={320}
@@ -29,7 +26,7 @@ export default async function PhotoSection({ photos }: Props) {
       {/* Main Photo 2 */}
       <div className="col-span-2 row-span-1">
         <Image
-          src={otherPhotos?.[0]?.path || PLACEHOLDER_IMAGE_URL}
+          src={otherPhotos?.[0]?.path}
           alt="Main photo 2"
           width={400}
           height={160}
@@ -40,7 +37,7 @@ export default async function PhotoSection({ photos }: Props) {
       {/* Small Photo 1 */}
       <div className="col-span-1 row-span-1">
         <Image
-          src={otherPhotos?.[1].path || PLACEHOLDER_IMAGE_URL}
+          src={otherPhotos?.[1].path}
           alt="Small photo 1"
           width={200}
           height={160}
@@ -51,7 +48,7 @@ export default async function PhotoSection({ photos }: Props) {
       {/* Small Photo 2 */}
       <div className="col-span-1 row-span-1">
         <Image
-          src={otherPhotos?.[2]?.path || PLACEHOLDER_IMAGE_URL}
+          src={otherPhotos?.[2]?.path}
           alt="Small photo 2"
           width={200}
           height={160}

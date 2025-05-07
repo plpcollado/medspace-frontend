@@ -2,7 +2,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  User as FirebaseUser,
   onAuthStateChanged
 } from "firebase/auth";
 import { setCookie, deleteCookie } from "cookies-next";
@@ -30,16 +29,6 @@ export class AuthService {
     } else {
       await deleteCookie(this.USER_TOKEN_COOKIE_NAME);
     }
-  }
-
-  // Check if user is authenticated
-  static isAuthenticated(): boolean {
-    return !!auth.currentUser;
-  }
-
-  // Get the current Firebase auth user
-  private static getCurrentFirebaseUser(): FirebaseUser | null {
-    return auth.currentUser;
   }
 
   // Subscribe to auth state changes

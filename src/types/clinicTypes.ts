@@ -78,7 +78,7 @@ export interface ClinicEquipment {
   id: number;
   clinicId: number;
   quantity: number;
-  equipmentType: ClinicEquipmentType;
+  type: ClinicEquipmentType;
 }
 
 export interface ClinicRegistrationData {
