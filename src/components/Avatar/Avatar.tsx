@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import Image from "@/components/Image";
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 
@@ -22,6 +22,7 @@ export default function Avatar({ className, imageUrl }: Props) {
         fill
         className="object-cover"
         priority
+        sizes="100%"
       />
     </div>
   );

@@ -16,7 +16,11 @@ export default async function Page({
   const { id } = await params;
 
   // Fetch clinic data using the id
-  const clinicData = await ClinicService.getClinicById(id);
+  const clinicData = await ClinicService.getClinicById(id, {
+    includeAvailabilities: true,
+    includeEquipments: true,
+    includePhotos: true
+  });
 
   if (!clinicData) {
     return <div>Clinic not found</div>;

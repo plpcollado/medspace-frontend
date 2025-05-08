@@ -5,7 +5,7 @@ import { Share, Heart } from "lucide-react";
 
 interface Props {
   title: string;
-  rating: number;
+  rating: number | null;
   city: string;
 }
 
@@ -36,8 +36,14 @@ export default function TitleSection({ city, rating, title }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex items-center mr-4">
-            <span className="text-yellow-500 mr-1">★</span>
-            <span className="font-medium">{rating || "5.0"} </span>
+            {rating !== null ? (
+              <>
+                <span className="text-yellow-500 mr-1">★</span>
+                <span className="font-medium">{rating || "5.0"} </span>
+              </>
+            ) : (
+              <span className="text-gray-400">No ratings yet</span>
+            )}
           </div>
           <span className="text-gray-600">{city || "CDMX"}</span>
         </div>

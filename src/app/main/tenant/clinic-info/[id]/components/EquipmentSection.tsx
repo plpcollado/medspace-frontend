@@ -30,12 +30,12 @@ export default function EquipmentSection({ equipment }: Props) {
       <h2 className="text-xl font-bold mb-4">What this clinic offers</h2>
       <div className="grid grid-cols-2 gap-4">
         {equipment.map((item) => {
-          const Icon = iconMap[item.equipmentType as ClinicEquipmentType];
+          const Icon = iconMap[item.type as ClinicEquipmentType];
           return (
             <Equipment
               key={item.id}
               icon={Icon}
-              name={constToTitleCase(item.equipmentType)}
+              name={constToTitleCase(item.type)}
             />
           );
         })}

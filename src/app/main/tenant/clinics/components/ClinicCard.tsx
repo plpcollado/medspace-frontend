@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/Image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi2";
@@ -8,7 +8,7 @@ interface Props {
   thumbnailURL: string;
   title: string;
   category: string;
-  rating: number;
+  rating: number | null;
   rentCostPerDay: number;
   isFavorited: boolean;
 }
@@ -66,8 +66,14 @@ export default function ClinicCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="flex items-center">
-              <span className="font-semibold">{rating}</span>
-              <span className="text-yellow-400">★</span>
+              {rating !== null ? (
+                <>
+                  <span className="font-semibold">{rating}</span>
+                  <span className="text-yellow-400 ml-1">★</span>
+                </>
+              ) : (
+                <span className="text-gray-400">No ratings yet</span>
+              )}
             </span>
           </div>
           <div className="flex items-center gap-1">
