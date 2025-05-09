@@ -12,17 +12,24 @@ import { format } from "date-fns";
 import toast from "react-hot-toast";
 import Modal from "@/components/Modal";
 import TextInput from "@/components/TextInput";
+import { RentRequestService } from "@/services/RentRequestService";
 
 interface Props {
   costPerDay: number;
   clinicName: string;
   clinicId: number;
+  availibility: {
+    form: Date;
+    to: Date;
+    weekdays?: number[];
+  };
 }
 
 export default function ReserveCard({
   costPerDay,
   clinicName,
-  clinicId
+  clinicId,
+  availibility
 }: Props) {
   const [selectedDays, setSelectedDays] = useState<Date[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -49,12 +56,16 @@ export default function ReserveCard({
     setIsLoading(true);
     // Handle the reserve logic here
 
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a network request
-
-    toast.success("Reservation request sent successfully");
-    console.log("Reserved:", clinicId);
-    setIsLoading(false);
-    setIsOpen(false);
+    try {
+      await RentRequestService.sendRentRequest(clinicId, comment, selectedDays);
+      toast.success("Reservation request sent successfully");
+    } catch (error) {
+      console.error("Error  reservation request:", error);
+      toast.error("Failed to send reservation request");
+    } finally {
+      setIsLoading(false);
+      setIsOpen(false);
+    }
   }
 
   return (
@@ -173,6 +184,9 @@ export default function ReserveCard({
             <PopoverContent>
               <DatePicker
                 mode="multiple"
+                enabledDaysOfWeek={availibility.weekdays || []}
+                fromDate={availibility.form}
+                toDate={availibility.to}
                 selectedDate={selectedDays}
                 onSelectDate={(days) => {
                   setSelectedDays(days || []);

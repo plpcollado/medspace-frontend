@@ -7,6 +7,7 @@ interface Props {
 export default function DescriptionSection({ description }: Props) {
   return (
     <div className="mb-6">
+      <h2 className="text-xl font-bold text-gray-900 mb-4">Description</h2>
       <p className="text-gray-800 mb-2">
         {description ||
           `
