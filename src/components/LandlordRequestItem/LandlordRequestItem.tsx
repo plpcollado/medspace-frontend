@@ -1,7 +1,7 @@
-'use client';
+"use client";
 import React from "react";
-import Image from "next/image"; 
 import Button from "../Button";
+import Image from "../Image";
 
 interface LandlordRequestItemProps {
   specialistName: string;
@@ -15,7 +15,7 @@ interface LandlordRequestItemProps {
 const RequestDetails = ({
   specialistName,
   date,
-  specialistPhoto,
+  specialistPhoto
 }: {
   specialistName: string;
   date: string;
@@ -27,7 +27,7 @@ const RequestDetails = ({
         src={specialistPhoto}
         alt="Specialist photo"
         className="h-8 w-8 rounded-full object-cover"
-        width={32} 
+        width={32}
         height={32}
       />
     )}
@@ -40,22 +40,16 @@ const RequestDetails = ({
 
 const RequestActions = ({
   onClickAccept,
-  onClickDeny,
+  onClickDeny
 }: {
   onClickAccept: () => void;
   onClickDeny: () => void;
 }) => (
   <div className="flex gap-2">
-    <Button
-      onClick={onClickAccept}
-      variant="primary" 
-    >
+    <Button onClick={onClickAccept} variant="primary">
       Accept
     </Button>
-    <Button
-      onClick={onClickDeny}
-      variant="danger" 
-    >
+    <Button onClick={onClickDeny} variant="danger">
       Deny
     </Button>
   </div>
@@ -67,7 +61,7 @@ const LandlordRequestItem: React.FC<LandlordRequestItemProps> = ({
   officeName,
   onClickAccept,
   onClickDeny,
-  specialistPhoto,
+  specialistPhoto
 }) => {
   return (
     <div className="flex items-center justify-between p-4 bg-white shadow-sm rounded-lg w-full max-w-6xl mx-auto">
@@ -83,5 +77,3 @@ const LandlordRequestItem: React.FC<LandlordRequestItemProps> = ({
 };
 
 export default LandlordRequestItem;
-
-
