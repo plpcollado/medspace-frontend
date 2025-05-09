@@ -8,7 +8,7 @@ interface Props {
   landlordData: UserCompact;
 }
 
-export default async function LandlodrdInfoSection({ landlordData }: Props) {
+export default async function LandlordInfoSection({ landlordData }: Props) {
   return (
     <div className="flex items-start mb-6 flex-row">
       <div className="mr-4">

@@ -1,63 +1,72 @@
 "use client";
-import { IoIosNotifications } from "react-icons/io";
-import { MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { HiShare } from "react-icons/hi2";
 
 import Button from "@/components/Button";
+import Avatar from "../Avatar/Avatar";
+import Link from "next/link";
 
 type ClinicListItemProps = {
+  /** Id of the clinic */
+  clinicId: number;
   /** Name of the clinic */
   clinicName: string;
   /** State of the clinic */
-  clinicState: string;
+  clinicLocation: string;
   /** Url to the clinic's main image */
   clinicImageURL: string;
-  /** Number of rent requests of clinic */
-  numberOfClinicRequests: number;
   /** Function to call when the requests button is clicked */
-  onClickRequests: () => void;
+  onDelete: (clinicId: number) => void;
   /** Function to call when the edit button is clicked */
-  onClickEdit: () => void;
+  onEdit: (clinicId: number) => void;
   /** Function to call when the share button is clicked */
-  onShareClick: () => void;
+  onShare: (clinicId: number) => void;
 };
 
 const LandlordClinicListItem = ({
+  clinicId,
   clinicName,
-  clinicState,
   clinicImageURL,
-  numberOfClinicRequests,
-  onClickRequests,
-  onClickEdit,
-  onShareClick,
+  clinicLocation,
+  onDelete,
+  onEdit,
+  onShare
 }: ClinicListItemProps) => {
   return (
-    <div className="flex flex-1 flex-col gap-8 p-8 items-center justify-between shadow-[0_0_5px_rgba(0,0,0,0.1)] rounded-sm md:flex-row md:justify-between md:px-6 md:py-2 ">
+    <div className="flex flex-1 flex-col gap-8 p-8 items-center justify-between shadow-sm  rounded-lg md:flex-row md:justify-between md:px-6 md:py-2 ">
       <div className="flex flex-row items-center gap-4">
-        <img
-          src={clinicImageURL}
-          alt="Clinic"
-          className="w-16 h-16 object-cover rounded-full"
-        />
-        <p className="text-lg font-normal">{clinicName}</p>
+        <Avatar className={"my-2"} imageUrl={clinicImageURL} />
+
+        <Link
+          href={"/main/landlord/my-clinics/" + clinicId}
+          className="text-lg font-normal hover:underline text-blue-500 transition-colors duration-200"
+        >
+          {clinicName}
+        </Link>
       </div>
       <div className="hidden md:block">
-        <p className="text-md font-light">{clinicState}</p>
+        <p className="text-md ">{clinicLocation}</p>
       </div>
-      <div className="flex flex-col gap-4 md:flex-row md:items-center">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center">
         <HiShare
-          className="cursor-pointer w-6 h-6 fill-gray-600 transition-transform duration-200 hover:-rotate-12"
-          onClick={() => onShareClick()}
+          className="mr-2 cursor-pointer w-6 h-6 fill-gray-600 transition-transform duration-200 hover:-rotate-12"
+          onClick={() => onShare(clinicId)}
         />
-        <Button icon={<IoIosNotifications />} onClick={() => onClickRequests()}>
-          {numberOfClinicRequests} Requests
-        </Button>
+
         <Button
           icon={<MdEdit />}
           variant="outline"
-          onClick={() => onClickEdit()}
+          onClick={() => onEdit(clinicId)}
         >
           Edit
+        </Button>
+
+        <Button
+          icon={<MdDelete />}
+          variant="danger"
+          onClick={() => onDelete(clinicId)}
+        >
+          Delete
         </Button>
       </div>
     </div>

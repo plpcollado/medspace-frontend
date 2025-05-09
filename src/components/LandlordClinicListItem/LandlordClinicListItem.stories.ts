@@ -7,20 +7,20 @@ const meta: Meta<typeof LandlordClinicListItem> = {
   tags: ["autodocs"],
   args: {
     clinicName: "Consultorio Médico Moderno",
-    clinicState: "Aguascalientes",
+    clinicLocation: "Aguascalientes",
     clinicImageURL:
       "https://upload.wikimedia.org/wikipedia/commons/b/b3/Double_hospital_room._Ulan-Ude%2C_Buryatia.jpg",
-    numberOfClinicRequests: 12,
-    onClickEdit: () => {
+
+    onEdit: () => {
       alert("Edit clicked");
     },
-    onClickRequests: () => {
-      alert("Requests clicked");
+    onDelete: () => {
+      alert("Delete clicked");
     },
-    onShareClick: () => {
+    onShare: () => {
       alert("Share clicked");
-    },
-  },
+    }
+  }
 };
 
 export default meta;

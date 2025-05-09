@@ -1,6 +1,6 @@
 import LocationSection from "./components/LocationSection";
 import ReserveCard from "./components/ReserveCard";
-import LandlodrdInfoSection from "./components/LandlodrdInfoSection";
+import LandlordInfoSection from "./components/LandlodrdInfoSection";
 import ReviewsSection from "./components/ReviewsSection";
 import TitleSection from "./components/TitleSection";
 import PhotoSection from "./components/PhotoSection";
@@ -46,7 +46,7 @@ export default async function Page({
           {/* Left Content */}
           <div className="w-full lg:w-8/12 pr-0 lg:pr-6">
             {/* Host */}
-            <LandlodrdInfoSection
+            <LandlordInfoSection
               landlordData={{
                 averageRating: 5,
                 createdAt: new Date(),
