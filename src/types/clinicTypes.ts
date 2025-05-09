@@ -20,6 +20,16 @@ export const CLINIC_EQUIPMENTS = [
 ] as const;
 export type ClinicEquipmentType = (typeof CLINIC_EQUIPMENTS)[number];
 
+export const WEEK_DAY_NUMBERS = {
+  MONDAY: 1,
+  TUESDAY: 2,
+  WEDNESDAY: 3,
+  THURSDAY: 4,
+  FRIDAY: 5,
+  SATURDAY: 6,
+  SUNDAY: 0
+} as const;
+
 export const WEEK_DAYS = [
   "MONDAY",
   "TUESDAY",

@@ -7,6 +7,8 @@ import PhotoSection from "./components/PhotoSection";
 import EquipmentSection from "./components/EquipmentSection";
 import DescriptionSection from "./components/DescriptionSection";
 import { ClinicService } from "@/services/ClinicService";
+import { WEEK_DAY_NUMBERS } from "@/types/clinicTypes";
+import AvailabilitySection from "./components/AvailabilitySection";
 
 export default async function Page({
   params
@@ -43,10 +45,6 @@ export default async function Page({
         <div className="flex flex-wrap">
           {/* Left Content */}
           <div className="w-full lg:w-8/12 pr-0 lg:pr-6">
-            {/* Description */}
-
-            <DescriptionSection description={clinicData.description} />
-
             {/* Host */}
             <LandlodrdInfoSection
               landlordData={{
@@ -59,8 +57,14 @@ export default async function Page({
               }}
             />
 
+            {/* Description */}
+            <DescriptionSection description={clinicData.description} />
+
             {/* Amenities */}
             <EquipmentSection equipment={clinicData.equipments || []} />
+
+            {/* Availability */}
+            <AvailabilitySection availabilities={clinicData.availabilities!} />
 
             {/* Location */}
             <LocationSection
@@ -96,6 +100,14 @@ export default async function Page({
             costPerDay={clinicData.pricePerDay}
             clinicName={clinicData.displayName}
             clinicId={clinicData.id}
+            availibility={{
+              form: clinicData.availableFromDate,
+              to: clinicData.availableToDate,
+              weekdays:
+                clinicData.availabilities?.map(
+                  (a) => WEEK_DAY_NUMBERS[a.weekDay]
+                ) || []
+            }}
           />
         </div>
       </main>
