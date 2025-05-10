@@ -15,8 +15,9 @@ export default async function LandlordInfoSection({ landlordData }: Props) {
         <Avatar
           className="w-16 h-16"
           imageUrl={
-            (await StorageService.getFileUrl(landlordData?.profilePhotoUrl)) ||
-            ""
+            (await StorageService.getFileUrl(
+              landlordData?.profilePictureUrl
+            )) || ""
           }
         />
       </div>

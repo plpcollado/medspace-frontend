@@ -37,9 +37,10 @@ export default function ClinicsList({ clinics }: Props) {
         await navigator.share({
           title: "Consultorio médico en renta",
           text: "Consulta este espacio disponible",
-          url: window.location.href
-            .replace("landlord", "tenant")
-            .replace("my-clinics", `clinic-info/${clinicId}`)
+          url: window.location.href.replace(
+            "landlord/my-clinics",
+            `clinic/${clinicId}`
+          )
         });
       } else {
         alert("Sharing is not supported on this browser.");

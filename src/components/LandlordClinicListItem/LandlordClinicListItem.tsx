@@ -38,7 +38,7 @@ const LandlordClinicListItem = ({
         <Avatar className={"my-2"} imageUrl={clinicImageURL} />
 
         <Link
-          href={"/main/landlord/my-clinics/" + clinicId}
+          href={"/main/clinic/" + clinicId}
           className="text-lg font-normal hover:underline text-blue-500 transition-colors duration-200"
         >
           {clinicName}
