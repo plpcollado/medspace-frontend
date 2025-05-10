@@ -5,35 +5,38 @@ import NextImage from "next/image";
 import { StorageService } from "@/services/StorageService";
 
 interface Props extends Omit<ComponentProps<typeof NextImage>, "src"> {
+  placeholderImage?: string;
   src?: string;
 }
 
-export default function Image({ src = "/placeholder.png", ...props }: Props) {
-  const isBucketSrc =
-    src && !(src.startsWith("/") || src.startsWith("https://"));
-  const [imageSrc, setImageSrc] = useState<string>(
-    isBucketSrc ? "/placeholder.png" : src
-  );
+export default function Image({
+  placeholderImage = "/placeholder.png",
+  src,
+  ...props
+}: Props) {
+  const [imageSrc, setImageSrc] = useState<string>(placeholderImage);
+
+  console.log("Image src:", src);
 
   useEffect(() => {
-    if (isBucketSrc) {
+    const isBucketSrc =
+      !!src && !(src.startsWith("/") || src.startsWith("https://"));
+
+    if (!src) {
+      setImageSrc(placeholderImage);
+    } else if (isBucketSrc) {
       StorageService.getFileUrl(src)
         .then((url) => {
-          if (url) {
-            setImageSrc(url);
-          } else {
-            console.error("Error fetching image URL from Firebase:", src);
-            setImageSrc("/placeholder.png");
-          }
+          setImageSrc(url || placeholderImage);
         })
         .catch((error) => {
-          console.error("Failed to fetch image:", error);
-          setImageSrc("/placeholder.png");
+          console.error("Failed to fetch image from storage:", error);
+          setImageSrc(placeholderImage);
         });
     } else {
       setImageSrc(src);
     }
-  }, [src, isBucketSrc]);
+  }, [src, placeholderImage]);
 
   return <NextImage src={imageSrc} {...props} />;
 }
