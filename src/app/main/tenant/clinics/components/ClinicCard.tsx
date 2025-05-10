@@ -36,7 +36,7 @@ export default function ClinicCard({
 
   return (
     <Link
-      href={`/main/tenant/clinic-info/${clinicId}`}
+      href={`/main/clinic/${clinicId}`}
       className="flex flex-row bg-white cursor-pointer hover:bg-gray-50 transition-colors w-full py-4"
     >
       <div className="w-72 h-48 p-2">

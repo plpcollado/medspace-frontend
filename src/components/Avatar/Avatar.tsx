@@ -17,7 +17,8 @@ export default function Avatar({ className, imageUrl }: Props) {
       )}
     >
       <Image
-        src={imageUrl || "/pfp_placeholder.png"}
+        placeholderImage="/pfp_placeholder.png"
+        src={imageUrl}
         alt="Avatar"
         fill
         className="object-cover"

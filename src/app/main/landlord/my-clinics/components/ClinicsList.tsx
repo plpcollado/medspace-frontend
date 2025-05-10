@@ -1,13 +1,13 @@
 "use client";
 
 import Button from "@/components/Button";
-import LandlordClinicListItem from "@/components/LandlordClinicListItem";
 import Modal from "@/components/Modal";
 import { ClinicService } from "@/services/ClinicService";
 import { MyClinicData } from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
+import LandlordClinicListItem from "./LandlordClinicListItem";
 
 interface Props {
   clinics: MyClinicData[];
@@ -37,9 +37,10 @@ export default function ClinicsList({ clinics }: Props) {
         await navigator.share({
           title: "Consultorio médico en renta",
           text: "Consulta este espacio disponible",
-          url: window.location.href
-            .replace("landlord", "tenant")
-            .replace("my-clinics", `clinic-info/${clinicId}`)
+          url: window.location.href.replace(
+            "landlord/my-clinics",
+            `clinic/${clinicId}`
+          )
         });
       } else {
         alert("Sharing is not supported on this browser.");
