@@ -2,7 +2,8 @@ import { env } from "@/config/env";
 import {
   Clinic,
   ClinicEquipmentType,
-  ClinicRegistrationData
+  ClinicRegistrationData,
+  MyClinicData
 } from "@/types/clinicTypes";
 import { ApiResponse } from "@/types/serviceTypes";
 import { AuthService } from "./AuthService";
@@ -130,6 +131,31 @@ export class ClinicService {
       return response.data.data;
     } catch (error) {
       console.error("[ClinicService]: Get clinic by ID error:", error);
+      throw error;
+    }
+  }
+
+  static async deleteClinicById(clinicId: number): Promise<void> {
+    try {
+      const headers = await AuthService.getAuthHeaders();
+      await axios.delete(`${this.BASE_URL}/${clinicId}`, { headers });
+    } catch (error) {
+      console.error("[ClinicService]: Delete clinic error:", error);
+      throw error;
+    }
+  }
+
+  static async getMyClinics(): Promise<MyClinicData[]> {
+    try {
+      const headers = await AuthService.getAuthHeaders();
+      const response = await axios.get<ApiResponse<MyClinicData[]>>(
+        `${this.BASE_URL}/my-clinics`,
+        { headers }
+      );
+
+      return response.data.data || [];
+    } catch (error) {
+      console.error("[ClinicService]: Get my clinics error:", error);
       throw error;
     }
   }

@@ -117,3 +117,8 @@ export interface ClinicDailyAvailabilityInput {
   toTime: string | null;
   isActive: boolean;
 }
+
+export interface MyClinicData
+  extends Pick<Clinic, "id" | "displayName" | "addressState"> {
+  mainPhotoPath: string;
+}
