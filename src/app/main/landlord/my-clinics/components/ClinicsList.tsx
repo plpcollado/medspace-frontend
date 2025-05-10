@@ -1,13 +1,13 @@
 "use client";
 
 import Button from "@/components/Button";
-import LandlordClinicListItem from "@/components/LandlordClinicListItem";
 import Modal from "@/components/Modal";
 import { ClinicService } from "@/services/ClinicService";
 import { MyClinicData } from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
+import LandlordClinicListItem from "./LandlordClinicListItem";
 
 interface Props {
   clinics: MyClinicData[];
