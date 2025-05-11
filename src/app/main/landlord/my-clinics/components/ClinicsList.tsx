@@ -3,14 +3,14 @@
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { ClinicService } from "@/services/ClinicService";
-import { MyClinicData } from "@/types/clinicTypes";
+import { ClinicPreview } from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
 import LandlordClinicListItem from "./LandlordClinicListItem";
 
 interface Props {
-  clinics: MyClinicData[];
+  clinics: ClinicPreview[];
 }
 
 export default function ClinicsList({ clinics }: Props) {

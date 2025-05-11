@@ -57,7 +57,7 @@ export default async function Navbar() {
         {variant === "guest" ? (
           <GuestRightSection />
         ) : (
-          <UserRightSection pfpPath={user?.profilePictureUrl || ""} />
+          <UserRightSection pfpPath={user?.pfpPath || ""} />
         )}
       </div>
     </nav>

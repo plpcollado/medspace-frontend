@@ -1,11 +1,11 @@
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { UserCompact } from "@/types/userTypes";
+import { UserPublic } from "@/types/userTypes";
 import Avatar from "@/components/Avatar/Avatar";
 import { format } from "date-fns";
 import { StorageService } from "@/services/StorageService";
 
 interface Props {
-  landlordData: UserCompact;
+  landlordData: UserPublic;
 }
 
 export default async function LandlordInfoSection({ landlordData }: Props) {
@@ -15,9 +15,7 @@ export default async function LandlordInfoSection({ landlordData }: Props) {
         <Avatar
           className="w-16 h-16"
           imageUrl={
-            (await StorageService.getFileUrl(
-              landlordData?.profilePictureUrl
-            )) || ""
+            (await StorageService.getFileUrl(landlordData?.pfpPath)) || ""
           }
         />
       </div>

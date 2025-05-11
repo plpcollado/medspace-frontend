@@ -1,8 +1,19 @@
+import { ClinicPreview } from "./clinicTypes";
+import { Review } from "./reviewTypes";
+
 export type UserType = "TENANT" | "LANDLORD" | "ANALYST";
+
+export const TENANT_SPECIALTIES = [
+  "DENTAL",
+  "GASTROENTEROLOGY",
+  "UROLOGY"
+] as const;
+
+export type TenantSpecialtyType = (typeof TENANT_SPECIALTIES)[number];
 
 export interface TenantSpecialty {
   id: number;
-  name: string;
+  name: TenantSpecialtyType;
 }
 
 export interface User {
@@ -10,25 +21,32 @@ export interface User {
   fullName: string;
   email: string;
   firebaseUid: string;
-  profilePictureUrl: string;
+  pfpPath: string;
   userType: UserType;
-  tenantSpecialty: TenantSpecialty;
+  tenantSpecialty?: TenantSpecialty;
   averageRating: number;
   createdAt: Date;
-  tenantProfessionalLicenseUrl: string;
+  tenantLicensePath?: string;
   stripeCustomerId: string;
   defaultPaymentMethodId: string;
+  bio: string;
 }
 
-export type UserCompact = Pick<
-  User,
-  | "id"
-  | "fullName"
-  | "profilePictureUrl"
-  | "userType"
-  | "averageRating"
-  | "createdAt"
->;
+export interface UserPublic
+  extends Pick<
+    User,
+    | "id"
+    | "fullName"
+    | "averageRating"
+    | "tenantSpecialty"
+    | "userType"
+    | "createdAt"
+    | "bio"
+    | "pfpPath"
+  > {
+  reviews: Review[];
+  clinics?: ClinicPreview[];
+}
 
 export interface UserRegistrationData {
   fullName: string;

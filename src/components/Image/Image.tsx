@@ -16,8 +16,6 @@ export default function Image({
 }: Props) {
   const [imageSrc, setImageSrc] = useState<string>(placeholderImage);
 
-  console.log("Image src:", src);
-
   useEffect(() => {
     const isBucketSrc =
       !!src && !(src.startsWith("/") || src.startsWith("https://"));

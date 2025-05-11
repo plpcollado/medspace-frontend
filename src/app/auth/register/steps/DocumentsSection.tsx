@@ -3,7 +3,8 @@ import SelectInput from "@/components/SelectInput/SelectInput";
 import TextInput from "@/components/TextInput";
 import React, { useState } from "react";
 import Avatar from "@/components/Avatar/Avatar";
-import { UserRegistrationData } from "@/types/userTypes";
+import { TENANT_SPECIALTIES, UserRegistrationData } from "@/types/userTypes";
+import { constToTitleCase } from "@/lib/textUtils";
 
 type CreateUserFormData = Partial<UserRegistrationData>;
 
@@ -51,15 +52,12 @@ export default function DocumentsSection({ formData, updateFormData }: Props) {
           <>
             <SelectInput
               label="Specialty:"
-              values={[
-                { name: "Cardiology", value: "1" },
-                { name: "Dermatology", value: "2" },
-                { name: "Pediatrics", value: "3" },
-                { name: "Psychiatry", value: "4" },
-                { name: "Radiology", value: "5" },
-                { name: "Surgery", value: "6" },
-                { name: "Other", value: "7" }
-              ]}
+              values={TENANT_SPECIALTIES.map((s, i) => {
+                return {
+                  name: constToTitleCase(s),
+                  value: i.toString()
+                };
+              })}
               value={formData.tenantSpecialtyId}
               onChange={(e) =>
                 updateFormData("tenantSpecialtyId", parseInt(e.target.value))

@@ -118,7 +118,16 @@ export interface ClinicDailyAvailabilityInput {
   isActive: boolean;
 }
 
-export interface MyClinicData
-  extends Pick<Clinic, "id" | "displayName" | "addressState"> {
+export interface ClinicPreview
+  extends Pick<
+    Clinic,
+    | "id"
+    | "displayName"
+    | "addressState"
+    | "averageRating"
+    | "category"
+    | "pricePerDay"
+    | "description"
+  > {
   mainPhotoPath: string;
 }
