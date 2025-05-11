@@ -1,13 +1,11 @@
-import React from "react";
-import ClinicsList from "./components/ClinicsList";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { MdAddBox } from "react-icons/md";
-import { ClinicService } from "@/services/ClinicService";
+import ClinicFetcher from "./components/ClinicFetcher";
+import ClinicsListSkeleton from "./components/ClinicsListSkeleton";
 
 export default async function page() {
-  const clinics = await ClinicService.getMyClinics();
-
   return (
     <div className="flex flex-col gap-4 p-8">
       <div className="flex flex-row items-center">
@@ -19,7 +17,9 @@ export default async function page() {
         </Link>
       </div>
 
-      <ClinicsList clinics={clinics} />
+      <Suspense fallback={<ClinicsListSkeleton />}>
+        <ClinicFetcher />
+      </Suspense>
     </div>
   );
 }

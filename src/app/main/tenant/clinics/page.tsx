@@ -20,7 +20,7 @@ interface SearchParams {
 export default function Page() {
   const { authInitialized } = useAuth();
   const [clinics, setClinics] = useState<Clinic[]>([]);
-  const [isloading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Fixed variable name (capital L)
   const [searchParams, setSearchParams] = useState<SearchParams>({
     time: "12:00",
     equipment: [],
@@ -63,32 +63,50 @@ export default function Page() {
       <div className="w-3/4 flex flex-col">
         {/* Search & Filter */}
         <div className="p-4">
-          <ClinicFilterBar onSearch={handleSearch} isLoading={isloading} />
+          <ClinicFilterBar onSearch={handleSearch} isLoading={isLoading} />
         </div>
 
         {/* Scrollable clinic list */}
-        <div className="flex-1 overflow-y-auto  space-y-2">
-          {clinics.map((clinic, index) => (
-            <span key={index}>
-              <div className="border-t border-gray-300 mx-2"></div>
-              <ClinicCard
-                clinicId={clinic.id}
-                rating={clinic.averageRating}
-                title={clinic.displayName}
-                isFavorited={false}
-                category={constToTitleCase(clinic.category)}
-                rentCostPerDay={clinic.pricePerDay}
-                thumbnailURL={
-                  clinic.photos!.find((photo) => photo.isPrimary)?.path || ""
-                }
-              />
-            </span>
-          ))}
+        <div className="flex-1 overflow-y-auto space-y-2">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-full">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              <p className="ml-3 text-gray-600">Loading clinics...</p>
+            </div>
+          ) : (
+            <>
+              {clinics.length > 0 ? (
+                clinics.map((clinic, index) => (
+                  <span key={index}>
+                    <div className="border-t border-gray-300 mx-2"></div>
+                    <ClinicCard
+                      clinicId={clinic.id}
+                      rating={clinic.averageRating}
+                      title={clinic.displayName}
+                      isFavorited={false}
+                      category={constToTitleCase(clinic.category)}
+                      rentCostPerDay={clinic.pricePerDay}
+                      thumbnailURL={
+                        clinic.photos!.find((photo) => photo.isPrimary)?.path ||
+                        ""
+                      }
+                    />
+                  </span>
+                ))
+              ) : (
+                <div className="flex justify-center items-center h-full">
+                  <p className="text-gray-500">
+                    No clinics found matching your criteria.
+                  </p>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
 
       {/* Map Section */}
-      <div className="w-2/4 ">
+      <div className="w-2/4">
         <ClinicsMap
           clinics={clinics.map((clinic) => ({
             id: clinic.id,

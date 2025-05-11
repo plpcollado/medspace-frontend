@@ -7,7 +7,7 @@ import { MyClinicData } from "@/types/clinicTypes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
-import LandlordClinicListItem from "./LandlordClinicListItem";
+import ClinicListItem from "./ClinicListItem";
 
 interface Props {
   clinics: MyClinicData[];
@@ -28,7 +28,6 @@ export default function ClinicsList({ clinics }: Props) {
 
   function handleEdit(clinicId: number) {
     router.push(`/main/landlord/my-clinics/${clinicId}/edit`);
-    console.log("edit");
   }
 
   async function handleShare(clinicId: number) {
@@ -105,7 +104,7 @@ export default function ClinicsList({ clinics }: Props) {
         }}
       />
       {clinics.map((clinic, i) => (
-        <LandlordClinicListItem
+        <ClinicListItem
           key={i}
           clinicId={clinic.id}
           clinicImageURL={clinic.mainPhotoPath}

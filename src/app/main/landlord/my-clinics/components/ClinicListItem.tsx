@@ -23,7 +23,7 @@ type ClinicListItemProps = {
   onShare: (clinicId: number) => void;
 };
 
-const LandlordClinicListItem = ({
+function ClinicListItem({
   clinicId,
   clinicName,
   clinicImageURL,
@@ -31,7 +31,7 @@ const LandlordClinicListItem = ({
   onDelete,
   onEdit,
   onShare
-}: ClinicListItemProps) => {
+}: ClinicListItemProps) {
   return (
     <div className="flex flex-1 flex-col gap-8 p-8 items-center justify-between shadow-sm  rounded-lg md:flex-row md:justify-between md:px-6 md:py-2 ">
       <div className="flex flex-row items-center gap-4">
@@ -71,6 +71,6 @@ const LandlordClinicListItem = ({
       </div>
     </div>
   );
-};
+}
 
-export default LandlordClinicListItem;
+export default ClinicListItem;
