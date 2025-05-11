@@ -70,4 +70,21 @@ export class RentRequestService {
       throw error;
     }
   }
+
+  static async acceptRentRequest(rentRequestId: string) {
+    try {
+      const headers = await AuthService.getAuthHeaders();
+
+      await axios.put<ApiResponse<null>>(
+        this.BASE_URL + `/${rentRequestId}/accept`,
+        {},
+        {
+          headers
+        }
+      );
+    } catch (error) {
+      console.error("[RentRequestService]: Reject rent accept error:", error);
+      throw error;
+    }
+  }
 }

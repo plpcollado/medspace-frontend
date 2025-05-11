@@ -28,6 +28,16 @@ export default function RentRequestList({
     }
   };
 
+  const handleAcceptRequest = async (requestId: string) => {
+    try {
+      await RentRequestService.acceptRentRequest(requestId);
+      setRequests((prev) => prev.filter((r) => r.id !== requestId));
+      toast.success("Rent request accepted successfully.");
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10">
       {requests.map((request) => (
@@ -36,7 +46,9 @@ export default function RentRequestList({
           specialistName={request.tenantFullName}
           date={request.startDate}
           officeName={request.clinicDisplayName}
-          onClickAccept={() => {}}
+          onClickAccept={() => {
+            handleAcceptRequest(request.id);
+          }}
           onClickDeny={() => {
             handleRejectRequest(request.id);
           }}
