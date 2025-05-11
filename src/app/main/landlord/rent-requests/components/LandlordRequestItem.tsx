@@ -24,6 +24,7 @@ const RequestDetails = ({
   <div className="flex items-center space-x-2">
     {specialistPhoto && (
       <Image
+        placeholderImage="/pfp_placeholder.png"
         src={specialistPhoto}
         alt="Specialist photo"
         className="h-8 w-8 rounded-full object-cover"

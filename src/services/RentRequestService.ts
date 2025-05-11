@@ -19,7 +19,7 @@ export class RentRequestService {
       const params = new URLSearchParams();
       params.append("status", status);
       const response = await axios.get<ApiResponse<RentRequestPreview[]>>(
-        this.BASE_URL + "/landlord" + `?${params}`,
+        this.BASE_URL + "/my-received-requests" + `?${params}`,
         {
           headers
         }
