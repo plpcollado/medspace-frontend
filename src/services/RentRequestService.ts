@@ -83,7 +83,7 @@ export class RentRequestService {
         }
       );
     } catch (error) {
-      console.error("[RentRequestService]: Reject rent accept error:", error);
+      console.error("[RentRequestService]: Accept rent request error:", error);
       throw error;
     }
   }
