@@ -53,4 +53,21 @@ export class RentRequestService {
       throw error;
     }
   }
+
+  static async rejectRentRequest(rentRequestId: string) {
+    try {
+      const headers = await AuthService.getAuthHeaders();
+
+      await axios.put<ApiResponse<null>>(
+        this.BASE_URL + `/${rentRequestId}/reject`,
+        {},
+        {
+          headers
+        }
+      );
+    } catch (error) {
+      console.error("[RentRequestService]: Reject rent request error:", error);
+      throw error;
+    }
+  }
 }
