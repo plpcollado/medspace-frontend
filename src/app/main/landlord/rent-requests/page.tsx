@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import RentRequestFetcher from "./components/RentRequestFetcher";
-import ClinicsListSkeleton from "../my-clinics/components/ClinicsListSkeleton";
+import ClinicsListSkeleton from "@/components/ListSuspenseSkeleton/ListSuspenseSkeleton";
 
 export default function RentRequestsPage() {
   return (
