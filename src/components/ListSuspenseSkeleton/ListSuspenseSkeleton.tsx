@@ -1,4 +1,4 @@
-function ClinicsListSkeleton() {
+function ListSuspenseSkeleton() {
   return (
     <div className="flex flex-col gap-4 animate-pulse">
       {[1, 2, 3].map((i) => (
@@ -7,4 +7,4 @@ function ClinicsListSkeleton() {
     </div>
   );
 }
-export default ClinicsListSkeleton;
+export default ListSuspenseSkeleton;
