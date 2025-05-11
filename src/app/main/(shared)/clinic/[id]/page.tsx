@@ -57,7 +57,13 @@ export default async function ClinicPage({
                 createdAt: new Date(),
                 fullName: "Osdaddy",
                 id: 0,
-                profilePictureUrl: "",
+                reviews: [],
+                pfpPath: "",
+                bio: "s",
+                tenantSpecialty: {
+                  id: 1,
+                  name: "DENTAL"
+                },
                 userType: "LANDLORD"
               }}
             />

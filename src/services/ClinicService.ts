@@ -3,7 +3,7 @@ import {
   Clinic,
   ClinicEquipmentType,
   ClinicRegistrationData,
-  MyClinicData
+  ClinicPreview
 } from "@/types/clinicTypes";
 import { ApiResponse } from "@/types/serviceTypes";
 import { AuthService } from "./AuthService";
@@ -130,6 +130,11 @@ export class ClinicService {
 
       return response.data.data;
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          return null;
+        }
+      }
       console.error("[ClinicService]: Get clinic by ID error:", error);
       throw error;
     }
@@ -145,10 +150,10 @@ export class ClinicService {
     }
   }
 
-  static async getMyClinics(): Promise<MyClinicData[]> {
+  static async getMyClinics(): Promise<ClinicPreview[]> {
     try {
       const headers = await AuthService.getAuthHeaders();
-      const response = await axios.get<ApiResponse<MyClinicData[]>>(
+      const response = await axios.get<ApiResponse<ClinicPreview[]>>(
         `${this.BASE_URL}/my-clinics`,
         { headers }
       );
