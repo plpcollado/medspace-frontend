@@ -61,5 +61,9 @@ export interface CreateUserProfileData
     | "password"
     | "tenantSpecialty"
   > {
-  tenantSpecialtyId: number;
+  tenantSpecialtyId?: number;
 }
+
+export type EditUserProfileData = Partial<
+  Omit<CreateUserProfileData, "userType">
+>;
