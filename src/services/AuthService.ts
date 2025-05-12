@@ -2,12 +2,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  User as FirebaseUser,
   onAuthStateChanged
 } from "firebase/auth";
 import { setCookie, deleteCookie } from "cookies-next";
 import { UserService } from "./UserService";
-import { User, UserRegistrationData } from "@/types/userTypes";
+import { CreateUserProfileData, User } from "@/types/userTypes";
 import { auth } from "@/lib/firebase/firebaseApp";
 import { getCookieServer } from "@/lib/getCookieServer";
 
@@ -30,16 +29,6 @@ export class AuthService {
     } else {
       await deleteCookie(this.USER_TOKEN_COOKIE_NAME);
     }
-  }
-
-  // Check if user is authenticated
-  static isAuthenticated(): boolean {
-    return !!auth.currentUser;
-  }
-
-  // Get the current Firebase auth user
-  private static getCurrentFirebaseUser(): FirebaseUser | null {
-    return auth.currentUser;
   }
 
   // Subscribe to auth state changes
@@ -101,16 +90,15 @@ export class AuthService {
 
   // Register a new user with email and password
   static async registerUserWithEmailAndPassword(
-    email: string,
     password: string,
-    userData: UserRegistrationData
+    userData: CreateUserProfileData
   ): Promise<void> {
     let userCredential;
 
     try {
       userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
+        userData.email,
         password
       );
 

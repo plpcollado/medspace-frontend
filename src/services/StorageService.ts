@@ -2,7 +2,7 @@ import { storage } from "@/lib/firebase/firebaseApp";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export class StorageService {
-  static async uploadImage(file: File, path: string) {
+  static async uploadImage(file: File, path: string): Promise<string> {
     const storageRef = ref(storage, path);
     const metadata = {
       contentType: file.type
@@ -10,7 +10,7 @@ export class StorageService {
 
     try {
       const snapshot = await uploadBytes(storageRef, file, metadata);
-      return snapshot;
+      return snapshot.metadata.fullPath;
     } catch (error) {
       console.error("[FileService]: Error uploading file", error);
       throw error;

@@ -9,12 +9,22 @@ import Button from "@/components/Button";
 import toast from "react-hot-toast";
 import DocumentsSection from "./steps/DocumentsSection";
 import { AuthService } from "@/services/AuthService";
-import { UserRegistrationData } from "@/types/userTypes";
+import { CreateUserProfileData } from "@/types/userTypes";
 import axios from "axios";
 import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/navigation";
+import { StorageService } from "@/services/StorageService";
+import { v4 as uuidv4 } from "uuid";
+import { UserService } from "@/services/UserService";
 
-type CreateUserFormData = Partial<UserRegistrationData>;
+export interface CreateUserFormData
+  extends Omit<CreateUserProfileData, "pfpPath" | "tenantLicensePath"> {
+  pfpFile: File | null;
+  tenantLicenseFile: File | null;
+  password: string;
+  officialIdFile: File | null;
+  tenantLicenseNumber: string;
+}
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -25,15 +35,19 @@ export default function RegisterPage() {
     password: "",
     phoneNumber: "",
     userType: "ANALYST",
-    tenantProfessionalLicenseNumber: "",
-    tenantSpecialtyId: 1
+    pfpFile: null,
+    tenantSpecialtyId: 1,
+    tenantLicenseFile: null,
+    bio: "",
+    officialIdFile: null,
+    tenantLicenseNumber: ""
   });
 
   const [currentStep, setCurrentStep] = useState(1);
 
   const steps = [
     { label: "Basic Info" },
-    { label: "Documents" }
+    { label: "Details" }
     // { label: "Payment details" }
   ];
 
@@ -65,13 +79,42 @@ export default function RegisterPage() {
     setIsLoading(true); // Set loading state to true
 
     try {
-      const d = formData as UserRegistrationData;
+      const userData: CreateUserProfileData = {
+        pfpPath: "/pfp_placeholder.png",
+        tenantLicensePath: "null",
+        bio: formData.bio,
+        email: formData.email,
+        fullName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        tenantSpecialtyId: formData.tenantSpecialtyId,
+        userType: formData.userType
+      };
 
       await AuthService.registerUserWithEmailAndPassword(
-        d.email,
-        d.password,
-        d
+        formData.password,
+        userData
       );
+
+      //wait for the user to be created before uploading the files
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      const pfpPath = await StorageService.uploadImage(
+        formData.pfpFile!,
+        `user-pfps/${uuidv4()}-${formData.pfpFile?.name}`
+      );
+
+      let tenantLicensePath: string | undefined = undefined;
+      if (formData.userType === "TENANT") {
+        tenantLicensePath = await StorageService.uploadImage(
+          formData.tenantLicenseFile!,
+          `tenant-licenses/${uuidv4()}-${formData.tenantLicenseFile?.name}`
+        );
+      }
+
+      await UserService.updateUserProfile({
+        pfpPath,
+        tenantLicensePath
+      });
 
       toast.success("User created successfully!");
 
@@ -128,38 +171,47 @@ export default function RegisterPage() {
   function validateDocuments() {
     const sizeLimit = 2 * 1024 * 1024; // 2MB
 
-    if (!formData.pfp) {
+    if (!formData.pfpFile) {
       toast.error("Please upload a profile picture.");
       return false;
     }
-    if (formData.pfp.size > sizeLimit) {
+    if (formData.pfpFile.size > sizeLimit) {
       toast.error("Profile picture size should be less than 2MB.");
       return false;
     }
 
-    if (!formData.officialId) {
-      console.log(formData.officialId);
+    if (!formData.bio) {
+      toast.error("Please enter a short description about you.");
+      return false;
+    }
+
+    if (formData.bio.length > 500) {
+      toast.error("Bio should be max 500 characters.");
+      return false;
+    }
+
+    if (!formData.officialIdFile) {
       toast.error("Please upload an official ID.");
       return false;
     }
 
-    if (formData.officialId.size > sizeLimit) {
+    if (formData.officialIdFile.size > sizeLimit) {
       toast.error("Oficial ID size should be less than 2MB.");
       return false;
     }
 
     if (formData.userType === "TENANT") {
-      if (!formData.tenantProfessionalLicenseNumber) {
+      if (!formData.tenantLicenseNumber) {
         toast.error("Please enter your professional license number.");
         return false;
       }
 
-      if (!formData.tenantProfessionalLicense) {
+      if (!formData.tenantLicenseFile) {
         toast.error("Please upload a professional license.");
         return false;
       }
 
-      if (formData.tenantProfessionalLicense.size > sizeLimit) {
+      if (formData.tenantLicenseFile.size > sizeLimit) {
         toast.error("Professional license size should be less than 2MB.");
         return false;
       }

@@ -1,9 +1,7 @@
 import SelectInput from "@/components/SelectInput/SelectInput";
 import TextInput from "@/components/TextInput";
-import { UserRegistrationData } from "@/types/userTypes";
 import React from "react";
-
-type CreateUserFormData = Partial<UserRegistrationData>;
+import { CreateUserFormData } from "../page";
 
 interface Props {
   formData: CreateUserFormData;

@@ -1,44 +1,69 @@
+import { ClinicPreview } from "./clinicTypes";
+import { Review } from "./reviewTypes";
+
 export type UserType = "TENANT" | "LANDLORD" | "ANALYST";
+
+export const TENANT_SPECIALTIES = [
+  "DENTAL",
+  "GASTROENTEROLOGY",
+  "UROLOGY"
+] as const;
+
+export type TenantSpecialtyType = (typeof TENANT_SPECIALTIES)[number];
 
 export interface TenantSpecialty {
   id: number;
-  name: string;
+  name: TenantSpecialtyType;
 }
 
 export interface User {
   id: number;
   fullName: string;
   email: string;
+  phoneNumber: string;
   firebaseUid: string;
-  profilePhotoUrl: string;
+  pfpPath: string;
   userType: UserType;
-  tenantSpecialty: TenantSpecialty;
+  tenantSpecialty?: TenantSpecialty;
   averageRating: number;
   createdAt: Date;
-  tenantProfessionalLicenseUrl: string;
+  tenantLicensePath?: string;
   stripeCustomerId: string;
   defaultPaymentMethodId: string;
+  bio: string;
 }
 
-export type UserCompact = Pick<
-  User,
-  | "id"
-  | "fullName"
-  | "profilePhotoUrl"
-  | "userType"
-  | "averageRating"
-  | "createdAt"
->;
+export interface UserPublic
+  extends Pick<
+    User,
+    | "id"
+    | "fullName"
+    | "averageRating"
+    | "tenantSpecialty"
+    | "userType"
+    | "createdAt"
+    | "bio"
+    | "pfpPath"
+  > {
+  reviews: Review[];
+  clinics?: ClinicPreview[];
+}
 
-export interface UserRegistrationData {
-  fullName: string;
-  email: string;
-  password: string;
-  phoneNumber: string;
-  pfp: File;
-  userType: UserType;
-  officialId: File;
-  tenantProfessionalLicense?: File;
-  tenantProfessionalLicenseNumber?: string;
+export interface CreateUserProfileData
+  extends Omit<
+    User,
+    | "id"
+    | "firebaseUid"
+    | "createdAt"
+    | "averageRating"
+    | "stripeCustomerId"
+    | "defaultPaymentMethodId"
+    | "password"
+    | "tenantSpecialty"
+  > {
   tenantSpecialtyId?: number;
 }
+
+export type EditUserProfileData = Partial<
+  Omit<CreateUserProfileData, "userType">
+>;
