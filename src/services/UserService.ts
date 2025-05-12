@@ -1,45 +1,17 @@
 import axios from "axios";
 import { env } from "@/config/env";
-import { User, UserPublic, UserRegistrationData } from "@/types/userTypes";
+import { CreateUserProfileData, User, UserPublic } from "@/types/userTypes";
 import { ApiResponse } from "@/types/serviceTypes";
 import { AuthService } from "./AuthService";
 
 export class UserService {
   static BASE_URL = env.NEXT_PUBLIC_API_URL + "/users";
 
-  static async createUserProfile(
-    data: Omit<UserRegistrationData, "password">
-  ): Promise<ApiResponse<null>> {
+  static async createUserProfile(data: CreateUserProfileData): Promise<void> {
     try {
-      const formData = new FormData();
-
-      formData.append("fullName", data.fullName);
-      formData.append("email", data.email);
-      formData.append("phoneNumber", data.phoneNumber);
-      formData.append("pfp", data.pfp);
-      formData.append("userType", data.userType);
-      formData.append("officialId", data.officialId);
-
-      if (data.userType === "TENANT") {
-        formData.append(
-          "tenantProfessionalLicense",
-          data.tenantProfessionalLicense!
-        );
-        formData.append(
-          "tenantProfessionalLicenseNumber",
-          data.tenantProfessionalLicenseNumber!
-        );
-        formData.append("tenantSpecialtyId", String(data.tenantSpecialtyId));
-      }
       const headers = await AuthService.getAuthHeaders();
 
-      const response = await axios.post<ApiResponse<null>>(
-        this.BASE_URL,
-        formData,
-        { headers }
-      );
-
-      return response.data;
+      await axios.post<ApiResponse<null>>(this.BASE_URL, data, { headers });
     } catch (error) {
       console.error("[UserService]: Create user profile error:", error);
       throw error;
@@ -150,6 +122,21 @@ export class UserService {
     } catch (error) {
       console.error("[UserService]: Error fetching public user data", error);
       throw error; // You can customize the error handling as needed
+    }
+  }
+
+  static async updateUserProfile(
+    data: Partial<Omit<CreateUserProfileData, "userType">>
+  ): Promise<void> {
+    try {
+      const headers = await AuthService.getAuthHeaders();
+
+      await axios.put<ApiResponse<null>>(this.BASE_URL + "/me", data, {
+        headers
+      });
+    } catch (error) {
+      console.error("[UserService]: Update user profile error:", error);
+      throw error;
     }
   }
 }

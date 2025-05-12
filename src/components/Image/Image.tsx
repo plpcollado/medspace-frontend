@@ -18,7 +18,13 @@ export default function Image({
 
   useEffect(() => {
     const isBucketSrc =
-      !!src && !(src.startsWith("/") || src.startsWith("https://"));
+      !!src &&
+      !(
+        src.startsWith("/") ||
+        src.startsWith("http://") ||
+        src.startsWith("https://") ||
+        src.startsWith("blob:")
+      );
 
     if (!src) {
       setImageSrc(placeholderImage);

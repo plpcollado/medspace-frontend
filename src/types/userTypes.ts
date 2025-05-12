@@ -20,6 +20,7 @@ export interface User {
   id: number;
   fullName: string;
   email: string;
+  phoneNumber: string;
   firebaseUid: string;
   pfpPath: string;
   userType: UserType;
@@ -48,15 +49,17 @@ export interface UserPublic
   clinics?: ClinicPreview[];
 }
 
-export interface UserRegistrationData {
-  fullName: string;
-  email: string;
-  password: string;
-  phoneNumber: string;
-  pfp: File;
-  userType: UserType;
-  officialId: File;
-  tenantProfessionalLicense?: File;
-  tenantProfessionalLicenseNumber?: string;
-  tenantSpecialtyId?: number;
+export interface CreateUserProfileData
+  extends Omit<
+    User,
+    | "id"
+    | "firebaseUid"
+    | "createdAt"
+    | "averageRating"
+    | "stripeCustomerId"
+    | "defaultPaymentMethodId"
+    | "password"
+    | "tenantSpecialty"
+  > {
+  tenantSpecialtyId: number;
 }
