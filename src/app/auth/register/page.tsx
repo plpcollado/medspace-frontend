@@ -96,7 +96,7 @@ export default function RegisterPage() {
       );
 
       //wait for the user to be created before uploading the files
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       const pfpPath = await StorageService.uploadImage(
         formData.pfpFile!,
