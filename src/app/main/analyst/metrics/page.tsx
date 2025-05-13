@@ -54,8 +54,48 @@ export default function MetricsPage() {
   };
 
   const handleDownloadPDF = () => {
-    // TODO: Implement PDF download
-    console.log('Downloading PDF...');
+    // Create a style element for print
+    const style = document.createElement('style');
+    style.textContent = `
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        .metrics-content, .metrics-content * {
+          visibility: visible;
+        }
+        .metrics-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Add class to the content we want to print
+    const content = document.querySelector('main');
+    if (content) {
+      content.classList.add('metrics-content');
+    }
+
+    // Hide elements we don't want to print
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.classList.add('no-print'));
+
+    // Trigger print
+    window.print();
+
+    // Cleanup
+    document.head.removeChild(style);
+    if (content) {
+      content.classList.remove('metrics-content');
+    }
+    buttons.forEach(button => button.classList.remove('no-print'));
   };
 
   const handleTabChange = (tab: string) => {
