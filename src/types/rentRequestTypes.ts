@@ -1,3 +1,5 @@
+import { ApiResponse } from "./serviceTypes";
+
 export const RENT_REQUEST_STATUS = {
   PENDING: "PENDING",
   ACCEPTED: "ACCEPTED",
@@ -17,4 +19,23 @@ export interface RentRequestPreview {
   clinicDisplayName: string;
   tenantFullName: string;
   tenantProfilePictureUrl: string;
+}
+
+export interface RentRequestDashboardData {
+  rentRequestId: number;
+  tenantName: string;
+  clinicName: string;
+  status: string;
+  createdAt: string;
+  tenantSpecialty: string;
+  clinicAddress: string;
+  clinicBorough: string;
+  clinicLatitude: number;
+  clinicLongitude: number;
+}
+
+export interface RentRequestDashboardResponse extends ApiResponse<RentRequestDashboardData[]> {
+  success: boolean;
+  message: string;
+  data: RentRequestDashboardData[];
 }
